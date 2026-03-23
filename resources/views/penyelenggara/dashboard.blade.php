@@ -18,50 +18,58 @@
 </head>
 <body class="bg-[#f8fafc] text-slate-900 flex h-screen overflow-hidden">
 
-    <aside class="w-64 bg-white border-r border-slate-200 flex-col justify-between hidden md:flex z-20">
+    <aside id="sidebar" class="w-64 bg-white border-r border-slate-200 transition-all duration-300 flex-col justify-between hidden md:flex absolute md:relative z-50 md:z-20 h-full shadow-2xl md:shadow-none z-20">
         <div>
             <div class="h-20 flex items-center px-6 border-b border-slate-100 mb-4">
                 <a href="{{ route('home') }}" class="flex items-center gap-2">
-                    <span class="text-xl font-bold tracking-tight text-blue-600">LombaPeta</span>
-                    <span class="px-2 py-0.5 rounded-full bg-green-50 text-green-600 text-[10px] font-bold uppercase tracking-wider border border-green-100">Penyelenggara</span>
+                    <img src="{{ asset('images/lombapeta.png') }}" alt="Logo" class="w-10 h-10 object-contain">
+                    <div class="flex flex-col sidebar-text">
+                        <span class="text-xl font-bold tracking-tight text-blue-600 leading-tight">LombaPeta</span>
+                        <span class="text-green-600 opacity-70 text-[10px] font-bold uppercase tracking-wider border border-green-100">Penyelenggara</span>
+                    </div>
                 </a>
             </div>
 
             <nav class="px-4 space-y-1">
                 <a href="{{ route('penyelenggara.dashboard') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-blue-50 text-blue-700 font-bold border border-blue-100 transition-all">
                     <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                    <span class="text-sm">Dashboard</span>
+                    <span class="text-sm sidebar-text">Dashboard</span>
                 </a>
 
                 <a href="{{ route('penyelenggara.create') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium transition-all">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                    <span class="text-sm">Pasang Info Lomba</span>
+                    <span class="text-sm sidebar-text">Pasang Info Lomba</span>
                 </a>
 
                 <a href="{{ route('penyelenggara.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium transition-all">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
-                    <span class="text-sm">Lomba Saya</span>
+                    <span class="text-sm sidebar-text">Lomba Saya</span>
                 </a>
             </nav>
         </div>
 
         <div class="p-4 border-t border-slate-100">
-            <a href="{{ route('home') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-500 hover:bg-red-50 font-medium transition-all">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                <span class="text-sm">Keluar</span>
-            </a>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-500 hover:bg-red-50 font-medium transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                    <span class="text-sm sidebar-text">Keluar</span>
+                </button>
+            </form>
         </div>
     </aside>
 
     <div class="flex-1 flex flex-col h-screen overflow-hidden">
 
         <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-6 lg:px-10 z-10 shrink-0">
-            <h1 class="text-lg font-bold text-slate-800">Dashboard Penyelenggara</h1>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center"><button onclick="toggleSidebar()" class="p-2 mr-3 text-slate-500 hover:bg-slate-100 rounded-lg"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg></button></div><h1 class="text-lg font-bold text-slate-800">Dashboard Penyelenggara</h1>
+            </div>
 
             <div class="flex items-center gap-6">
                 <div class="relative hidden sm:block">
                     <svg class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    <input type="text" placeholder="Cari nama pendaftar..." class="pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 w-64 transition-all">
+                    <input type="text" placeholder="Cari..." class="pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 w-64 transition-all">
                 </div>
 
                 <div class="flex items-center gap-4 border-l border-slate-200 pl-6">
@@ -70,17 +78,17 @@
                         <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
                     </button>
                     <button class="w-9 h-9 rounded-full bg-green-100 text-green-700 font-bold text-sm flex items-center justify-center border border-green-200">
-                        PY
+                        {{ substr(auth()->user()->name, 0, 1) }}
                     </button>
                 </div>
             </div>
         </header>
 
         <main class="flex-1 overflow-y-auto p-6 lg:p-10">
-            <div class="max-w-7xl mx-auto space-y-8">
+            <div class="max-w-7xl mx-auto space-y-8 animate-fade-in-up">
 
                 <div>
-                    <h2 class="text-2xl font-bold text-slate-900 mb-1">Selamat Datang, Penyelenggara 👋</h2>
+                    <h2 class="text-2xl font-bold text-slate-900 mb-1">Selamat Datang, {{ auth()->user()->name }} 👋</h2>
                     <p class="text-slate-500 text-sm">Pantau statistik pendaftaran dan kelola peserta kompetisi Anda hari ini.</p>
                 </div>
 
@@ -92,9 +100,9 @@
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                             </div>
                         </div>
-                        <p class="text-4xl font-extrabold text-slate-900 mb-6">342</p>
+                        <p class="text-4xl font-extrabold text-slate-900 mb-6">{{ $totalRegistrants }}</p>
                         <div class="w-full bg-slate-100 h-1.5 rounded-full mt-auto">
-                            <div class="bg-blue-600 h-1.5 rounded-full w-[80%]"></div>
+                            <div class="bg-blue-600 h-1.5 rounded-full w-[{{ $totalRegistrants > 0 ? 100 : 0 }}%]"></div>
                         </div>
                     </div>
 
@@ -105,8 +113,8 @@
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             </div>
                         </div>
-                        <p class="text-4xl font-extrabold text-slate-900 mb-2">3</p>
-                        <p class="text-xs font-bold text-green-600">Sedang buka pendaftaran</p>
+                        <p class="text-4xl font-extrabold text-slate-900 mb-2">{{ $competitions->where('status', 'approved')->count() }}</p>
+                        <p class="text-xs font-bold text-green-600">Disetujui & Live</p>
                     </div>
 
                     <div class="bg-white/60 rounded-3xl p-6 border border-orange-200 shadow-sm relative overflow-hidden" style="background: linear-gradient(to bottom right, #fff7ed, #ffffff);">
@@ -116,8 +124,8 @@
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             </div>
                         </div>
-                        <p class="text-4xl font-extrabold text-slate-900 mb-2">28</p>
-                        <p class="text-xs font-bold text-orange-600">Perlu cek dokumen/bayar</p>
+                        <p class="text-4xl font-extrabold text-slate-900 mb-2">{{ $competitions->where('status', 'pending')->count() }}</p>
+                        <p class="text-xs font-bold text-orange-600">Pending Admin</p>
                     </div>
 
                     <div class="bg-white/60 rounded-3xl p-6 border border-purple-200 shadow-sm relative overflow-hidden" style="background: linear-gradient(to bottom right, #faf5ff, #ffffff);">
@@ -127,8 +135,8 @@
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                             </div>
                         </div>
-                        <p class="text-4xl font-extrabold text-slate-900 mb-2">5.8K</p>
-                        <p class="text-xs font-bold text-purple-600">Views halaman lomba Anda</p>
+                        <p class="text-4xl font-extrabold text-slate-900 mb-2">{{ number_format($totalViews) }}</p>
+                        <p class="text-xs font-bold text-purple-600">Views Halaman Lomba</p>
                     </div>
                 </div>
 
@@ -148,38 +156,23 @@
                             <span class="text-sm font-medium">Grafik lonjakan pendaftar akan ditampilkan di sini</span>
                         </div>
                     </div>
-
                     <div class="lg:col-span-1 bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
                         <h3 class="font-bold text-slate-900 mb-6">Pendaftar per Lomba</h3>
 
                         <div class="space-y-6">
+                            @forelse($competitions as $lomba)
                             <div>
                                 <div class="flex justify-between text-sm font-bold text-slate-700 mb-2">
-                                    <span class="truncate pr-2">Olimpiade Sains Nasional</span>
-                                    <span>145</span>
+                                    <span class="truncate pr-2">{{ $lomba->title }}</span>
+                                    <span>{{ $lomba->registrations_count }}</span>
                                 </div>
                                 <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                                    <div class="bg-blue-600 h-full rounded-full w-[85%]"></div>
+                                    <div class="bg-blue-600 h-full rounded-full w-[{{ $lomba->registrations_count > 0 ? min(100, $lomba->registrations_count * 2) : 0 }}%]"></div>
                                 </div>
                             </div>
-                            <div>
-                                <div class="flex justify-between text-sm font-bold text-slate-700 mb-2">
-                                    <span class="truncate pr-2">Kompetisi Esai Sastra</span>
-                                    <span>112</span>
-                                </div>
-                                <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                                    <div class="bg-blue-600 h-full rounded-full w-[60%]"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-sm font-bold text-slate-700 mb-2">
-                                    <span class="truncate pr-2">Lomba Debat Mahasiswa</span>
-                                    <span>85</span>
-                                </div>
-                                <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                                    <div class="bg-blue-600 h-full rounded-full w-[45%]"></div>
-                                </div>
-                            </div>
+                            @empty
+                            <p class="text-sm text-slate-400">Belum ada kompetisi.</p>
+                            @endforelse
                         </div>
                     </div>
                 </div>
@@ -187,47 +180,27 @@
                 <div class="bg-white rounded-3xl p-6 md:p-8 border border-slate-200 shadow-sm">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="font-bold text-slate-900 text-lg">Pendaftar Terbaru</h3>
-                        <a href="#" class="text-sm font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1">
+                        <a href="{{ route('penyelenggara.registrations.all') }}" class="text-sm font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1">
                             Lihat Semua Data <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                         </a>
                     </div>
 
                     <div class="space-y-4">
-                        <div class="flex items-start gap-4 p-4 rounded-2xl border border-slate-100 hover:bg-slate-50 transition">
-                            <div class="mt-1.5 w-2.5 h-2.5 rounded-full bg-green-500 shrink-0 shadow-sm shadow-green-200"></div>
+                        @forelse($recentRegistrations as $reg)
+                        <div class="flex items-start gap-4 p-4 rounded-2xl border border-slate-100 hover:bg-slate-50 transition cursor-pointer" onclick="window.location='{{ route('penyelenggara.registrations.show', $reg->id) }}'">
+                            <div class="mt-1.5 w-2.5 h-2.5 rounded-full {{ $reg->status == 'pending' ? 'bg-amber-400 shadow-amber-200' : ($reg->status == 'approved' ? 'bg-green-500 shadow-green-200' : 'bg-red-400 shadow-red-200') }} shrink-0 shadow-sm"></div>
                             <div class="flex-1">
-                                <h4 class="font-bold text-slate-900 text-sm">Budi Santoso <span class="text-slate-400 font-normal">- SMAN 1 Jakarta</span></h4>
-                                <p class="text-xs text-slate-500 mt-1">Mendaftar di: <span class="font-medium">Olimpiade Sains Nasional</span></p>
+                                <h4 class="font-bold text-slate-900 text-sm">{{ $reg->user->name }}</h4>
+                                <p class="text-xs text-slate-500 mt-1">Mendaftar di: <span class="font-extrabold text-blue-600">{{ $reg->competition->title }}</span></p>
                             </div>
-                            <span class="text-xs font-medium text-slate-400">5 menit lalu</span>
+                            <span class="text-xs font-medium text-slate-400">{{ $reg->created_at->diffForHumans() }}</span>
                         </div>
-
-                        <div class="flex items-start gap-4 p-4 rounded-2xl border border-slate-100 hover:bg-slate-50 transition">
-                            <div class="mt-1.5 w-2.5 h-2.5 rounded-full bg-amber-400 shrink-0 shadow-sm shadow-amber-200"></div>
-                            <div class="flex-1">
-                                <h4 class="font-bold text-slate-900 text-sm">Siti Aminah <span class="text-slate-400 font-normal">- SMPN 5 Bandung</span></h4>
-                                <p class="text-xs text-slate-500 mt-1">Mendaftar di: <span class="font-medium">Kompetisi Esai Sastra</span></p>
-                            </div>
-                            <span class="text-xs font-medium text-slate-400">20 menit lalu</span>
+                        @empty
+                        <div class="py-12 border-2 border-dashed border-slate-100 rounded-3xl flex flex-col items-center justify-center text-slate-400">
+                             <svg class="w-10 h-10 mb-3 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                             <p class="text-sm italic">Belum ada pendaftaran terbaru.</p>
                         </div>
-
-                        <div class="flex items-start gap-4 p-4 rounded-2xl border border-slate-100 hover:bg-slate-50 transition">
-                            <div class="mt-1.5 w-2.5 h-2.5 rounded-full bg-green-500 shrink-0 shadow-sm shadow-green-200"></div>
-                            <div class="flex-1">
-                                <h4 class="font-bold text-slate-900 text-sm">Ahmad Fauzi <span class="text-slate-400 font-normal">- SMAN 3 Surabaya</span></h4>
-                                <p class="text-xs text-slate-500 mt-1">Mendaftar di: <span class="font-medium">Olimpiade Sains Nasional</span></p>
-                            </div>
-                            <span class="text-xs font-medium text-slate-400">2 jam lalu</span>
-                        </div>
-
-                        <div class="flex items-start gap-4 p-4 rounded-2xl border border-slate-100 hover:bg-slate-50 transition">
-                            <div class="mt-1.5 w-2.5 h-2.5 rounded-full bg-green-500 shrink-0 shadow-sm shadow-green-200"></div>
-                            <div class="flex-1">
-                                <h4 class="font-bold text-slate-900 text-sm">Dina Mariana <span class="text-slate-400 font-normal">- SMA Telkom Makassar</span></h4>
-                                <p class="text-xs text-slate-500 mt-1">Mendaftar di: <span class="font-medium">Lomba Debat Mahasiswa</span></p>
-                            </div>
-                            <span class="text-xs font-medium text-slate-400">Kemarin</span>
-                        </div>
+                        @endforelse
                     </div>
                 </div>
 
@@ -235,5 +208,31 @@
         </main>
     </div>
 
+
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const isMobile = window.innerWidth < 768;
+        
+        if (isMobile) {
+            const computedDisplay = window.getComputedStyle(sidebar).display;
+            if (computedDisplay === "none") {
+                sidebar.style.display = "flex";
+            } else {
+                sidebar.style.display = "none";
+            }
+        } else {
+            if (sidebar.classList.contains("w-64")) {
+                sidebar.classList.remove("w-64");
+                sidebar.classList.add("w-20");
+                document.querySelectorAll(".sidebar-text").forEach(el => el.classList.add("hidden"));
+            } else {
+                sidebar.classList.remove("w-20");
+                sidebar.classList.add("w-64");
+                document.querySelectorAll(".sidebar-text").forEach(el => el.classList.remove("hidden"));
+            }
+        }
+    }
+</script>
 </body>
 </html>

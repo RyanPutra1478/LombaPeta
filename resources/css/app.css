@@ -9,3 +9,56 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
+@layer utilities {
+    .animate-fade-in-up {
+        animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    
+    .animate-fade-in-right {
+        animation: fadeInRight 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .animate-stagger-1 { animation-delay: 0.1s; opacity: 0; }
+    .animate-stagger-2 { animation-delay: 0.2s; opacity: 0; }
+    .animate-stagger-3 { animation-delay: 0.3s; opacity: 0; }
+    .animate-stagger-4 { animation-delay: 0.4s; opacity: 0; }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Glassmorphism smooth hover */
+.glass-hover {
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
+}

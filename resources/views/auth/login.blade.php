@@ -18,8 +18,7 @@
         <div class="max-w-[1440px] w-[92%] mx-auto">
             <div class="flex justify-between items-center h-20">
                 <a href="/" class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold italic" id="nav-logo">L</div>
-                    <span class="text-xl font-bold tracking-tight text-blue-900">LombaPeta</span>
+                    <img src="{{ asset('images/lombapeta.png') }}" alt="Logo" class="w-10 h-10 object-contain"> <span class="text-xl font-bold tracking-tight text-blue-900">LombaPeta</span>
                 </a>
                 <a href="/" class="text-sm font-medium text-slate-500 hover:text-blue-600 transition">← Kembali ke Beranda</a>
             </div>
@@ -31,7 +30,7 @@
             <div class="grid md:grid-cols-2 gap-16 lg:gap-24 items-center">
 
                 <div class="space-y-8 hidden md:block">
-                    <img id="hero-img" src="https://placehold.co/800x600/f1f5f9/3b82f6?text=Portal+Autentikasi" alt="Ilustrasi" class="w-full h-auto rounded-3xl shadow-sm border border-slate-100 transition-all duration-500">
+                    <img id="hero-img" src="{{ asset('images/foto utama.png') }}" alt="Ilustrasi" class="w-full h-auto rounded-3xl shadow-sm border border-slate-100 transition-all duration-500">
                     <div id="hero-text">
                         <h2 class="text-4xl lg:text-5xl font-extrabold leading-tight text-slate-900">
                             Satu Portal untuk <br><span class="text-blue-600" id="hero-highlight">Semua Prestasimu</span>
@@ -42,7 +41,7 @@
                     </div>
                 </div>
 
-                <div class="bg-white p-8 md:p-10 rounded-3xl shadow-2xl border border-slate-100 max-w-xl w-full mx-auto md:mx-0">
+                <div class="bg-white p-8 md:p-10 rounded-3xl shadow-2xl border border-slate-100 max-w-xl w-full mx-auto md:mx-0 animate-fade-in-up">
 
                     <div class="flex gap-6 mb-8 pb-4 border-b border-slate-100">
                         <button id="tab-login" onclick="setMode('login')" class="text-2xl font-bold text-blue-600 border-b-2 border-blue-600 pb-2 transition-all">Masuk</button>
@@ -71,7 +70,7 @@
 
                         <div>
                             <label class="block text-sm font-semibold mb-2 text-slate-700" id="label-email">Email / NISN</label>
-                            <input type="email" name="email" placeholder="email@anda.com" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition bg-slate-50 focus:bg-white" id="input-email">
+                            <input type="text" name="email" placeholder="email@anda.com" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition bg-slate-50 focus:bg-white" id="input-email">
                         </div>
 
                         <div>
@@ -87,7 +86,7 @@
                             <a href="#" class="text-blue-600 font-medium hover:underline" id="link-forgot">Lupa Kata Sandi?</a>
                         </div>
 
-                        <button type="submit" id="btn-submit" class="w-full py-4 mt-4 bg-blue-600 text-white rounded-xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition-all text-lg">
+                        <button type="submit" id="btn-submit" class="w-full py-4 mt-4 bg-blue-600 text-white rounded-xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition-all text-lg hover:-translate-y-0.5 shadow-lg hover:shadow-blue-100 ">
                             Masuk
                         </button>
                     </form>
@@ -102,14 +101,12 @@
 
         const config = {
             peserta: { color: 'blue', labelEmail: 'Email Pelajar / NISN', placeholderEmail: 'pelajar@sekolah.com', labelName: 'Nama Lengkap Siswa' },
-            penyelenggara: { color: 'green', labelEmail: 'Email Institusi Resmi', placeholderEmail: 'info@institusi.com', labelName: 'Nama Institusi / Organisasi' },
+            penyelenggara: { color: 'emerald', labelEmail: 'Email Institusi Resmi', placeholderEmail: 'info@institusi.com', labelName: 'Nama Institusi / Organisasi' },
             admin: { color: 'slate', labelEmail: 'Username / Email Admin', placeholderEmail: 'admin@lombapeta.co.id', labelName: 'Nama Admin' }
         };
 
         function setMode(mode) {
             currentMode = mode;
-
-            // Mengubah value hidden input agar Laravel tahu ini form login atau register
             document.getElementById('input-mode').value = mode;
 
             const tabLogin = document.getElementById('tab-login');
@@ -118,16 +115,17 @@
             const fieldExtras = document.getElementById('field-extras');
 
             let activeColor = config[currentRole].color;
+            let isHidden = tabRegister.classList.contains('hidden');
 
             if (mode === 'login') {
-                tabLogin.className = `text-2xl font-bold text-${activeColor}-600 border-b-2 border-${activeColor}-600 pb-2 transition-all`;
-                tabRegister.className = `text-2xl font-bold text-slate-400 hover:text-slate-600 pb-2 transition-all`;
+                tabLogin.className = `text-2xl font-bold border-b-2 pb-2 transition-all ${activeColor === 'emerald' ? 'text-emerald-600 border-emerald-600' : (activeColor === 'blue' ? 'text-blue-600 border-blue-600' : 'text-slate-800 border-slate-800')}`;
+                tabRegister.className = `text-2xl font-bold text-slate-400 hover:text-slate-600 pb-2 transition-all ${isHidden ? 'hidden' : ''}`;
 
                 fieldNama.classList.add('hidden');
                 fieldExtras.classList.remove('hidden');
             } else {
-                tabRegister.className = `text-2xl font-bold text-${activeColor}-600 border-b-2 border-${activeColor}-600 pb-2 transition-all`;
-                tabLogin.className = `text-2xl font-bold text-slate-400 hover:text-slate-600 pb-2 transition-all`;
+                tabRegister.className = `text-2xl font-bold border-b-2 pb-2 transition-all ${activeColor === 'emerald' ? 'text-emerald-600 border-emerald-600' : (activeColor === 'blue' ? 'text-blue-600 border-blue-600' : 'text-slate-800 border-slate-800')} ${isHidden ? 'hidden' : ''}`;
+                tabLogin.className = "text-2xl font-bold text-slate-400 hover:text-slate-600 pb-2 transition-all";
 
                 fieldNama.classList.remove('hidden');
                 fieldExtras.classList.add('hidden');
@@ -143,12 +141,26 @@
             const roles = ['peserta', 'penyelenggara', 'admin'];
             let activeColor = config[role].color;
 
+            // Handle register tab visibility for Admin
+            if (role === 'admin') {
+                if (currentMode === 'register') setMode('login');
+                document.getElementById('tab-register').classList.add('hidden');
+            } else {
+                document.getElementById('tab-register').classList.remove('hidden');
+            }
+
             roles.forEach(r => {
                 const btn = document.getElementById(`btn-${r}`);
                 if (r === role) {
-                    btn.className = `py-2.5 rounded-lg text-sm font-bold bg-white text-${activeColor}-600 shadow-sm border border-slate-200 transition-all`;
+                    if (activeColor === 'emerald') {
+                        btn.className = "py-2.5 rounded-lg text-sm font-bold bg-white text-emerald-600 shadow-sm border border-slate-200 transition-all";
+                    } else if (activeColor === 'blue') {
+                        btn.className = "py-2.5 rounded-lg text-sm font-bold bg-white text-blue-600 shadow-sm border border-slate-200 transition-all";
+                    } else {
+                        btn.className = "py-2.5 rounded-lg text-sm font-bold bg-white text-slate-800 shadow-sm border border-slate-200 transition-all";
+                    }
                 } else {
-                    btn.className = `py-2.5 rounded-lg text-sm font-medium text-slate-500 hover:bg-white hover:text-slate-800 transition-all border border-transparent`;
+                    btn.className = "py-2.5 rounded-lg text-sm font-medium text-slate-500 hover:bg-white hover:text-slate-800 transition-all border border-transparent";
                 }
             });
 
@@ -156,17 +168,15 @@
             document.getElementById('input-email').placeholder = config[role].placeholderEmail;
             document.getElementById('label-nama').innerText = config[role].labelName;
 
-            document.getElementById('link-forgot').className = `text-${activeColor}-600 font-medium hover:underline`;
-
-            if (role === 'admin' && currentMode === 'register') {
-                setMode('login');
-                document.getElementById('tab-register').classList.add('hidden');
+            if (activeColor === 'emerald') {
+                document.getElementById('link-forgot').className = "text-emerald-600 font-medium hover:underline";
+            } else if (activeColor === 'blue') {
+                document.getElementById('link-forgot').className = "text-blue-600 font-medium hover:underline";
             } else {
-                document.getElementById('tab-register').classList.remove('hidden');
+                document.getElementById('link-forgot').className = "text-slate-800 font-medium hover:underline";
             }
 
             setMode(currentMode);
-            updateSubmitButton();
         }
 
         function updateSubmitButton() {
@@ -178,13 +188,41 @@
             btn.innerText = `${actionText} sebagai ${roleText}`;
 
             if(activeColor === 'slate') {
-                btn.className = `w-full py-4 mt-4 bg-slate-800 text-white rounded-xl font-bold shadow-lg shadow-slate-200 hover:bg-slate-900 transition-all text-lg`;
+                btn.className = "w-full py-4 mt-4 bg-slate-800 text-white rounded-xl font-bold shadow-lg shadow-slate-200 hover:bg-slate-900 transition-all text-lg";
+            } else if (activeColor === 'emerald') {
+                btn.className = "w-full py-4 mt-4 bg-emerald-600 text-white rounded-xl font-bold shadow-lg shadow-emerald-200 hover:bg-emerald-700 transition-all text-lg";
             } else {
-                btn.className = `w-full py-4 mt-4 bg-${activeColor}-600 text-white rounded-xl font-bold shadow-lg shadow-${activeColor}-200 hover:bg-${activeColor}-700 transition-all text-lg`;
+                btn.className = "w-full py-4 mt-4 bg-blue-600 text-white rounded-xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition-all text-lg hover:-translate-y-0.5 shadow-lg hover:shadow-blue-100 ";
             }
         }
 
         setRole('peserta');
     </script>
+
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const isMobile = window.innerWidth < 768;
+        
+        if (isMobile) {
+            const computedDisplay = window.getComputedStyle(sidebar).display;
+            if (computedDisplay === "none") {
+                sidebar.style.display = "flex";
+            } else {
+                sidebar.style.display = "none";
+            }
+        } else {
+            if (sidebar.classList.contains("w-64")) {
+                sidebar.classList.remove("w-64");
+                sidebar.classList.add("w-20");
+                document.querySelectorAll(".sidebar-text").forEach(el => el.classList.add("hidden"));
+            } else {
+                sidebar.classList.remove("w-20");
+                sidebar.classList.add("w-64");
+                document.querySelectorAll(".sidebar-text").forEach(el => el.classList.remove("hidden"));
+            }
+        }
+    }
+</script>
 </body>
 </html>

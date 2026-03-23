@@ -2,56 +2,67 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CompetitionController;
+use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\BookmarkController;
 
-// 1. Route ke Halaman Utama & Form Auth
-Route::get('/', function () { return view('welcome'); })->name('home');
-Route::get('/auth', function () { return view('auth.login'); })->name('auth');
-
-// 2. Route untuk Memproses Data Login/Register (POST)
+Route::get('/', function () {
+    $competitions = \App\Models\Competition::with('organizer')
+        ->where('status', 'approved')
+        ->where('deadline', '>=', now())
+        ->latest()
+        ->take(8)
+        ->get();
+    return view('welcome', compact('competitions'));
+})->name('home');
+Route::get('/auth', function () { return view('auth.login'); })->name('login');
 Route::post('/auth/process', [AuthController::class, 'process'])->name('auth.process');
+Route::post('/logout', function () {
+    auth()->logout();
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+    return redirect('/');
+})->name('logout');
 
-// 3. Route Halaman Dashboard
-// Arahkan ke file dashboard admin yang baru saja Anda buat
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard'); // KODE BARU (menghapus awalan 'admin.')
-})->name('admin.dashboard');
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/verifikasi', [AdminController::class, 'verifikasi'])->name('verifikasi');
+    Route::get('/verifikasi/{id}', [AdminController::class, 'showCompetition'])->name('verifikasi.show');
+    Route::post('/verifikasi/{id}', [AdminController::class, 'approveCompetition'])->name('verifikasi.approve');
+    Route::delete('/verifikasi/{id}', [AdminController::class, 'deleteCompetition'])->name('verifikasi.delete');
+    Route::get('/pengaturan', [AdminController::class, 'pengaturan'])->name('pengaturan');
+    Route::get('/user/{id}', [AdminController::class, 'showUser'])->name('user.show');
+    Route::post('/pengaturan/{id}/approve', [AdminController::class, 'approveUser'])->name('user.approve');
+    Route::delete('/pengaturan/{id}', [AdminController::class, 'deleteUser'])->name('user.delete');
+    Route::post('/pengaturan/{id}/restore', [AdminController::class, 'restoreUser'])->name('user.restore');
+});
 
-Route::get('/admin/verifikasi', function () {
-    return view('admin.verifikasi');
-})->name('admin.verifikasi');
+Route::middleware(['auth', 'role:penyelenggara'])->prefix('penyelenggara')->name('penyelenggara.')->group(function () {
+    Route::middleware(['status'])->group(function () {
+        Route::get('/dashboard', [CompetitionController::class, 'dashboard'])->name('dashboard');
+        Route::get('/create', [CompetitionController::class, 'create'])->name('create');
+        Route::post('/store', [CompetitionController::class, 'store'])->name('store');
+        Route::get('/index', [CompetitionController::class, 'index'])->name('index'); 
+        Route::get('/edit/{id}', [CompetitionController::class, 'edit'])->name('edit');
+        Route::put('/update/{id}', [CompetitionController::class, 'update'])->name('update');
+        Route::delete('/destroy/{id}', [CompetitionController::class, 'destroy'])->name('destroy');
+        Route::get('/competition/{id}/registrations', [RegistrationController::class, 'registrants'])->name('competition.registrants');
+        Route::get('/registrations/all', [RegistrationController::class, 'allRegistrants'])->name('registrations.all');
+        Route::get('/registrations/{id}', [RegistrationController::class, 'organizerShow'])->name('registrations.show');
+        Route::post('/registrations/{id}/status', [RegistrationController::class, 'updateStatus'])->name('registrations.updateStatus');
+    });
+});
 
-
-
-Route::get('/peserta/dashboard', function () {
-    return view('peserta.rekomendasi');
-})->name('peserta.dashboard');
-
-Route::get('/peserta/detail-lomba', function () {
-    return view('peserta.detail'); // Sesuaikan jika Anda menamai filenya berbeda
-})->name('peserta.detail');
-
-Route::get('/peserta/kalender', function () {
-    return view('peserta.kalender'); // Sesuai dengan nama file yang Anda simpan
-})->name('peserta.kalender');
-
-Route::get('/peserta/profil', function () {
-    return view('peserta.profil');
-})->name('peserta.profil');
-
-// Rute Formulir Penyelenggara
-Route::get('/penyelenggara/create', function () {
-    return view('penyelenggara.create');
-})->name('penyelenggara.create');
-
-Route::get('/penyelenggara/index', function () {
-    return view('penyelenggara.index');
-})->name('penyelenggara.index');
-
-Route::get('/penyelenggara/dashboard', function () {
-    return view('penyelenggara.dashboard');
-})->name('penyelenggara.dashboard');
-
-// Rute Tabel List Penyelenggara
-Route::get('/penyelenggara/lomba-saya', function () {
-    return view('penyelenggara.index'); // Menyasar file index.blade.php
-})->name('penyelenggara.index');
+Route::middleware(['auth', 'role:peserta'])->prefix('peserta')->name('peserta.')->group(function () {
+    Route::get('/dashboard', [CompetitionController::class, 'filter'])->name('dashboard');
+    Route::get('/detail-lomba/{id}', [CompetitionController::class, 'show'])->name('detail');
+    Route::get('/pendaftaran/{id}', [RegistrationController::class, 'create'])->name('pendaftaran');
+    Route::post('/daftar/{id}', [RegistrationController::class, 'store'])->name('pendaftaran.store');
+    
+    Route::get('/kalender', [RegistrationController::class, 'calendar'])->name('kalender');
+    
+    Route::get('/profil', [RegistrationController::class, 'index'])->name('profil');
+    
+    Route::post('/bookmark/{id}', [BookmarkController::class, 'toggle'])->name('bookmark.toggle');
+});

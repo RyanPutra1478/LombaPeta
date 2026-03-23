@@ -22,70 +22,69 @@
 </head>
 <body class="bg-[#f8fafc] text-slate-900 flex h-screen overflow-hidden">
 
-    <aside class="w-64 bg-white border-r border-slate-200 flex-col justify-between hidden md:flex z-20 shrink-0">
+    <aside id="sidebar" class="w-64 bg-white border-r border-slate-200 transition-all duration-300 flex-col justify-between hidden md:flex absolute md:relative z-50 md:z-20 h-full shadow-2xl md:shadow-none z-20 shrink-0">
         <div>
             <div class="h-20 flex items-center px-6 border-b border-slate-100 mb-4">
                 <a href="{{ route('home') }}" class="flex items-center gap-2">
-                    <span class="text-xl font-bold tracking-tight text-blue-600">LombaPeta</span>
-                    <span class="px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 text-[10px] font-bold uppercase tracking-wider">Peserta</span>
+                    <img src="{{ asset('images/lombapeta.png') }}" alt="Logo" class="w-10 h-10 object-contain">
+                    <div class="flex flex-col sidebar-text">
+                        <span class="text-xl font-bold tracking-tight text-blue-600 leading-tight">LombaPeta</span>
+                        <span class="text-blue-700 opacity-70 text-[10px] font-bold uppercase tracking-wider">Peserta</span>
+                    </div>
                 </a>
             </div>
 
             <nav class="px-4 space-y-1">
                 <a href="{{ route('peserta.dashboard') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium transition-all">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
-                    <span class="text-sm">Info Lomba</span>
+                    <span class="text-sm sidebar-text">Info Lomba</span>
                 </a>
 
                 <a href="{{ route('peserta.kalender') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-blue-50 text-blue-700 font-bold border border-blue-100 transition-all">
                     <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                    <span class="text-sm">Kalender Lomba</span>
+                    <span class="text-sm sidebar-text">Kalender Lomba</span>
                 </a>
 
                 <a href="{{ route('peserta.profil') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium transition-all">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                    <span class="text-sm">Profil Saya</span>
+                    <span class="text-sm sidebar-text">Profil Saya</span>
                 </a>
             </nav>
         </div>
 
         <div class="p-4 border-t border-slate-100">
-            <a href="{{ route('home') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-500 hover:bg-red-50 font-medium transition-all">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                <span class="text-sm">Keluar</span>
-            </a>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-500 hover:bg-red-50 font-medium transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                    <span class="text-sm sidebar-text">Keluar</span>
+                </button>
+            </form>
         </div>
     </aside>
 
     <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
 
         <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-6 lg:px-10 z-10 shrink-0">
-            <h1 class="text-lg font-bold text-slate-800">Jadwal & Agenda</h1>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center"><button onclick="toggleSidebar()" class="p-2 mr-3 text-slate-500 hover:bg-slate-100 rounded-lg"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg></button></div><h1 class="text-lg font-bold text-slate-800">Jadwal & Agenda</h1>
+            </div>
 
             <div class="flex items-center gap-6">
-                <div class="relative hidden sm:block">
-                    <svg class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    <input type="text" placeholder="Cari jadwal lomba..." class="pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 w-64 transition-all">
-                </div>
-
                 <div class="flex items-center gap-4 border-l border-slate-200 pl-6">
-                    <button class="relative text-slate-400 hover:text-slate-600 transition-colors">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                        <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
-                    </button>
-                    <button class="w-9 h-9 rounded-full bg-blue-600 text-white font-bold text-sm flex items-center justify-center shadow-md shadow-blue-200">
-                        PS
+                    <button class="w-9 h-9 rounded-full bg-blue-600 text-white font-bold text-sm flex items-center justify-center shadow-md shadow-blue-200" hover:-translate-y-0.5 transition-all duration-300 shadow-lg hover:shadow-blue-100 >
+                        {{ substr(auth()->user()->name, 0, 1) }}
                     </button>
                 </div>
             </div>
         </header>
 
         <main class="flex-1 overflow-y-auto p-4 lg:p-8">
-            <div class="max-w-7xl mx-auto">
+            <div class="max-w-7xl mx-auto animate-fade-in-up">
 
                 <div class="mb-8">
                     <h2 class="text-3xl font-extrabold text-slate-900 mb-2">Kalender Lomba 📅</h2>
-                    <p class="text-slate-500">Pantau jadwal pendaftaran, technical meeting, dan pelaksanaan kompetisi yang kamu ikuti.</p>
+                    <p class="text-slate-500">Pantau jadwal pendaftaran dan pelaksanaan kompetisi yang kamu ikuti (Status Approved).</p>
                 </div>
 
                 <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
@@ -93,97 +92,69 @@
                     <div class="xl:col-span-2">
                         <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
 
-                            <div class="p-6 flex items-center justify-between border-b border-slate-100">
-                                <h3 class="text-xl font-bold text-slate-800">Agustus 2026</h3>
+                            <div class="px-6 py-4 flex items-center justify-between border-b border-slate-100 bg-slate-50/50">
                                 <div class="flex items-center gap-4">
-                                    <button class="px-4 py-2 text-sm font-bold text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition">Hari Ini</button>
-                                    <div class="flex items-center gap-1">
-                                        <button class="p-2 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-100 transition">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-                                        </button>
-                                        <button class="p-2 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-100 transition">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                                        </button>
-                                    </div>
+                                    <h3 class="text-xl font-bold text-slate-900 tracking-tight">{{ $startOfMonth->format('F Y') }}</h3>
+                                </div>
+                                <div class="flex items-center bg-white border border-slate-200 rounded-xl p-1 shadow-sm">
+                                    <a href="{{ route('peserta.kalender', ['month' => $startOfMonth->copy()->subMonth()->month, 'year' => $startOfMonth->copy()->subMonth()->year]) }}" class="p-1.5 hover:bg-slate-50 rounded-lg text-slate-500 transition-colors">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                                    </a>
+                                    <div class="w-px h-4 bg-slate-200 mx-1"></div>
+                                    <a href="{{ route('peserta.kalender', ['month' => $startOfMonth->copy()->addMonth()->month, 'year' => $startOfMonth->copy()->addMonth()->year]) }}" class="p-1.5 hover:bg-slate-50 rounded-lg text-slate-500 transition-colors">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                    </a>
                                 </div>
                             </div>
 
-                            <div class="bg-slate-100">
-                                <div class="grid grid-cols-7 gap-px bg-slate-200 border-b border-slate-200">
-                                    <div class="bg-slate-50 text-center py-3 text-xs font-bold text-slate-500 uppercase tracking-widest">Sen</div>
-                                    <div class="bg-slate-50 text-center py-3 text-xs font-bold text-slate-500 uppercase tracking-widest">Sel</div>
-                                    <div class="bg-slate-50 text-center py-3 text-xs font-bold text-slate-500 uppercase tracking-widest">Rab</div>
-                                    <div class="bg-slate-50 text-center py-3 text-xs font-bold text-slate-500 uppercase tracking-widest">Kam</div>
-                                    <div class="bg-slate-50 text-center py-3 text-xs font-bold text-slate-500 uppercase tracking-widest">Jum</div>
-                                    <div class="bg-slate-50 text-center py-3 text-xs font-bold text-slate-500 uppercase tracking-widest">Sab</div>
-                                    <div class="bg-slate-50 text-center py-3 text-xs font-bold text-slate-500 uppercase tracking-widest text-red-400">Min</div>
-                                </div>
+                            <div class="grid grid-cols-7 border-b border-slate-100 bg-white">
+                                @foreach(['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'] as $day)
+                                <div class="py-3 text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ $day }}</div>
+                                @endforeach
+                            </div>
 
-                                <div class="grid grid-cols-7 gap-px bg-slate-200">
+                            <div class="grid grid-cols-7 bg-slate-50 gap-px">
+                                @php
+                                    $daysInMonth = $startOfMonth->daysInMonth;
+                                    $dayOfWeek = $startOfMonth->dayOfWeek;
+                                @endphp
 
-                                    <div class="bg-white/50 calendar-cell p-2"></div>
-                                    <div class="bg-white/50 calendar-cell p-2"></div>
-                                    <div class="bg-white/50 calendar-cell p-2"></div>
-                                    <div class="bg-white/50 calendar-cell p-2"></div>
-                                    <div class="bg-white/50 calendar-cell p-2"></div>
+                                {{-- Leading Days --}}
+                                @for($i = 0; $i < $dayOfWeek; $i++)
+                                <div class="bg-slate-50/50 min-h-[100px] md:min-h-[120px]"></div>
+                                @endfor
 
-                                    <div class="bg-white calendar-cell p-2 flex flex-col group cursor-pointer hover:bg-slate-50">
-                                        <span class="text-sm font-semibold text-slate-700">1</span>
-                                        <div class="mt-1 px-2 py-1 bg-green-100 text-green-700 text-[10px] font-bold rounded shadow-sm border border-green-200 leading-tight">Buka Daftar OSN</div>
-                                    </div>
-                                    <div class="bg-white calendar-cell p-2 flex flex-col group cursor-pointer hover:bg-slate-50">
-                                        <span class="text-sm font-semibold text-red-500">2</span>
-                                    </div>
-
-                                    @for ($i = 3; $i <= 14; $i++)
-                                        <div class="bg-white calendar-cell p-2 flex flex-col group cursor-pointer hover:bg-slate-50">
-                                            <span class="text-sm font-semibold {{ $i % 7 == 2 ? 'text-red-500' : 'text-slate-700' }}">{{ $i }}</span>
+                                {{-- Actual Days --}}
+                                @for($day = 1; $day <= $daysInMonth; $day++)
+                                    @php 
+                                        $isToday = (\Carbon\Carbon::now()->day == $day && \Carbon\Carbon::now()->month == $month && \Carbon\Carbon::now()->year == $year);
+                                        $hasDeadlines = isset($deadlinesByDay[$day]);
+                                    @endphp
+                                    <div class="bg-white min-h-[100px] md:min-h-[120px] p-2 hover:bg-slate-50 transition-colors group relative border-t border-l border-slate-100">
+                                        <div class="flex justify-between items-center mb-1">
+                                            <span class="text-sm font-bold {{ $isToday ? 'w-7 h-7 bg-blue-600 text-white flex items-center justify-center rounded-full shadow-md shadow-blue-200' : 'text-slate-400' }}">
+                                                {{ $day }}
+                                            </span>
                                         </div>
-                                    @endfor
-
-                                    <div class="bg-white calendar-cell p-2 flex flex-col group cursor-pointer hover:bg-slate-50">
-                                        <span class="text-sm font-semibold text-slate-700">15</span>
-                                        <div class="mt-1 px-2 py-1 bg-red-100 text-red-700 text-[10px] font-bold rounded shadow-sm border border-red-200 leading-tight mb-1">Tutup Daftar OSN</div>
-                                        <div class="px-2 py-1 bg-blue-100 text-blue-700 text-[10px] font-bold rounded shadow-sm border border-blue-200 leading-tight">TM Lomba Puisi</div>
-                                    </div>
-
-                                    @for ($i = 16; $i <= 19; $i++)
-                                        <div class="bg-white calendar-cell p-2 flex flex-col group cursor-pointer hover:bg-slate-50">
-                                            <span class="text-sm font-semibold {{ $i % 7 == 2 ? 'text-red-500' : 'text-slate-700' }}">{{ $i }}</span>
-                                        </div>
-                                    @endfor
-
-                                    <div class="bg-blue-50/50 calendar-cell p-2 flex flex-col group cursor-pointer ring-inset ring-2 ring-blue-500">
-                                        <span class="w-6 h-6 flex items-center justify-center bg-blue-600 text-white rounded-full text-sm font-bold shadow-md shadow-blue-200">20</span>
-                                        <div class="mt-2 px-2 py-1 bg-amber-100 text-amber-700 text-[10px] font-bold rounded shadow-sm border border-amber-200 leading-tight">Technical Meeting OSN</div>
-                                    </div>
-
-                                    <div class="bg-white calendar-cell p-2 flex flex-col group cursor-pointer hover:bg-slate-50"><span class="text-sm font-semibold text-slate-700">21</span></div>
-                                    <div class="bg-white calendar-cell p-2 flex flex-col group cursor-pointer hover:bg-slate-50"><span class="text-sm font-semibold text-slate-700">22</span></div>
-                                    <div class="bg-white calendar-cell p-2 flex flex-col group cursor-pointer hover:bg-slate-50"><span class="text-sm font-semibold text-red-500">23</span></div>
-
-                                    <div class="bg-white calendar-cell p-2 flex flex-col group cursor-pointer hover:bg-slate-50">
-                                        <span class="text-sm font-semibold text-slate-700">24</span>
-                                        <div class="mt-1 px-2 py-1 bg-purple-100 text-purple-700 text-[10px] font-bold rounded shadow-sm border border-purple-200 leading-tight relative overflow-hidden">
-                                            <div class="absolute inset-y-0 left-0 w-1 bg-purple-500"></div>
-                                            <span class="ml-1">Pelaksanaan OSN</span>
+                                        
+                                        <div class="space-y-1">
+                                            @if($hasDeadlines)
+                                                @foreach($deadlinesByDay[$day] as $comp)
+                                                    <div class="px-2 py-1 rounded bg-blue-50 border border-blue-100 text-[10px] font-bold text-blue-700 leading-tight line-clamp-2 hover:bg-blue-100 cursor-help transition-all shadow-sm" title="{{ $comp->title }}">
+                                                        {{ $comp->title }}
+                                                    </div>
+                                                @endforeach
+                                            @endif
                                         </div>
                                     </div>
+                                @endfor
 
-                                    @for ($i = 25; $i <= 31; $i++)
-                                        <div class="bg-white calendar-cell p-2 flex flex-col group cursor-pointer hover:bg-slate-50">
-                                            <span class="text-sm font-semibold {{ $i % 7 == 2 ? 'text-red-500' : 'text-slate-700' }}">{{ $i }}</span>
-                                        </div>
-                                    @endfor
-
-                                    <div class="bg-white/50 calendar-cell p-2"></div>
-                                    <div class="bg-white/50 calendar-cell p-2"></div>
-                                    <div class="bg-white/50 calendar-cell p-2"></div>
-                                    <div class="bg-white/50 calendar-cell p-2"></div>
-                                    <div class="bg-white/50 calendar-cell p-2"></div>
-                                    <div class="bg-white/50 calendar-cell p-2"></div>
-
-                                </div>
+                                {{-- Trailing Days --}}
+                                @php $totalCells = $dayOfWeek + $daysInMonth; @endphp
+                                @while($totalCells % 7 != 0)
+                                    <div class="bg-slate-50/50 min-h-[100px] md:min-h-[120px]"></div>
+                                    @php $totalCells++; @endphp
+                                @endwhile
                             </div>
                         </div>
                     </div>
@@ -196,52 +167,25 @@
                             </h3>
 
                             <div class="space-y-4">
-
+                                @forelse($registrations as $r)
                                 <div class="flex items-start gap-4">
-                                    <div class="flex flex-col items-center justify-center w-12 h-12 bg-blue-50 border border-blue-200 rounded-xl shrink-0">
-                                        <span class="text-xs font-bold text-blue-600 uppercase">Ags</span>
-                                        <span class="text-lg font-extrabold text-blue-900 leading-none">20</span>
+                                    <div class="flex flex-col items-center justify-center w-10 h-10 bg-blue-50 border border-blue-200 rounded-xl shrink-0">
+                                        <span class="text-xs font-bold text-blue-600 uppercase">{{ \Carbon\Carbon::parse($r->competition->deadline)->format('M') }}</span>
+                                        <span class="text-lg font-extrabold text-blue-900 leading-none">{{ \Carbon\Carbon::parse($r->competition->deadline)->format('d') }}</span>
                                     </div>
                                     <div>
-                                        <h4 class="font-bold text-slate-900 text-sm">Technical Meeting OSN</h4>
-                                        <p class="text-xs text-slate-500 mt-1 line-clamp-1">Kementerian Pendidikan RI</p>
-                                        <span class="inline-block mt-2 px-2 py-0.5 bg-blue-100 text-blue-700 text-[10px] font-bold rounded">Hari Ini</span>
+                                        <h4 class="font-bold text-slate-900 text-sm">Batas Akhir/Pelaksanaan: {{ $r->competition->title }}</h4>
+                                        <p class="text-xs text-slate-500 mt-1 line-clamp-1">{{ $r->competition->organizer->name }}</p>
+                                        <span class="inline-block mt-2 px-2 py-0.5 bg-blue-100 text-blue-700 text-[10px] font-bold rounded">
+                                            {{ \Carbon\Carbon::parse($r->competition->deadline)->diffForHumans() }}
+                                        </span>
                                     </div>
                                 </div>
-
-                                <hr class="border-slate-100">
-
-                                <div class="flex items-start gap-4">
-                                    <div class="flex flex-col items-center justify-center w-12 h-12 bg-slate-50 border border-slate-200 rounded-xl shrink-0">
-                                        <span class="text-xs font-bold text-slate-500 uppercase">Ags</span>
-                                        <span class="text-lg font-extrabold text-slate-700 leading-none">24</span>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-bold text-slate-900 text-sm">Pelaksanaan OSN</h4>
-                                        <p class="text-xs text-slate-500 mt-1 line-clamp-1">Sains & Matematika</p>
-                                        <span class="inline-block mt-2 px-2 py-0.5 bg-purple-100 text-purple-700 text-[10px] font-bold rounded">Ujian / Lomba</span>
-                                    </div>
-                                </div>
-
-                                <hr class="border-slate-100">
-
-                                <div class="flex items-start gap-4 opacity-75">
-                                    <div class="flex flex-col items-center justify-center w-12 h-12 bg-slate-50 border border-slate-200 rounded-xl shrink-0">
-                                        <span class="text-xs font-bold text-slate-500 uppercase">Sep</span>
-                                        <span class="text-lg font-extrabold text-slate-700 leading-none">01</span>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-bold text-slate-900 text-sm">Penyisihan Cipta Puisi</h4>
-                                        <p class="text-xs text-slate-500 mt-1 line-clamp-1">Komunitas Sastra Muda</p>
-                                        <span class="inline-block mt-2 px-2 py-0.5 bg-slate-100 text-slate-600 text-[10px] font-bold rounded">Menunggu Jadwal</span>
-                                    </div>
-                                </div>
-
+                                <hr class="border-slate-100 last:hidden">
+                                @empty
+                                <p class="text-slate-400 italic text-sm text-center py-4">Belum ada agenda terdekat. Pastikan pendaftaran Anda telah disetujui (Approved) oleh penyelenggara.</p>
+                                @endforelse
                             </div>
-
-                            <button class="w-full mt-8 py-3 border border-slate-200 text-sm font-bold text-slate-600 rounded-xl hover:bg-slate-50 transition-colors">
-                                Lihat Semua Jadwal
-                            </button>
 
                         </div>
                     </div>
@@ -251,5 +195,36 @@
         </main>
     </div>
 
+                </div>
+            </div>
+        </main>
+    </div>
+
+
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const isMobile = window.innerWidth < 768;
+        
+        if (isMobile) {
+            const computedDisplay = window.getComputedStyle(sidebar).display;
+            if (computedDisplay === "none") {
+                sidebar.style.display = "flex";
+            } else {
+                sidebar.style.display = "none";
+            }
+        } else {
+            if (sidebar.classList.contains("w-64")) {
+                sidebar.classList.remove("w-64");
+                sidebar.classList.add("w-20");
+                document.querySelectorAll(".sidebar-text").forEach(el => el.classList.add("hidden"));
+            } else {
+                sidebar.classList.remove("w-20");
+                sidebar.classList.add("w-64");
+                document.querySelectorAll(".sidebar-text").forEach(el => el.classList.remove("hidden"));
+            }
+        }
+    }
+</script>
 </body>
 </html>

@@ -18,142 +18,193 @@
 </head>
 <body class="bg-[#f8fafc] text-slate-900 flex h-screen overflow-hidden">
 
-    <aside class="w-64 bg-white border-r border-slate-200 flex-col justify-between hidden md:flex z-20 shrink-0">
+    <aside id="sidebar" class="w-64 bg-white border-r border-slate-200 transition-all duration-300 flex-col justify-between hidden md:flex absolute md:relative z-50 md:z-20 h-full shadow-2xl md:shadow-none z-20 shrink-0">
         <div>
             <div class="h-20 flex items-center px-6 border-b border-slate-100 mb-4">
                 <a href="{{ route('home') }}" class="flex items-center gap-2">
-                    <span class="text-xl font-bold tracking-tight text-blue-600">LombaPeta</span>
-                    <span class="px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 text-[10px] font-bold uppercase tracking-wider">Peserta</span>
+                    <img src="{{ asset('images/lombapeta.png') }}" alt="Logo" class="w-10 h-10 object-contain">
+                    <div class="flex flex-col sidebar-text">
+                        <span class="text-xl font-bold tracking-tight text-blue-600 leading-tight">LombaPeta</span>
+                        <span class="text-blue-700 opacity-70 text-[10px] font-bold uppercase tracking-wider">Peserta</span>
+                    </div>
                 </a>
             </div>
 
             <nav class="px-4 space-y-1">
                 <a href="{{ route('peserta.dashboard') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium transition-all">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
-                    <span class="text-sm">Info Lomba</span>
+                    <span class="text-sm sidebar-text">Info Lomba</span>
                 </a>
 
                 <a href="{{ route('peserta.kalender') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium transition-all">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                    <span class="text-sm">Kalender Lomba</span>
+                    <span class="text-sm sidebar-text">Kalender Lomba</span>
                 </a>
 
                 <a href="{{ route('peserta.profil') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-blue-50 text-blue-700 font-bold border border-blue-100 transition-all">
                     <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                    <span class="text-sm">Profil Saya</span>
+                    <span class="text-sm sidebar-text">Profil Saya</span>
                 </a>
             </nav>
         </div>
 
         <div class="p-4 border-t border-slate-100">
-            <a href="{{ route('home') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-500 hover:bg-red-50 font-medium transition-all">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                <span class="text-sm">Keluar</span>
-            </a>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-500 hover:bg-red-50 font-medium transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                    <span class="text-sm sidebar-text">Keluar</span>
+                </button>
+            </form>
         </div>
     </aside>
 
     <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
 
         <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-6 lg:px-10 z-10 shrink-0">
-            <h1 class="text-lg font-bold text-slate-800">Profil Peserta</h1>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center"><button onclick="toggleSidebar()" class="p-2 mr-3 text-slate-500 hover:bg-slate-100 rounded-lg"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg></button></div><h1 class="text-lg font-bold text-slate-800">Profil Peserta</h1>
+            </div>
 
             <div class="flex items-center gap-6">
                 <div class="flex items-center gap-4 border-l border-slate-200 pl-6">
-                    <button class="relative text-slate-400 hover:text-slate-600 transition-colors">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                        <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
-                    </button>
-                    <button class="w-9 h-9 rounded-full bg-blue-600 text-white font-bold text-sm flex items-center justify-center shadow-md shadow-blue-200">
-                        BS
+                    <button class="w-9 h-9 rounded-full bg-blue-600 text-white font-bold text-sm flex items-center justify-center shadow-md shadow-blue-200" hover:-translate-y-0.5 transition-all duration-300 shadow-lg hover:shadow-blue-100 >
+                        {{ substr(auth()->user()->name, 0, 1) }}
                     </button>
                 </div>
             </div>
         </header>
 
         <main class="flex-1 overflow-y-auto p-4 lg:p-10 relative">
-            <div class="max-w-6xl mx-auto pb-10">
+            <div class="max-w-6xl mx-auto pb-10 animate-fade-in-up">
+                
+                @if(session('status'))
+                <div class="mb-6 p-4 bg-blue-100 text-blue-700 rounded-2xl border border-blue-200 font-bold">
+                    {{ session('status') == 'bookmarked' ? 'Lomba berhasil disimpan!' : 'Lomba dihapus dari simpanan.' }}
+                </div>
+                @endif
 
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
                     <div>
                         <div class="flex items-center gap-4 mb-2">
-                            <h2 class="text-3xl lg:text-4xl font-extrabold text-slate-900">Halo Budi Santoso!</h2>
-                            <button onclick="toggleModal('editProfileModal')" class="p-2 text-slate-400 hover:text-blue-600 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors tooltip" title="Edit Biodata">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                            </button>
+                            <h2 class="text-3xl lg:text-4xl font-extrabold text-slate-900">Halo {{ auth()->user()->name }}!</h2>
                         </div>
                         <p class="text-slate-500 text-lg">Kelola persiapan lombamu di satu tempat</p>
                     </div>
 
                     <div class="flex gap-3">
                         <div class="px-5 py-2.5 rounded-full border border-blue-200 bg-blue-50 text-blue-700 font-bold text-sm shadow-sm">
-                            3 Lomba Diikuti
-                        </div>
-                        <div class="px-5 py-2.5 rounded-full border border-orange-200 bg-orange-50 text-orange-600 font-bold text-sm shadow-sm">
-                            1 Menang
+                            {{ $registrations->count() }} Lomba Diikuti
                         </div>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-                    <div class="lg:col-span-2 space-y-6">
-
-                        <div class="flex justify-between items-end mb-4">
-                            <h3 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
-                                Lomba Tersimpan
+                    <div class="lg:col-span-2 space-y-12">
+                        
+                        <!-- Lomba Diikuti -->
+                        <section>
+                            <h3 class="text-2xl font-bold text-slate-900 flex items-center gap-2 mb-6">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Sedang Diikuti
                             </h3>
-                            <a href="{{ route('peserta.dashboard') }}" class="text-blue-600 font-bold text-sm hover:underline">Cari Lomba Lagi</a>
-                        </div>
-
-                        <div class="bg-white rounded-3xl p-4 flex flex-col sm:flex-row gap-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-                            <div class="w-full sm:w-48 h-36 bg-slate-100 rounded-2xl overflow-hidden shrink-0">
-                                <img src="https://placehold.co/400x300/e2e8f0/3b82f6?text=OSN" alt="Olimpiade Sains" class="w-full h-full object-cover">
-                            </div>
-                            <div class="flex-1 flex flex-col justify-between py-1">
-                                <div>
-                                    <div class="flex justify-between items-start gap-4 mb-2">
-                                        <h4 class="font-bold text-lg text-slate-900 leading-snug">Olimpiade Sains Nasional (OSN) Tingkat SMA 2026</h4>
-                                        <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full">Aktif</span>
+                            @forelse($registrations as $r)
+                            <div class="bg-white rounded-3xl p-4 flex flex-col sm:flex-row gap-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow mb-4">
+                                <div class="w-full sm:w-48 h-36 bg-slate-100 rounded-2xl overflow-hidden shrink-0">
+                                    @if($r->competition->poster)
+                                    <img src="{{ asset('storage/' . $r->competition->poster) }}" alt="Poster" class="w-full h-full object-cover">
+                                    @else
+                                    <img src="{{ asset('images/lomba.png') }}" alt="Poster Default" class="w-full h-full object-cover">
+                                    @endif
+                                </div>
+                                    <div class="flex-1 flex flex-col justify-between py-1">
+                                    <div>
+                                        <div class="flex justify-between items-start gap-4 mb-2">
+                                            <h4 class="font-bold text-lg text-slate-900 leading-snug tracking-tight">{{ $r->competition->title }}</h4>
+                                            @if($r->status == 'approved')
+                                                <span class="px-3 py-1 bg-emerald-100 text-emerald-700 text-[10px] font-black rounded-full uppercase tracking-widest border border-emerald-200 shadow-sm">Verified</span>
+                                            @elseif($r->status == 'pending')
+                                                <span class="px-3 py-1 bg-slate-100 text-slate-500 text-[10px] font-black rounded-full uppercase tracking-widest border border-slate-200">Pending</span>
+                                            @else
+                                                <span class="px-3 py-1 bg-red-100 text-red-700 text-[10px] font-black rounded-full uppercase tracking-widest border border-red-200">Rejected</span>
+                                            @endif
+                                        </div>
+                                        <div class="text-[11px] text-slate-400 font-bold uppercase tracking-tighter">Terdaftar pada: {{ $r->created_at->format('d M Y') }}</div>
                                     </div>
-                                    <div class="flex flex-wrap items-center gap-4 text-sm text-slate-500 font-medium">
-                                        <div class="flex items-center gap-1.5">
-                                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                            15 Agustus 2026
+                                    <div class="flex items-center gap-2 mt-4 sm:mt-0">
+                                        <a href="{{ route('peserta.detail', $r->competition_id) }}" class="px-5 py-2.5 border-2 border-slate-100 text-slate-600 font-black text-xs rounded-2xl hover:bg-slate-50 hover:border-slate-200 transition-all active:scale-95">Detail</a>
+                                        
+                                        @if($r->status == 'approved')
+                                            <a href="{{ $r->group_link ?? '#' }}" target="_blank" class="flex items-center gap-2 px-5 py-2.5 bg-[#25D366] text-white font-black text-xs rounded-2xl shadow-lg shadow-green-100 hover:bg-[#20bd5c] hover:-translate-y-0.5 transition-all active:scale-95">
+                                                <img src="{{ asset('images/whatsapp.png') }}" class="w-4 h-4 object-contain" alt="WhatsApp">
+                                                Group Lomba
+                                            </a>
+                                        @elseif($r->status == 'pending')
+                                            <div class="px-5 py-2.5 bg-slate-100 text-slate-400 font-black text-xs rounded-2xl border border-slate-200 shadow-inner flex items-center gap-2">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                                Tunggu Disetujui
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            @empty
+                            <div class="p-8 text-center bg-slate-100 rounded-3xl border border-dashed border-slate-300">
+                                <p class="text-slate-400 font-medium">Belum ada lomba yang diikuti.</p>
+                            </div>
+                            @endforelse
+                        </section>
+
+                        <!-- Lomba Tersimpan -->
+                        <section>
+                            <div class="flex justify-between items-end mb-6">
+                                <h3 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
+                                    Lomba Tersimpan
+                                </h3>
+                                <a href="{{ route('peserta.dashboard') }}" class="text-blue-600 font-bold text-sm hover:underline">Cari Lomba Lagi</a>
+                            </div>
+
+                            @forelse($bookmarks as $b)
+                            <div class="bg-white rounded-3xl p-4 flex flex-col sm:flex-row gap-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow mb-4">
+                                <div class="w-full sm:w-48 h-36 bg-slate-100 rounded-2xl overflow-hidden shrink-0">
+                                    @if($b->competition->poster)
+                                    <img src="{{ asset('storage/' . $b->competition->poster) }}" alt="Poster" class="w-full h-full object-cover">
+                                    @else
+                                    <img src="{{ asset('images/lomba.png') }}" alt="Poster Default" class="w-full h-full object-cover">
+                                    @endif
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between py-1">
+                                    <div>
+                                        <div class="flex justify-between items-start gap-4 mb-2">
+                                            <h4 class="font-bold text-lg text-slate-900 leading-snug">{{ $b->competition->title }}</h4>
+                                            <form action="{{ route('peserta.bookmark.toggle', $b->competition_id) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+                                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                                </button>
+                                            </form>
+                                        </div>
+                                        <div class="flex flex-wrap items-center gap-4 text-sm text-slate-500 font-medium">
+                                            <div class="flex items-center gap-1.5">
+                                                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                Deadline: {{ \Carbon\Carbon::parse($b->competition->deadline)->format('d M Y') }}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="flex gap-3 mt-4 sm:mt-0">
-                                    <a href="{{ route('peserta.detail') }}" class="px-5 py-2 border border-slate-200 text-slate-600 font-bold text-sm rounded-xl hover:bg-slate-50 transition-colors">Detail</a>
-                                    <button class="px-5 py-2 bg-blue-600 text-white font-bold text-sm rounded-xl hover:bg-blue-700 transition-colors shadow-sm shadow-blue-200">Kunjungi Link</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-3xl p-4 flex flex-col sm:flex-row gap-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-                            <div class="w-full sm:w-48 h-36 bg-slate-100 rounded-2xl overflow-hidden shrink-0">
-                                <img src="https://placehold.co/400x300/fdf4ff/d946ef?text=Esai" alt="Lomba Esai" class="w-full h-full object-cover">
-                            </div>
-                            <div class="flex-1 flex flex-col justify-between py-1">
-                                <div>
-                                    <div class="flex justify-between items-start gap-4 mb-2">
-                                        <h4 class="font-bold text-lg text-slate-900 leading-snug">Lomba Esai Nasional Pemuda Inovatif</h4>
-                                        <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full">Aktif</span>
-                                    </div>
-                                    <div class="flex flex-wrap items-center gap-4 text-sm text-slate-500 font-medium">
-                                        <div class="flex items-center gap-1.5">
-                                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                            30 September 2026
-                                        </div>
+                                    <div class="flex gap-3 mt-4 sm:mt-0">
+                                        <a href="{{ route('peserta.detail', $b->competition_id) }}" class="px-5 py-2 border border-slate-200 text-slate-600 font-bold text-sm rounded-xl hover:bg-slate-50 transition-colors">Detail</a>
+                                        <a href="{{ route('peserta.pendaftaran', $b->competition_id) }}" class="px-5 py-2 bg-blue-600 text-white font-bold text-sm rounded-xl hover:bg-blue-700 transition-colors shadow-sm shadow-blue-200">Daftar</a>
                                     </div>
                                 </div>
-                                <div class="flex gap-3 mt-4 sm:mt-0">
-                                    <a href="{{ route('peserta.detail') }}" class="px-5 py-2 border border-slate-200 text-slate-600 font-bold text-sm rounded-xl hover:bg-slate-50 transition-colors">Detail</a>
-                                    <button class="px-5 py-2 bg-blue-600 text-white font-bold text-sm rounded-xl hover:bg-blue-700 transition-colors shadow-sm shadow-blue-200">Kunjungi Link</button>
-                                </div>
                             </div>
-                        </div>
+                            @empty
+                            <div class="p-8 text-center bg-slate-100 rounded-3xl border border-dashed border-slate-300">
+                                <p class="text-slate-400 font-medium">Belum ada lomba yang disimpan.</p>
+                            </div>
+                            @endforelse
+                        </section>
 
                     </div>
 
@@ -166,14 +217,16 @@
                             </h3>
 
                             <div class="space-y-4">
+                                @forelse($registrations->take(3) as $r)
                                 <div class="bg-white/10 p-5 rounded-2xl border border-white/20 backdrop-blur-sm">
-                                    <p class="text-[11px] text-blue-200 font-bold tracking-wider mb-1.5">5 HARI LAGI</p>
-                                    <p class="font-bold text-lg leading-snug">OSN Tingkat SMA 2026</p>
+                                    <p class="text-[11px] text-blue-200 font-bold tracking-wider mb-1.5 uppercase">
+                                        {{ \Carbon\Carbon::parse($r->competition->deadline)->diffForHumans() }}
+                                    </p>
+                                    <p class="font-bold text-lg leading-snug">{{ $r->competition->title }}</p>
                                 </div>
-                                <div class="bg-white/10 p-5 rounded-2xl border border-white/20 backdrop-blur-sm">
-                                    <p class="text-[11px] text-blue-200 font-bold tracking-wider mb-1.5">12 HARI LAGI</p>
-                                    <p class="font-bold text-lg leading-snug">Olimpiade Matematika ITS</p>
-                                </div>
+                                @empty
+                                <p class="text-blue-200 text-sm italic">Oleh pendaftar, data deadline akan tampil di sini.</p>
+                                @endforelse
                             </div>
 
                             <a href="{{ route('peserta.kalender') }}" class="block text-center w-full mt-6 py-3.5 border border-white/30 rounded-xl hover:bg-white/10 font-bold text-sm transition-colors">
@@ -182,6 +235,11 @@
 
                         </div>
                     </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
 
                 </div>
             </div>
@@ -266,5 +324,31 @@
         }
     </script>
 
+
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const isMobile = window.innerWidth < 768;
+        
+        if (isMobile) {
+            const computedDisplay = window.getComputedStyle(sidebar).display;
+            if (computedDisplay === "none") {
+                sidebar.style.display = "flex";
+            } else {
+                sidebar.style.display = "none";
+            }
+        } else {
+            if (sidebar.classList.contains("w-64")) {
+                sidebar.classList.remove("w-64");
+                sidebar.classList.add("w-20");
+                document.querySelectorAll(".sidebar-text").forEach(el => el.classList.add("hidden"));
+            } else {
+                sidebar.classList.remove("w-20");
+                sidebar.classList.add("w-64");
+                document.querySelectorAll(".sidebar-text").forEach(el => el.classList.remove("hidden"));
+            }
+        }
+    }
+</script>
 </body>
 </html>

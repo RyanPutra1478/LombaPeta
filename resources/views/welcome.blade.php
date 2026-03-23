@@ -18,7 +18,7 @@
         <div class="max-w-[1440px] w-[92%] mx-auto">
             <div class="flex justify-between items-center h-20">
                 <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold italic">L</div>
+                    <img src="{{ asset('images/lombapeta.png') }}" alt="Logo" class="w-10 h-10 object-contain">
                     <span class="text-xl font-bold tracking-tight text-blue-900">LombaPeta</span>
                 </div>
                 <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">
@@ -27,7 +27,7 @@
                     <a href="#kontak" class="hover:text-blue-600 transition">Kontak</a>
                 </div>
              <div class="flex items-center gap-4">
-                <a href="{{ route('auth') }}" class="bg-blue-600 text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-blue-700 transition shadow-lg shadow-blue-200">Masuk</a>
+                <a href="{{ route('login') }}" class="bg-blue-600 text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-blue-700 transition shadow-lg shadow-blue-200">Masuk</a>
             </div>
             </div>
         </div>
@@ -36,7 +36,7 @@
     <section class="py-16 md:py-0 overflow-hidden min-h-[calc(100vh-5rem)] flex items-center">
         <div class="max-w-[1440px] w-[92%] mx-auto">
             <div class="grid md:grid-cols-2 gap-16 lg:gap-24 items-center">
-                <div class="space-y-8">
+                <div class="space-y-8 animate-fade-in-right">
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-wider">
                         <span>🚀 Temukan Bakatmu di Sini</span>
                     </div>
@@ -47,12 +47,12 @@
                         LombaPeta membantu siswa SMP dan SMA di seluruh Indonesia menemukan kompetisi berkualitas yang relevan dengan minat dan bakat mereka.
                     </p>
                     <div class="flex flex-wrap gap-4">
-                        <button class="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-blue-700 transition shadow-xl shadow-blue-200">Temukan Sekarang</button>
-                        <button class="border border-slate-200 text-slate-600 px-8 py-4 rounded-xl font-bold hover:bg-slate-50 transition">Pasang Lomba</button>
+                        <button class="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-blue-700 transition shadow-xl shadow-blue-200 hover:-translate-y-1" hover:-translate-y-0.5 transition-all duration-300 shadow-lg hover:shadow-blue-100 >Temukan Sekarang</button>
+                        <button class="border border-slate-200 text-slate-600 px-8 py-4 rounded-xl font-bold hover:bg-slate-50 transition hover:-translate-y-1">Pasang Lomba</button>
                     </div>
                 </div>
-                <div class="relative w-full flex justify-end">
-                    <img src="https://placehold.co/800x600/f1f5f9/3b82f6?text=Ilustrasi+Siswa" alt="Ilustrasi" class="w-full max-w-2xl h-auto rounded-2xl shadow-sm border border-slate-100">
+                <div class="relative w-full flex justify-end animate-fade-in-up">
+                    <img src="{{ asset('images/foto utama.png') }}" alt="Ilustrasi" class="w-full max-w-2xl h-auto rounded-3xl shadow-2xl border border-slate-100 transition-transform duration-700 hover:scale-[1.02]">
                 </div>
             </div>
         </div>
@@ -64,17 +64,17 @@
             <p class="text-slate-500 mb-16">Hanya butuh 3 langkah sederhana untuk memulai perjalananmu.</p>
             <div class="grid md:grid-cols-3 gap-8 text-left">
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
-                    <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-6">🔍</div>
+                    <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-6">🔍</div>
                     <h3 class="font-bold text-lg mb-3">1. Jelajahi Kategori</h3>
                     <p class="text-sm text-slate-500">Pilih lomba berdasarkan bidangmu, baik MIPA, Seni, Olahraga, maupun teknologi.</p>
                 </div>
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
-                    <div class="w-12 h-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center mb-6">✅</div>
+                    <div class="w-10 h-10 bg-green-50 text-green-600 rounded-xl flex items-center justify-center mb-6">✅</div>
                     <h3 class="font-bold text-lg mb-3">2. Cek Kredibilitas</h3>
                     <p class="text-sm text-slate-500">Periksa detail penyelenggara dan tingkat kredibilitas dari setiap lomba yang ingin kamu ikuti.</p>
                 </div>
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
-                    <div class="w-12 h-12 bg-yellow-50 text-yellow-600 rounded-xl flex items-center justify-center mb-6">🏆</div>
+                    <div class="w-10 h-10 bg-yellow-50 text-yellow-600 rounded-xl flex items-center justify-center mb-6">🏆</div>
                     <h3 class="font-bold text-lg mb-3">3. Daftar & Menang</h3>
                     <p class="text-sm text-slate-500">Dapatkan link pendaftaran resmi dan mulailah berjuang menjadi pemenang.</p>
                 </div>
@@ -123,29 +123,47 @@
                 <a href="#" class="text-blue-600 font-bold text-sm hover:underline">Lihat Semua Lomba →</a>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                @for ($i = 0; $i < 4; $i++)
-                <div class="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm group hover:shadow-xl transition-all duration-300">
-                    <div class="h-48 bg-slate-200 relative">
-                        <img src="https://placehold.co/400x300/3b82f6/white?text=Olimpiade+Sains" alt="Thumbnail" class="w-full h-full object-cover">
-                        <div class="absolute top-3 left-3 flex gap-2">
-                            <span class="px-2 py-1 bg-white/90 backdrop-blur rounded text-[10px] font-bold">MIPA</span>
-                            <span class="px-2 py-1 bg-blue-600 text-white rounded text-[10px] font-bold">SMA</span>
+                @forelse ($competitions as $index => $competition)
+                <a href="{{ route('peserta.detail', $competition->id) }}" class="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 animate-fade-in-up animate-stagger-{{ ($index % 4) + 1 }}">
+                    <div class="h-48 bg-slate-200 relative overflow-hidden">
+                        @if($competition->poster && Storage::disk('public')->exists($competition->poster))
+                            <img src="{{ asset('storage/' . $competition->poster) }}" alt="Poster" class="w-full h-full object-cover transition-transform group-hover:scale-105 duration-700">
+                        @else
+                            <img src="{{ asset('images/lomba.png') }}" alt="Default" class="w-full h-full object-cover transition-transform group-hover:scale-105 duration-700">
+                        @endif
+                        <div class="absolute top-4 left-4 flex gap-2">
+                            @if($competition->category)
+                                <span class="px-3 py-1 bg-white/95 backdrop-blur text-blue-700 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm border border-blue-50">{{ $competition->category }}</span>
+                            @endif
+                            @if($competition->level)
+                                <span class="px-3 py-1 bg-blue-600 text-white rounded-full text-[10px] font-bold uppercase tracking-wider shadow-md">{{ $competition->level }}</span>
+                            @endif
                         </div>
                     </div>
-                    <div class="p-5">
-                        <h3 class="font-bold text-slate-900 mb-3 line-clamp-2">Olimpiade Sains Nasional (OSN) Tingkat SMA 2026</h3>
-                        <div class="space-y-2 mb-4">
-                            <div class="flex items-center text-xs text-slate-400 gap-2">
-                                📍 <span>Kementrian Pendidikan dan Kebudayaan RI</span>
+                    <div class="p-6">
+                        <h3 class="font-bold text-slate-800 mb-3 line-clamp-2 h-12 leading-snug group-hover:text-blue-600 transition-colors">{{ $competition->title }}</h3>
+                        <div class="space-y-3 mb-5 text-slate-500">
+                            <div class="flex items-center text-[11px] font-medium gap-2.5">
+                                <div class="w-5 h-5 rounded-full bg-slate-50 flex items-center justify-center text-blue-600">📍</div>
+                                <span class="truncate">{{ $competition->organizer->name ?? 'Penyelenggara' }}</span>
                             </div>
-                            <div class="flex items-center text-xs text-slate-400 gap-2">
-                                📅 <span>30 Januari 2026</span>
+                            <div class="flex items-center text-[11px] font-medium gap-2.5">
+                                <div class="w-5 h-5 rounded-full bg-slate-50 flex items-center justify-center text-blue-600">📅</div>
+                                <span>{{ $competition->deadline->format('d F Y') }}</span>
                             </div>
                         </div>
-                        <button class="w-full py-2.5 rounded-lg bg-blue-50 text-blue-600 text-sm font-bold group-hover:bg-blue-600 group-hover:text-white transition">Lihat Detail</button>
+                        <div class="w-full py-3 rounded-2xl bg-slate-50 text-blue-600 text-xs font-bold group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-lg group-hover:shadow-blue-100 transition-all duration-300 text-center">Lihat Detail Lomba</div>
                     </div>
-                </div>
-                @endfor
+                </a>
+                @empty
+                    <div class="col-span-full py-20 flex flex-col items-center justify-center text-center bg-white rounded-3xl border border-dashed border-slate-200 animate-fade-in-up">
+                        <div class="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-300 mb-4">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                        </div>
+                        <h4 class="font-bold text-slate-800 mb-1">Tidak ada lomba aktif</h4>
+                        <p class="text-sm text-slate-500 max-w-xs px-6">Belum ada lomba yang terverifikasi saat ini. Silakan kembali lagi nanti.</p>
+                    </div>
+                @endforelse
             </div>
         </div>
     </section>
@@ -180,7 +198,7 @@
                         <label class="block text-sm font-semibold mb-2 text-slate-700">Pesan</label>
                         <textarea rows="4" placeholder="Apa yang ingin Anda tanyakan?" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition"></textarea>
                     </div>
-                    <button class="w-full py-4 bg-blue-600 text-white rounded-xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition">Kirim Pesan</button>
+                    <button class="w-full py-4 bg-blue-600 text-white rounded-xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition" hover:-translate-y-0.5 transition-all duration-300 shadow-lg hover:shadow-blue-100 >Kirim Pesan</button>
                 </form>
             </div>
         </div>
@@ -190,7 +208,7 @@
         <div class="max-w-[1440px] w-[92%] mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 mb-16">
             <div class="col-span-2 md:col-span-1">
                 <div class="flex items-center gap-2 mb-6">
-                    <div class="w-6 h-6 bg-blue-600 rounded flex items-center justify-center text-white font-bold italic text-xs">L</div>
+                    <img src="{{ asset('images/lombapeta.png') }}" alt="Logo" class="w-10 h-10 object-contain">
                     <span class="text-lg font-bold text-blue-900">LombaPeta</span>
                 </div>
                 <p class="text-xs text-slate-500 leading-relaxed">Platform pencari lomba nomor satu di Indonesia bagi siswa untuk mengembangkan potensi diri.</p>

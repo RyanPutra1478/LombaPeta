@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pasang Info Lomba - Penyelenggara</title>
+    <title>Edit Info Lomba - Penyelenggara</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,13 +35,13 @@
                     <span class="text-sm sidebar-text">Dashboard</span>
                 </a>
 
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-blue-50 text-blue-700 font-bold border border-blue-100 transition-all">
-                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                <a href="{{ route('penyelenggara.create') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     <span class="text-sm sidebar-text">Pasang Info Lomba</span>
                 </a>
 
-                <a href="{{ route('penyelenggara.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium transition-all">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                <a href="{{ route('penyelenggara.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-blue-50 text-blue-700 font-bold border border-blue-100 transition-all">
+                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
                     <span class="text-sm sidebar-text">Lomba Saya</span>
                 </a>
             </nav>
@@ -61,7 +61,7 @@
 
         <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-6 lg:px-10 z-10 shrink-0">
             <div class="flex items-center gap-4">
-                <div class="flex items-center"><button onclick="toggleSidebar()" class="p-2 mr-3 text-slate-500 hover:bg-slate-100 rounded-lg"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg></button></div><h1 class="text-lg font-bold text-slate-800">Formulir Lomba</h1>
+                <div class="flex items-center"><button onclick="toggleSidebar()" class="p-2 mr-3 text-slate-500 hover:bg-slate-100 rounded-lg"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg></button></div><h1 class="text-lg font-bold text-slate-800">Edit Lomba</h1>
             </div>
             <div class="flex items-center gap-4">
                 <button class="w-9 h-9 rounded-full bg-green-100 text-green-700 font-bold text-sm flex items-center justify-center border border-green-200">{{ substr(auth()->user()->name, 0, 1) }}</button>
@@ -72,8 +72,8 @@
             <div class="max-w-4xl mx-auto space-y-6 animate-fade-in-up">
 
                 <div>
-                    <h2 class="text-3xl font-bold text-slate-900 mb-2">Pasang Informasi Lomba</h2>
-                    <p class="text-slate-500 text-sm mb-6">Lengkapi detail kompetisi Anda untuk menjangkau ribuan pelajar di seluruh Indonesia.</p>
+                    <h2 class="text-3xl font-bold text-slate-900 mb-2">Perbarui Informasi Lomba</h2>
+                    <p class="text-slate-500 text-sm mb-6">Ubah detail kompetisi yang telah Anda pasang sebelumnya.</p>
 
                     @if($errors->any())
                     <div class="bg-red-50 border border-red-200 rounded-2xl p-4 mb-6">
@@ -84,35 +84,29 @@
                         </ul>
                     </div>
                     @endif
-
-                    <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 flex gap-4 items-start">
-                        <svg class="w-6 h-6 text-blue-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <div>
-                            <h4 class="font-bold text-blue-900 text-sm">Proses Verifikasi Ketat</h4>
-                            <p class="text-blue-700 text-xs mt-1 leading-relaxed">Demi keamanan peserta, tim LombaPeta akan melakukan verifikasi manual terhadap institusi dan keabsahan lomba Anda dalam 1x24 jam sebelum diterbitkan.</p>
-                        </div>
-                    </div>
                 </div>
 
-                <form action="{{ route('penyelenggara.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                <form action="{{ route('penyelenggara.update', $competition->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                     @csrf
+                    @method('PUT')
+                    
                     <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm">
                         <h3 class="text-lg font-bold text-slate-800 mb-6 border-b border-slate-100 pb-3">1. Informasi Dasar</h3>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                             <div class="md:col-span-2">
                                 <label class="block text-sm font-semibold mb-2 text-slate-700">Nama Lomba / Kompetisi <span class="text-red-500">*</span></label>
-                                <input type="text" name="title" value="{{ old('title') }}" placeholder="Cth: Olimpiade Sains Nasional 2026" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all">
+                                <input type="text" name="title" value="{{ old('title', $competition->title) }}" placeholder="Cth: Olimpiade Sains Nasional 2026" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all">
                             </div>
 
                             <div>
                                 <label class="block text-sm font-semibold mb-2 text-slate-700">Kategori <span class="text-red-500">*</span></label>
                                 <select name="category" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all appearance-none">
                                     <option value="">Pilih Kategori...</option>
-                                    <option value="Sains" {{ old('category') == 'Sains' ? 'selected' : '' }}>Sains & Matematika</option>
-                                    <option value="Seni" {{ old('category') == 'Seni' ? 'selected' : '' }}>Seni & Sastra</option>
-                                    <option value="Olahraga" {{ old('category') == 'Olahraga' ? 'selected' : '' }}>Olahraga</option>
-                                    <option value="Teknologi" {{ old('category') == 'Teknologi' ? 'selected' : '' }}>Teknologi & Robotik</option>
+                                    <option value="Sains" {{ old('category', $competition->category) == 'Sains' ? 'selected' : '' }}>Sains & Matematika</option>
+                                    <option value="Seni" {{ old('category', $competition->category) == 'Seni' ? 'selected' : '' }}>Seni & Sastra</option>
+                                    <option value="Olahraga" {{ old('category', $competition->category) == 'Olahraga' ? 'selected' : '' }}>Olahraga</option>
+                                    <option value="Teknologi" {{ old('category', $competition->category) == 'Teknologi' ? 'selected' : '' }}>Teknologi & Robotik</option>
                                 </select>
                             </div>
 
@@ -120,45 +114,55 @@
                                 <label class="block text-sm font-semibold mb-2 text-slate-700">Level <span class="text-red-500">*</span></label>
                                 <select name="level" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all appearance-none">
                                     <option value="">Pilih Level...</option>
-                                    <option value="SD" {{ old('level') == 'SD' ? 'selected' : '' }}>SD / Sederajat</option>
-                                    <option value="SMP" {{ old('level') == 'SMP' ? 'selected' : '' }}>SMP / Sederajat</option>
-                                    <option value="SMA" {{ old('level') == 'SMA' ? 'selected' : '' }}>SMA / Sederajat</option>
-                                    <option value="Universitas" {{ old('level') == 'Universitas' ? 'selected' : '' }}>Universitas / Umum</option>
+                                    <option value="SD" {{ old('level', $competition->level) == 'SD' ? 'selected' : '' }}>SD / Sederajat</option>
+                                    <option value="SMP" {{ old('level', $competition->level) == 'SMP' ? 'selected' : '' }}>SMP / Sederajat</option>
+                                    <option value="SMA" {{ old('level', $competition->level) == 'SMA' ? 'selected' : '' }}>SMA / Sederajat</option>
+                                    <option value="Universitas" {{ old('level', $competition->level) == 'Universitas' ? 'selected' : '' }}>Universitas / Umum</option>
                                 </select>
                             </div>
 
                             <div>
                                 <label class="block text-sm font-semibold mb-2 text-slate-700">Tenggat Pendaftaran <span class="text-red-500">*</span></label>
-                                <input type="date" name="deadline" value="{{ old('deadline') }}" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all text-slate-600">
+                                <input type="date" name="deadline" value="{{ old('deadline', \Carbon\Carbon::parse($competition->deadline)->format('Y-m-d')) }}" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all text-slate-600">
                             </div>
 
                             <div>
                                 <label class="block text-sm font-semibold mb-2 text-slate-700">Biaya Pendaftaran</label>
                                 <div class="relative">
                                     <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-500 font-medium">Rp</span>
-                                    <input type="number" name="registration_fee" value="{{ old('registration_fee', 0) }}" class="w-full pl-12 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all">
+                                    <input type="number" name="registration_fee" value="{{ old('registration_fee', $competition->registration_fee) }}" class="w-full pl-12 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all">
                                 </div>
                             </div>
 
                            <div>
                              <label class="block text-sm font-semibold mb-2 text-slate-700">Lokasi / Kota Penyelenggara <span class="text-red-500">*</span></label>
-                             <input type="text" name="location" value="{{ old('location') }}" placeholder="Cth: Makassar / Online" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all">
+                             <input type="text" name="location" value="{{ old('location', $competition->location) }}" placeholder="Cth: Makassar / Online" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all">
                            </div>
 
-                           <div>
+                            <div>
                                 <label class="block text-sm font-semibold mb-2 text-slate-700">Model Lomba <span class="text-red-500">*</span></label>
                                 <select name="competition_model" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all appearance-none">
-                                    <option value="individu" {{ old('competition_model') == 'individu' ? 'selected' : '' }}>Individu (Perorangan)</option>
-                                    <option value="tim" {{ old('competition_model') == 'tim' ? 'selected' : '' }}>Tim (Kelompok)</option>
+                                    <option value="individu" {{ old('competition_model', $competition->competition_model) == 'individu' ? 'selected' : '' }}>Individu (Perorangan)</option>
+                                    <option value="tim" {{ old('competition_model', $competition->competition_model) == 'tim' ? 'selected' : '' }}>Tim (Kelompok)</option>
                                 </select>
                             </div>
 
-                           <input type="hidden" name="credibility_score" value="80">
+                           <input type="hidden" name="credibility_score" value="{{ $competition->credibility_score }}">
                         </div>
 
                         <div>
-                            <label class="block text-sm font-semibold mb-2 text-slate-700">Poster / Banner Lomba <span class="text-red-500">*</span></label>
+                            <label class="block text-sm font-semibold mb-2 text-slate-700">Poster / Banner Lomba</label>
+                            @if($competition->poster)
+                            <div class="mb-3 w-40 h-40 rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+                                <img src="{{ asset('storage/' . $competition->poster) }}" alt="Poster Existing" class="w-full h-full object-cover">
+                            </div>
+                            @else
+                            <div class="mb-3 w-40 h-40 rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+                                <img src="{{ asset('images/lomba.png') }}" alt="Poster Default" class="w-full h-full object-cover">
+                            </div>
+                            @endif
                             <input type="file" name="poster" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50">
+                            <p class="text-[10px] text-slate-400 mt-1">Kosongkan jika tidak ingin mengubah poster.</p>
                         </div>
                     </div>
 
@@ -167,11 +171,11 @@
                         <div class="space-y-6">
                             <div>
                                 <label class="block text-sm font-semibold mb-2 text-slate-700">Deskripsi Singkat <span class="text-red-500">*</span></label>
-                                <textarea name="description" rows="8" placeholder="Jelaskan detail kompetisi di sini secara mendalam..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all shadow-inner font-medium">{{ old('description') }}</textarea><p class="text-[10px] text-slate-400 mt-2 font-medium italic">* Gunakan Enter untuk baris baru agar tampilan deskripsi rapi bagi peserta.</p>
+                                <textarea name="description" rows="8" placeholder="Jelaskan detail kompetisi di sini secara mendalam..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all shadow-inner font-medium">{{ old('description', $competition->description) }}</textarea><p class="text-[10px] text-slate-400 mt-2 font-medium italic">* Gunakan Enter untuk baris baru agar tampilan deskripsi rapi bagi peserta.</p>
                             </div>
                             <div>
                                 <label class="block text-sm font-semibold mb-2 text-slate-700">Link Guidebook / Panduan (Opsional)</label>
-                                <input type="url" name="guidebook_link" value="{{ old('guidebook_link') }}" placeholder="https://..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all">
+                                <input type="url" name="guidebook_link" value="{{ old('guidebook_link', $competition->guidebook_link) }}" placeholder="https://..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all">
                             </div>
                         </div>
                     </div>
@@ -181,19 +185,24 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-sm font-semibold mb-2 text-slate-700">WhatsApp Panitia <span class="text-red-500">*</span></label>
-                                <input type="text" name="contact_info" value="{{ old('contact_info') }}" placeholder="0812..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all">
+                                <input type="text" name="contact_info" value="{{ old('contact_info', $competition->contact_info) }}" placeholder="0812..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all">
                             </div>
                             <div>
                                 <label class="block text-sm font-semibold mb-2 text-slate-700">QR Code Pembayaran (Opsional)</label>
+                                @if($competition->payment_qr_code)
+                                <div class="mb-3 w-40 h-40 rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+                                    <img src="{{ asset('storage/' . $competition->payment_qr_code) }}" alt="QR Code Existing" class="w-full h-full object-cover">
+                                </div>
+                                @endif
                                 <input type="file" name="payment_qr_code" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50">
                             </div>
                         </div>
                     </div>
 
                     <div class="flex items-center justify-end gap-4 pt-4 pb-12">
-                        <button type="button" onclick="history.back()" class="px-6 py-3.5 rounded-xl font-bold text-slate-500 hover:bg-slate-100 transition-colors">Batal</button>
+                        <a href="{{ route('penyelenggara.index') }}" class="px-6 py-3.5 rounded-xl font-bold text-slate-500 hover:bg-slate-100 transition-colors">Batal</a>
                         <button type="submit" class="px-8 py-3.5 rounded-xl font-bold bg-blue-600 text-white shadow-lg shadow-blue-200 hover:bg-blue-700 transition-all flex items-center gap-2">
-                            Kirim untuk Verifikasi
+                            Simpan Perubahan
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         </button>
                     </div>

@@ -11,7 +11,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->validateCsrfTokens(except: [
+            '/auth/process',
+        ]);
+        $middleware->alias([
+            'role' => \App\Http\Middleware\CheckRole::class,
+            'status' => \App\Http\Middleware\CheckStatus::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
