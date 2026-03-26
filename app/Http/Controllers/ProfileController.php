@@ -14,7 +14,7 @@ class ProfileController extends Controller
         $profile = $user->profile ?? UserProfile::create(['user_id' => $user->id]);
         
         $view = $user->role === 'penyelenggara' ? 'penyelenggara.profile' : 'peserta.profile';
-        if ($user->role === 'admin') $view = 'admin.pengaturan'; 
+        if ($user->role === 'admin') return redirect()->route('admin.pengaturan'); 
         
         return view($view, compact('user', 'profile'));
     }

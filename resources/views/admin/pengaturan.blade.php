@@ -22,7 +22,7 @@
 </head>
 <body class="bg-[#f8fafc] text-slate-900 flex h-screen overflow-hidden">
 
-    <aside id="sidebar" class="w-64 bg-white border-r border-slate-200 transition-all duration-300 flex-col justify-between hidden md:flex absolute md:relative z-50 md:z-20 h-full shadow-2xl md:shadow-none z-20 shrink-0">
+    <aside id="sidebar" class="w-64 bg-white border-r border-slate-200 transition-all duration-300 flex-col justify-between hidden md:flex absolute md:relative z-50 md:z-20 h-full shadow-2xl md:shadow-none shrink-0">
         <div>
             <div class="h-20 flex items-center px-6 border-b border-slate-100 mb-4">
                 <a href="{{ route('home') }}" class="flex items-center gap-2">
@@ -66,9 +66,11 @@
     <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
 
         <header class="h-20 glass-nav border-b border-slate-200/50 flex items-center justify-between px-6 lg:px-10 z-10 shrink-0">
-
             <div class="flex items-center gap-4">
-                <div class="flex items-center"><button onclick="toggleSidebar()" class="p-2 mr-3 text-slate-500 hover:bg-slate-100 rounded-lg"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg></button></div><h1 class="text-lg font-bold text-slate-800">Pengaturan Sistem</h1>
+                <button onclick="toggleSidebar()" class="p-2 mr-3 text-slate-500 hover:bg-slate-100 rounded-lg md:hidden">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <h1 class="text-lg font-bold text-slate-800">Pengaturan Sistem</h1>
             </div>
 
             <div class="flex items-center gap-6">
@@ -76,7 +78,6 @@
                     @include('partials.notifications')
                     @include('partials.profile_avatar')
                 </div>
-
             </div>
         </header>
 
@@ -96,7 +97,7 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex items-center gap-4 transition-all hover:border-amber-200 hover:shadow-md group">
+                    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex items-center gap-4 transition-all hover:border-amber-200 hover:shadow-md group cursor-pointer">
                         <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center group-hover:bg-amber-100 transition-colors">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         </div>
@@ -105,7 +106,7 @@
                             <p class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-widest">Pending Approval</p>
                         </div>
                     </div>
-                    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex items-center gap-4 transition-all hover:border-green-200 hover:shadow-md group">
+                    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex items-center gap-4 transition-all hover:border-green-200 hover:shadow-md group cursor-pointer">
                         <div class="w-10 h-10 rounded-2xl bg-green-50 text-green-500 flex items-center justify-center group-hover:bg-green-100 transition-colors">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         </div>
@@ -114,7 +115,7 @@
                             <p class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-widest">Active Accounts</p>
                         </div>
                     </div>
-                    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex items-center gap-4 transition-all hover:border-red-200 hover:shadow-md group">
+                    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex items-center gap-4 transition-all hover:border-red-200 hover:shadow-md group cursor-pointer" onclick="scrollToTrash()">
                         <div class="w-10 h-10 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center group-hover:bg-red-100 transition-colors">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                         </div>
@@ -126,7 +127,7 @@
                 </div>
 
                 @if($deletedUsers->count() > 0)
-                <div class="bg-white rounded-3xl border-2 border-red-100 shadow-lg overflow-hidden transition-all hover:border-red-200">
+                <div id="trashSection" class="bg-white rounded-3xl border-2 border-red-100 shadow-lg overflow-hidden transition-all hover:border-red-200">
                     <div class="p-6 border-b border-red-50 bg-red-50/50 flex justify-between items-center">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center">
@@ -181,103 +182,6 @@
                 </div>
                 @endif
 
-                <!-- Audit Trail / Activity Log History Section -->
-                <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden transition-all hover:border-blue-100">
-                    <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/30">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            </div>
-                            <div>
-                                <h3 class="font-black text-slate-800 tracking-tight text-xl">Audit Trail & Riwayat Aktivitas</h3>
-                                <p class="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-0.5">Logging system records • Real-time database audit</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left">
-                            <thead class="bg-slate-50 text-[10px] font-black text-slate-400 uppercase tracking-[0.22em] border-b border-slate-100">
-                                <tr>
-                                    <th class="px-8 py-5">Pelaku</th>
-                                    <th class="px-8 py-5">Aksi</th>
-                                    <th class="px-8 py-5">Detail Aktivitas</th>
-                                    <th class="px-8 py-5">Waktu</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-50">
-                                @forelse($recentLogs as $log)
-                                <tr class="hover:bg-slate-50/50 transition-all group">
-                                    <td class="px-8 py-5 border-r border-slate-50">
-                                        <div class="flex items-center gap-3">
-                                            <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs shrink-0">
-                                                {{ substr($log->user->name ?? '?', 0, 1) }}
-                                            </div>
-                                            <div>
-                                                <p class="font-bold text-slate-900 group-hover:text-blue-600 transition-colors leading-none mb-1">{{ $log->user->name ?? 'System/Deleted' }}</p>
-                                                <span class="px-2 py-0.5 bg-slate-100 text-slate-500 rounded text-[8px] font-black uppercase tracking-wider">{{ $log->user->role ?? 'N/A' }}</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-8 py-5">
-                                        @php
-                                            $colorClass = match($log->action) {
-                                                'create' => 'bg-emerald-100 text-emerald-700 border-emerald-200',
-                                                'update' => 'bg-blue-100 text-blue-700 border-blue-200',
-                                                'delete' => 'bg-red-100 text-red-700 border-red-200',
-                                                'approve' => 'bg-green-100 text-green-700 border-green-200',
-                                                'reject' => 'bg-amber-100 text-amber-700 border-amber-200',
-                                                default => 'bg-slate-100 text-slate-700 border-slate-200'
-                                            };
-                                        @endphp
-                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-[9px] font-black border uppercase tracking-widest {{ $colorClass }}">
-                                            {{ $log->action }}
-                                        </span>
-                                    </td>
-                                    <td class="px-8 py-5">
-                                        <div class="flex flex-col">
-                                            <p class="text-sm font-bold text-slate-700 leading-relaxed">{{ $log->description }}</p>
-                                            
-                                            @if(isset($log->properties['changes']))
-                                                <div class="mt-2 space-y-1 border-l-2 border-slate-100 pl-3 bg-slate-50/50 py-1 rounded-r-lg">
-                                                    @foreach($log->properties['changes'] as $field => $change)
-                                                        <p class="text-[10px] text-slate-500 font-medium">
-                                                            <span class="font-bold text-slate-600 uppercase text-[8px] tracking-wider">{{ str_replace('_', ' ', $field) }}:</span> 
-                                                            <span class="text-slate-400 line-through opacity-70">{{ is_array($change['old'] ?? '') ? json_encode($change['old']) : ($change['old'] ?? 'NULL') }}</span> 
-                                                            <span class="text-slate-300 mx-1">→</span> 
-                                                            <span class="text-blue-600 font-bold">{{ is_array($change['new'] ?? '') ? json_encode($change['new']) : ($change['new'] ?? 'NULL') }}</span>
-                                                        </p>
-                                                    @endforeach
-                                                </div>
-                                            @endif
-
-                                            <p class="text-[9px] text-slate-400 font-bold uppercase tracking-tight mt-1">Origin: {{ $log->ip_address ?? 'Unknown' }} • {{ $log->model_type }} #{{ $log->model_id }}</p>
-                                        </div>
-                                    </td>
-                                    <td class="px-8 py-5">
-                                        <div class="flex flex-col text-right">
-                                            <p class="text-xs font-black text-slate-800">{{ $log->created_at->diffForHumans() }}</p>
-                                            <p class="text-[10px] text-slate-400 font-bold">{{ $log->created_at->format('d M, H:i') }}</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="4" class="px-8 py-20 text-center">
-                                        <div class="flex flex-col items-center gap-3">
-                                            <div class="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-slate-200 mb-2">
-                                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                            </div>
-                                            <p class="text-slate-400 font-bold italic">Belum ada catatan aktivitas yang tersedia.</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
                 <!-- Active Penyelenggara Table -->
                 <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden transition-all hover:border-blue-100">
                     <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/30">
@@ -328,13 +232,9 @@
                                             </form>
                                             @endif
 
-                                            <form action="{{ route('admin.user.delete', $p->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus akun ini?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="p-2.5 bg-red-50 text-red-600 rounded-xl hover:bg-red-600 hover:text-white transition-all shadow-sm active:scale-90" title="Hapus Akun">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                                </button>
-                                            </form>
+                                            <button type="button" onclick="confirmDeleteUser({{ $p->id }})" class="p-2.5 bg-red-50 text-red-600 rounded-xl hover:bg-red-600 hover:text-white transition-all shadow-sm active:scale-90" title="Hapus Akun">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -396,13 +296,9 @@
                                             </form>
                                             @endif
 
-                                            <form action="{{ route('admin.user.delete', $u->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus akun ini?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="p-2.5 bg-red-50 text-red-600 rounded-xl hover:bg-red-600 hover:text-white transition-all shadow-sm active:scale-90" title="Hapus Akun">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                                </button>
-                                            </form>
+                                            <button type="button" onclick="confirmDeleteUser({{ $u->id }})" class="p-2.5 bg-red-50 text-red-600 rounded-xl hover:bg-red-600 hover:text-white transition-all shadow-sm active:scale-90" title="Hapus Akun">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -415,7 +311,7 @@
                 </div>
 
                 <!-- Bidang Lomba (Kategori) CRUD -->
-                <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden transition-all hover:border-violet-100">
                     <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/30">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center">
@@ -430,26 +326,22 @@
                     </div>
 
                     <div class="p-6">
-                        <!-- Add Category Form -->
                         <form action="{{ route('admin.kategori.store') }}" method="POST" class="flex gap-3 mb-6">
                             @csrf
                             <input type="text" name="name" placeholder="Nama kategori baru..." required
-                                class="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-violet-100 focus:border-violet-400 bg-slate-50 focus:bg-white transition-all text-sm">
-                            <button type="submit" class="px-5 py-2.5 bg-violet-600 text-white rounded-xl font-bold text-sm hover:bg-violet-700 transition-all shadow-sm">
+                                class="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-violet-100 focus:border-violet-400 bg-slate-50 focus:bg-white transition-all text-sm font-medium">
+                            <button type="submit" class="px-5 py-2.5 bg-violet-600 text-white rounded-xl font-bold text-sm hover:bg-violet-700 transition-all shadow-sm active:scale-95">
                                 + Tambah
                             </button>
                         </form>
 
-                        <!-- Categories List -->
                         <div class="flex flex-wrap gap-2">
                             @forelse($categories as $cat)
-                            <div class="flex items-center gap-2 px-4 py-2 bg-violet-50 text-violet-700 rounded-xl border border-violet-100 text-sm font-bold">
+                            <div class="flex items-center gap-2 px-4 py-2 bg-violet-50 text-violet-700 rounded-xl border border-violet-100 text-sm font-bold transition-all hover:bg-white hover:border-violet-200 group">
                                 <span>{{ $cat->name }}</span>
-                                <form action="{{ route('admin.kategori.destroy', $cat->id) }}" method="POST" onsubmit="return confirm('Hapus kategori {{ $cat->name }}?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-violet-300 hover:text-red-500 transition-colors ml-1 leading-none">&times;</button>
-                                </form>
+                                <button type="button" onclick="confirmDeleteCategory({{ $cat->id }}, '{{ $cat->name }}')" class="p-1 px-1.5 text-violet-300 hover:text-red-500 rounded transition-all opacity-0 group-hover:opacity-100">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                </button>
                             </div>
                             @empty
                                 <p class="text-slate-400 text-sm italic">Belum ada kategori. Tambahkan di atas.</p>
@@ -458,58 +350,139 @@
                     </div>
                 </div>
 
+                <!-- Audit Trail / Activity Log History Section -->
+                <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden transition-all hover:border-blue-100">
+                    <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/30">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="font-black text-slate-800 tracking-tight text-xl">Audit Trail & Riwayat Aktivitas</h3>
+                                <p class="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-0.5">Logging system records • Real-time database audit</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50 text-[10px] font-black text-slate-400 uppercase tracking-[0.22em] border-b border-slate-100">
+                                <tr>
+                                    <th class="px-8 py-5">Pelaku</th>
+                                    <th class="px-8 py-5">Aksi</th>
+                                    <th class="px-8 py-5">Detail Aktivitas</th>
+                                    <th class="px-8 py-5">Waktu</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-50">
+                                @forelse($recentLogs as $log)
+                                <tr class="hover:bg-slate-50/50 transition-all group">
+                                    <td class="px-8 py-5 border-r border-slate-50">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs shrink-0">
+                                                {{ substr($log->user->name ?? '?', 0, 1) }}
+                                            </div>
+                                            <div>
+                                                <p class="font-bold text-slate-900 group-hover:text-blue-600 transition-colors leading-none mb-1 text-sm">{{ $log->user->name ?? 'System/Deleted' }}</p>
+                                                <span class="px-2 py-0.5 bg-slate-100 text-slate-500 rounded text-[8px] font-black uppercase tracking-wider">{{ $log->user->role ?? 'N/A' }}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-8 py-5">
+                                        @php
+                                            $colorClass = match($log->action) {
+                                                'create' => 'bg-emerald-100 text-emerald-700 border-emerald-200',
+                                                'update' => 'bg-blue-100 text-blue-700 border-blue-200',
+                                                'delete' => 'bg-red-100 text-red-700 border-red-200',
+                                                'approve' => 'bg-green-100 text-green-700 border-green-200',
+                                                'reject' => 'bg-amber-100 text-amber-700 border-amber-200',
+                                                default => 'bg-slate-100 text-slate-700 border-slate-200'
+                                            };
+                                        @endphp
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-[9px] font-black border uppercase tracking-widest {{ $colorClass }}">
+                                            {{ $log->action }}
+                                        </span>
+                                    </td>
+                                    <td class="px-8 py-5 text-sm font-medium text-slate-600">{{ $log->description }}</td>
+                                    <td class="px-8 py-5">
+                                        <div class="flex flex-col text-right">
+                                            <p class="text-[10px] font-black text-slate-800">{{ $log->created_at->diffForHumans() }}</p>
+                                            <p class="text-[9px] text-slate-400 font-bold">{{ $log->created_at->format('d M, H:i') }}</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr><td colspan="4" class="px-8 py-20 text-center text-slate-400 font-medium italic">Belum ada aktivitas tercatat.</td></tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
 
-    <!-- User Detail Modal (Vanilla JS) -->
+    <!-- Modals -->
     <div id="userDetailModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-all duration-300 opacity-0">
-        <div class="bg-white rounded-[2rem] shadow-2xl max-w-lg w-full overflow-hidden transform scale-95 transition-all duration-300">
-            <div class="h-32 bg-gradient-to-br from-blue-600 via-indigo-600 to-indigo-800 p-6 relative">
-                <button onclick="closeModal()" class="absolute top-6 right-6 p-2 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors backdrop-blur-md">
+        <div class="bg-white rounded-[2.5rem] shadow-2xl max-w-lg w-full overflow-hidden transform scale-95 transition-all duration-300">
+            <div class="h-32 bg-gradient-to-br from-blue-600 to-indigo-800 p-6 flex justify-end items-start mt-[-1px]">
+                <button onclick="closeModal()" class="p-2 bg-white/20 hover:bg-white/30 text-white rounded-full transition-all backdrop-blur-md">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
-            <div class="px-10 pb-10 -mt-12">
-                <div class="w-24 h-24 rounded-3xl bg-white p-1.5 mb-6 shadow-2xl ring-4 ring-white relative z-10">
-                    <div id="modalAvatar" class="w-full h-full rounded-2xl bg-gradient-to-tr from-blue-100 to-blue-50 flex items-center justify-center text-blue-600 text-3xl font-black uppercase shadow-inner">
-                        ?
-                    </div>
+            <div class="px-10 pb-10 -mt-12 text-center">
+                <div class="w-24 h-24 rounded-3xl bg-white p-2 mx-auto mb-6 shadow-2xl relative z-10">
+                    <div id="modalAvatar" class="w-full h-full rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 text-3xl font-black uppercase">?</div>
                 </div>
-                
                 <h3 id="modalName" class="text-3xl font-black text-slate-900 mb-1 tracking-tight">Memuat...</h3>
-                <p class="text-slate-500 mb-8 flex items-center gap-2 font-medium">
-                    <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                    <span id="modalEmail">...</span>
-                </p>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="p-5 rounded-3xl bg-slate-50/80 border border-slate-100 transition-hover hover:bg-white hover:shadow-sm">
-                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Account Role</p>
-                        <p id="modalRole" class="font-black text-slate-800 capitalize text-sm">--</p>
-                    </div>
-                    <div class="p-5 rounded-3xl bg-slate-50/80 border border-slate-100 transition-hover hover:bg-white hover:shadow-sm">
-                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Account Status</p>
-                        <p id="modalStatus" class="font-black text-blue-600 capitalize text-sm">--</p>
-                    </div>
-                    <div class="p-5 rounded-3xl bg-slate-50/80 border border-slate-100 transition-hover hover:bg-white hover:shadow-sm">
-                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Username</p>
-                        <p id="modalUsername" class="font-black text-slate-800 text-sm">--</p>
-                    </div>
-                    <div class="p-5 rounded-3xl bg-slate-50/80 border border-slate-100 transition-hover hover:bg-white hover:shadow-sm">
-                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Member Since</p>
-                        <p id="modalJoined" class="font-black text-slate-800 text-sm">--</p>
-                    </div>
+                <p id="modalEmail" class="text-slate-500 mb-8 font-medium">...</p>
+                <div class="grid grid-cols-2 gap-4 text-left">
+                    <div class="p-4 rounded-3xl bg-slate-50 border border-slate-100"><p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Role</p><p id="modalRole" class="font-black text-slate-700 uppercase text-[10px]">--</p></div>
+                    <div class="p-4 rounded-3xl bg-slate-50 border border-slate-100"><p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Status</p><p id="modalStatus" class="font-black text-blue-600 uppercase text-[10px]">--</p></div>
+                    <div class="p-4 rounded-3xl bg-slate-50 border border-slate-100"><p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Username</p><p id="modalUsername" class="font-bold text-slate-700 text-xs">--</p></div>
+                    <div class="p-4 rounded-3xl bg-slate-50 border border-slate-100"><p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Bergabung</p><p id="modalJoined" class="font-bold text-slate-700 text-xs">--</p></div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Premium Delete Confirmation Modal -->
+    <div id="deleteConfirmModal" class="fixed inset-0 z-[110] hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-all duration-300 opacity-0">
+        <div class="bg-white rounded-[2.5rem] shadow-2xl max-w-md w-full p-10 transform scale-95 transition-all duration-300 text-center">
+            <div class="w-20 h-20 rounded-3xl bg-red-50 text-red-500 flex items-center justify-center mx-auto mb-6 shadow-inner ring-4 ring-red-50/50">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+            </div>
+            <h3 id="deleteModalTitle" class="text-2xl font-black text-slate-900 mb-2 tracking-tight">Hapus Data?</h3>
+            <p id="deleteModalMessage" class="text-slate-500 text-sm mb-8 leading-relaxed">Tindakan ini tidak dapat dibatalkan.</p>
+            <div class="flex flex-col gap-3">
+                <form id="deleteForm" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="w-full py-4 bg-red-600 text-white rounded-2xl font-black text-sm hover:bg-red-700 transition-all shadow-xl shadow-red-200 active:scale-95">Ya, Hapus Sekarang</button>
+                </form>
+                <button onclick="closeDeleteModal()" class="w-full py-3 text-slate-400 font-bold text-xs hover:text-slate-600 transition-all">Batalkan</button>
+            </div>
+        </div>
+    </div>
+
+    @include('partials.scripts')
     <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const isMobile = window.innerWidth < 768;
+            if (isMobile) {
+                sidebar.classList.toggle('hidden');
+                sidebar.classList.toggle('flex');
+            } else {
+                sidebar.classList.toggle('w-64');
+                sidebar.classList.toggle('w-20');
+                document.querySelectorAll('.sidebar-text').forEach(el => el.classList.toggle('hidden'));
+            }
+        }
+
         function showUserDetail(id) {
             const modal = document.getElementById('userDetailModal');
             const content = modal.querySelector('div');
-            
             modal.classList.remove('hidden');
             modal.classList.add('flex');
             setTimeout(() => {
@@ -519,69 +492,77 @@
             }, 10);
 
             fetch(`/admin/user/${id}`)
-                .then(response => response.json())
-                .then(user => {
-                    document.getElementById('modalName').innerText = user.name;
-                    document.getElementById('modalEmail').innerText = user.email;
-                    document.getElementById('modalRole').innerText = user.role;
-                    document.getElementById('modalStatus').innerText = user.status;
-                    document.getElementById('modalUsername').innerText = user.username || '-';
-                    document.getElementById('modalAvatar').innerText = user.name.charAt(0);
-                    
-                    const date = new Date(user.created_at);
-                    document.getElementById('modalJoined').innerText = date.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: 'numeric'});
-                })
-                .catch(err => {
-                    console.error('Error fetching user:', err);
+                .then(r => r.json())
+                .then(u => {
+                    document.getElementById('modalName').innerText = u.name;
+                    document.getElementById('modalEmail').innerText = u.email;
+                    document.getElementById('modalRole').innerText = u.role;
+                    document.getElementById('modalStatus').innerText = u.status;
+                    document.getElementById('modalUsername').innerText = u.username || '-';
+                    document.getElementById('modalAvatar').innerText = u.name.charAt(0);
+                    document.getElementById('modalJoined').innerText = new Date(u.created_at).toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'});
                 });
         }
 
         function closeModal() {
             const modal = document.getElementById('userDetailModal');
             const content = modal.querySelector('div');
-            
             modal.classList.remove('opacity-100');
             content.classList.remove('scale-100');
             content.classList.add('scale-95');
+            setTimeout(() => { modal.classList.remove('flex'); modal.classList.add('hidden'); }, 300);
+        }
+
+        function confirmDeleteUser(id) {
+            const modal = document.getElementById('deleteConfirmModal');
+            const content = modal.querySelector('div');
+            const form = document.getElementById('deleteForm');
+            const title = document.getElementById('deleteModalTitle');
+            const message = document.getElementById('deleteModalMessage');
             
-            setTimeout(() => {
-                modal.classList.remove('flex');
-                modal.classList.add('hidden');
-            }, 300);
+            form.action = `/admin/pengaturan/${id}`;
+            title.innerText = 'Hapus Akun?';
+            message.innerText = 'Akun ini akan dipindahkan ke daftar terhapus dan dapat dipulihkan nanti.';
+            showModal(modal, content);
         }
 
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeModal();
-        });
+        function confirmDeleteCategory(id, name) {
+            const modal = document.getElementById('deleteConfirmModal');
+            const content = modal.querySelector('div');
+            const form = document.getElementById('deleteForm');
+            const title = document.getElementById('deleteModalTitle');
+            const message = document.getElementById('deleteModalMessage');
+            
+            form.action = `/admin/kategori/${id}`;
+            title.innerText = 'Hapus Kategori?';
+            message.innerText = `Kategori "${name}" akan dihapus secara permanen.`;
+            showModal(modal, content);
+        }
+
+        function showModal(modal, content) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => { modal.classList.add('opacity-100'); content.classList.remove('scale-95'); content.classList.add('scale-100'); }, 10);
+        }
+
+        function closeDeleteModal() {
+            const modal = document.getElementById('deleteConfirmModal');
+            const content = modal.querySelector('div');
+            modal.classList.remove('opacity-100');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            setTimeout(() => { modal.classList.remove('flex'); modal.classList.add('hidden'); }, 300);
+        }
+
+        function scrollToTrash() {
+            const el = document.getElementById('trashSection');
+            if(el) el.scrollIntoView({behavior: 'smooth'});
+        }
+
+        window.onclick = (e) => {
+            if(e.target.id === 'userDetailModal') closeModal();
+            if(e.target.id === 'deleteConfirmModal') closeDeleteModal();
+        };
     </script>
-
-@include('partials.scripts')
-<script>
-    function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        const isMobile = window.innerWidth < 768;
-        
-        if (isMobile) {
-            const computedDisplay = window.getComputedStyle(sidebar).display;
-            if (computedDisplay === "none") {
-                sidebar.style.display = "flex";
-            } else {
-                sidebar.style.display = "none";
-            }
-        } else {
-            if (sidebar.classList.contains("w-64")) {
-                sidebar.classList.remove("w-64");
-                sidebar.classList.add("w-20");
-                document.querySelectorAll(".sidebar-text").forEach(el => el.classList.add("hidden"));
-            } else {
-                sidebar.classList.remove("w-20");
-                sidebar.classList.add("w-64");
-                document.querySelectorAll(".sidebar-text").forEach(el => el.classList.remove("hidden"));
-            }
-        }
-    }
-</script>
-    @include('partials.scripts')
 </body>
 </html>
-

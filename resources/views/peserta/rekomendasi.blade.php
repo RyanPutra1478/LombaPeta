@@ -130,7 +130,8 @@
 
                     @forelse($competitions as $index => $l)
                     <div class="bg-white rounded-[2rem] border border-slate-200 overflow-hidden hover:shadow-2xl hover:shadow-slate-200/50 transition-all duration-300 group flex flex-col justify-between animate-fade-in-up cursor-pointer" 
-                         style="animation-delay: {{ $index * 75 }}ms">
+                         style="animation-delay: {{ $index * 75 }}ms"
+                         onclick="window.location.href='{{ route('peserta.detail', $l->id) }}'">
                         <div class="h-44 relative overflow-hidden bg-slate-100">
                             @if($l->poster)
                             <img src="{{ asset('storage/' . $l->poster) }}" alt="Poster" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
@@ -151,10 +152,10 @@
                                     <svg class="w-4 h-4 text-slate-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                                     <span class="line-clamp-1">{{ $l->organizer->name ?? 'Penyelenggara' }}</span>
                                 </div>
-                                <div class="flex items-center text-sm text-slate-500 gap-2">
-                                    <svg class="w-4 h-4 text-blue-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                    <span>Tutup: {{ \Carbon\Carbon::parse($l->deadline)->format('d M Y') }}</span>
-                                </div>
+                                 <div class="flex items-center text-sm text-slate-500 gap-2">
+                                     <svg class="w-4 h-4 text-blue-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                     <span class="font-medium text-xs">Tenggat Pendaftaran: <span class="text-slate-900 font-bold">{{ \Carbon\Carbon::parse($l->deadline)->format('d M Y') }}</span></span>
+                                 </div>
                                 <div class="flex items-center gap-2 mt-2">
                                     <span class="px-2.5 py-1 {{ $l->registration_fee > 0 ? 'bg-slate-100 text-slate-700' : 'bg-green-100 text-green-700' }} text-xs font-bold rounded-md">
                                         {{ $l->registration_fee > 0 ? 'Rp ' . number_format($l->registration_fee, 0, ',', '.') : 'Gratis' }}
@@ -172,7 +173,7 @@
                                 </div>
                             </div>
                            <a href="{{ route('peserta.detail', $l->id) }}" class="block text-center w-full py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-200">
-                                Lihat Detail
+                                Lihat Lomba
                             </a>
                         </div>
                     </div>

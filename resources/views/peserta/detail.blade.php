@@ -168,7 +168,7 @@
                         <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center mb-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                         </div>
-                        <p class="text-xs text-slate-500 font-medium mb-1">Pendaftaran Ditutup</p>
+                        <p class="text-xs text-slate-500 font-medium mb-1">Tenggat Pendaftaran</p>
                         <p class="font-bold text-slate-900">{{ \Carbon\Carbon::parse($competition->deadline)->format('d F Y') }}</p>
                     </div>
                     <div class="p-5 flex flex-col items-center justify-center text-center">

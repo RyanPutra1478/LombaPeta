@@ -100,9 +100,13 @@ class AdminController extends Controller
         $competition->title = $request->title;
         $competition->category_id = $request->category_id;
         $catModel = \App\Models\CompetitionCategory::find($request->category_id);
-        $competition->category = $catModel ? $catModel->name : null;
-        $competition->level = $request->level;
-        $competition->credibility_score = $request->credibility_score;
+        $competition->category = $catModel ? $catModel->name : $competition->category;
+        $competition->level = $request->level ?? $competition->level;
+        if ($request->filled('credibility_score')) {
+            $competition->credibility_score = $request->credibility_score;
+        } else if ($competition->credibility_score === null) {
+            $competition->credibility_score = 0;
+        }
         $competition->status = $request->status;
         
         // Log before saving to capture differences

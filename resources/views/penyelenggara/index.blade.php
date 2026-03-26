@@ -116,13 +116,9 @@
                                             <a href="{{ route('penyelenggara.edit', $l->id) }}" title="Edit Lomba" class="p-2 bg-amber-50 text-amber-500 rounded-lg hover:bg-amber-500 hover:text-white transition-colors">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                                             </a>
-                                            <form action="{{ route('penyelenggara.destroy', $l->id) }}" method="POST" onsubmit="return confirm('Hapus lomba ini?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-colors">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                                </button>
-                                            </form>
+                                             <button type="button" onclick="confirmDelete({{ $l->id }})" title="Hapus Lomba" class="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-colors">
+                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                             </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -143,10 +139,53 @@
                         </table>
                     </div>
                 </div>
-                </div>
 
             </div>
         </main>
+    </div>
+
+    <!-- Competition Detail Preview Modal -->
+    <div id="lombaDetailModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md transition-all duration-300 opacity-0">
+        <div class="bg-white rounded-[2.5rem] shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto transform scale-95 transition-all duration-300 relative">
+            <button onclick="closeLombaModal()" class="absolute top-6 right-8 p-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full transition-all z-10 shadow-sm active:scale-95">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div class="flex flex-col lg:flex-row">
+                <div class="lg:w-1/3 p-10 bg-slate-50 flex flex-col items-center">
+                    <img id="modalPoster" src="" class="w-full h-[400px] object-cover rounded-3xl shadow-2xl border-4 border-white mb-6 bg-white">
+                </div>
+                <div class="lg:w-2/3 p-10 lg:pl-0">
+                    <div class="px-4 text-slate-900">
+                        <span id="modalCategory" class="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full mb-4 inline-block">Category</span>
+                        <h3 id="modalTitle" class="text-4xl font-black mb-6 tracking-tight leading-none">--</h3>
+                        <div class="space-y-4">
+                            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Deskripsi Kompetisi</p>
+                            <div id="modalDescription" class="prose prose-sm text-slate-600 font-medium leading-relaxed max-h-48 overflow-y-auto pr-4 break-words whitespace-pre-line">--</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Premium Delete Confirmation Modal -->
+    <div id="deleteConfirmModal" class="fixed inset-0 z-[110] hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-all duration-300 opacity-0">
+        <div class="bg-white rounded-[2.5rem] shadow-2xl max-w-md w-full p-10 transform scale-95 transition-all duration-300 text-center">
+            <div class="w-20 h-20 rounded-3xl bg-red-50 text-red-500 flex items-center justify-center mx-auto mb-6 shadow-inner ring-4 ring-red-50/50">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+            </div>
+            <h3 class="text-2xl font-black text-slate-900 mb-2 tracking-tight">Hapus Lomba?</h3>
+            <p class="text-slate-500 text-sm mb-8 leading-relaxed">Tindakan ini tidak dapat dibatalkan. Seluruh data pendaftaran terkait juga akan dihapus secara permanen.</p>
+            
+            <div class="flex flex-col gap-3">
+                <form id="deleteForm" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="w-full py-4 bg-red-600 text-white rounded-2xl font-black text-sm hover:bg-red-700 transition-all shadow-xl shadow-red-200 active:scale-95">Ya, Hapus Sekarang</button>
+                </form>
+                <button onclick="closeDeleteModal()" class="w-full py-3 text-slate-400 font-bold text-xs hover:text-slate-600 transition-all">Batalkan</button>
+            </div>
+        </div>
     </div>
 
 
@@ -158,7 +197,7 @@
         
         if (isMobile) {
             const computedDisplay = window.getComputedStyle(sidebar).display;
-            if (computedDisplay === "none") {
+            if (computedDisplay === "none" || computedDisplay === "") {
                 sidebar.style.display = "flex";
             } else {
                 sidebar.style.display = "none";
@@ -175,73 +214,73 @@
             }
         }
     }
+
+    let deleteId = null;
+    function confirmDelete(id) {
+        deleteId = id;
+        const modal = document.getElementById('deleteConfirmModal');
+        const content = modal.querySelector('div');
+        const form = document.getElementById('deleteForm');
+        form.action = `/penyelenggara/competition/${id}`;
+        
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        setTimeout(() => {
+            modal.classList.add('opacity-100');
+            content.classList.remove('scale-95');
+            content.classList.add('scale-100');
+        }, 10);
+    }
+
+    function closeDeleteModal() {
+        const modal = document.getElementById('deleteConfirmModal');
+        const content = modal.querySelector('div');
+        modal.classList.remove('opacity-100');
+        content.classList.remove('scale-100');
+        content.classList.add('scale-95');
+        setTimeout(() => {
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }, 300);
+    }
+
+    function showLombaDetail(id) {
+        const modal = document.getElementById('lombaDetailModal');
+        const content = modal.querySelector('div');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        setTimeout(() => {
+            modal.classList.add('opacity-100');
+            content.classList.remove('scale-95');
+            content.classList.add('scale-100');
+        }, 10);
+
+        fetch(`/penyelenggara/competition/${id}/json`)
+            .then(response => response.json())
+            .then(lomba => {
+                document.getElementById('modalTitle').innerText = lomba.title;
+                document.getElementById('modalDescription').innerText = lomba.description;
+                document.getElementById('modalCategory').innerText = lomba.category_name || lomba.category;
+                if (lomba.poster) {
+                    document.getElementById('modalPoster').src = '/storage/' + lomba.poster;
+                } else {
+                    document.getElementById('modalPoster').src = "{{ asset('images/lomba.png') }}";
+                }
+            });
+    }
+
+    function closeLombaModal() {
+        const modal = document.getElementById('lombaDetailModal');
+        const content = modal.querySelector('div');
+        modal.classList.remove('opacity-100');
+        content.classList.remove('scale-100');
+        content.classList.add('scale-95');
+        setTimeout(() => {
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }, 300);
+    }
 </script>
-
-    <!-- Competition Detail Preview Modal -->
-    <div id="lombaDetailModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md transition-all duration-300 opacity-0">
-        <div class="bg-white rounded-[2.5rem] shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto transform scale-95 transition-all duration-300 relative">
-            <button onclick="closeLombaModal()" class="absolute top-6 right-8 p-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full transition-all z-10 shadow-sm active:scale-95">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-            
-            <div class="flex flex-col lg:flex-row">
-                <div class="lg:w-1/3 p-10 bg-slate-50 flex flex-col items-center">
-                    <img id="modalPoster" src="" class="w-full h-[400px] object-cover rounded-3xl shadow-2xl border-4 border-white mb-6 bg-white">
-                </div>
-                <div class="lg:w-2/3 p-10 lg:pl-0">
-                    <div class="px-4">
-                        <span id="modalCategory" class="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full mb-4 inline-block">Category</span>
-                        <h3 id="modalTitle" class="text-4xl font-black text-slate-900 mb-6 tracking-tight leading-none">--</h3>
-                        <div class="space-y-4">
-                            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Deskripsi Kompetisi</p>
-                            <div id="modalDescription" class="prose prose-sm text-slate-600 font-medium leading-relaxed max-h-48 overflow-y-auto pr-4 break-words whitespace-pre-line">--</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function showLombaDetail(id) {
-            const modal = document.getElementById('lombaDetailModal');
-            const content = modal.querySelector('div');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => {
-                modal.classList.add('opacity-100');
-                content.classList.remove('scale-95');
-                content.classList.add('scale-100');
-            }, 10);
-
-            // Use penyelenggara's own JSON route (no admin access needed)
-            fetch(`/penyelenggara/competition/${id}/json`)
-                .then(response => response.json())
-                .then(lomba => {
-                    document.getElementById('modalTitle').innerText = lomba.title;
-                    document.getElementById('modalDescription').innerText = lomba.description;
-                    document.getElementById('modalCategory').innerText = lomba.category_name || lomba.category;
-                    if (lomba.poster) {
-                        document.getElementById('modalPoster').src = '/storage/' + lomba.poster;
-                    } else {
-                        document.getElementById('modalPoster').src = "{{ asset('images/lomba.png') }}";
-                    }
-                });
-        }
-
-        function closeLombaModal() {
-            const modal = document.getElementById('lombaDetailModal');
-            const content = modal.querySelector('div');
-            modal.classList.remove('opacity-100');
-            content.classList.remove('scale-100');
-            content.classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.remove('flex');
-                modal.classList.add('hidden');
-            }, 300);
-        }
-    </script>
-    @include('partials.scripts')
 </body>
 </html>
 

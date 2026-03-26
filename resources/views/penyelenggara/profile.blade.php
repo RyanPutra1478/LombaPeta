@@ -80,7 +80,6 @@
                     <!-- Personal Info Card -->
                     <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
                         <h3 class="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
-                            <span class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold">1</span>
                             Informasi Dasar
                         </h3>
                         
