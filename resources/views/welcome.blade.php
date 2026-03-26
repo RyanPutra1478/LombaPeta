@@ -12,12 +12,16 @@
         body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body class="bg-white text-slate-900">
+<body class="bg-slate-50 text-slate-900 relative">
 
-    <nav class="fixed top-0 left-0 w-full z-50 glass-nav border-b border-slate-100/50">
+    <!-- Efek Bercak Latar Belakang untuk Menonjolkan Glassmorphism -->
+    <div class="absolute top-0 left-0 w-full h-screen overflow-hidden pointer-events-none z-0">
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-[100px] opacity-60"></div>
+        <div class="absolute top-20 right-0 w-96 h-96 bg-emerald-200 rounded-full mix-blend-multiply filter blur-[100px] opacity-60"></div>
+    </div>
 
-
-        <div class="max-w-[1440px] w-[92%] mx-auto">
+    <nav class="fixed top-0 left-0 w-full z-50 glass-nav">
+        <div class="max-w-[1440px] w-[92%] mx-auto relative z-10">
             <div class="flex justify-between items-center h-20">
                 <div class="flex items-center gap-2">
                     <img src="{{ asset('images/lombapeta.png') }}" alt="Logo" class="w-10 h-10 object-contain">
@@ -55,14 +59,14 @@
                         <a href="{{ route('login') }}" class="border border-slate-200 text-slate-600 px-8 py-4 rounded-xl font-bold hover:bg-slate-50 transition hover:-translate-y-1 inline-block">Pasang Lomba</a>
                     </div>
                 </div>
-                <div class="relative w-full flex justify-end animate-fade-in-up">
+                <div class="relative w-full hidden md:flex justify-end animate-fade-in-up">
                     <img src="{{ asset('images/foto utama.png') }}" alt="Ilustrasi" class="w-full max-w-2xl h-auto transition-transform duration-700 hover:scale-[1.05]">
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-24 bg-slate-50 border-y border-slate-100" id="tentang">
+    <section class="py-24 bg-white border-y border-slate-100" id="tentang">
         <div class="max-w-[1440px] w-[92%] mx-auto text-center">
             <h2 class="text-3xl font-bold mb-4">Bagaimana LombaPeta Bekerja?</h2>
             <p class="text-slate-500 mb-16">Hanya butuh 3 langkah sederhana untuk memulai perjalananmu.</p>
@@ -124,26 +128,28 @@
                 </div>
 
                 <h3 class="text-xl font-black text-center mb-8 relative z-10">Pilih Peranmu</h3>
-                <div class="grid grid-cols-2 gap-4 relative z-10">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10">
                     <div class="relative group/role">
-                        <div class="p-6 rounded-3xl bg-blue-50/50 text-center border border-blue-100 hover:bg-blue-600 hover:text-white transition-all duration-500 cursor-default group/item">
+                        <div class="p-6 md:p-8 rounded-3xl bg-blue-50/50 text-center border border-blue-100 hover:bg-blue-600 hover:text-white transition-all duration-500 cursor-default group/item h-full flex flex-col justify-center">
                             <span class="block font-black text-lg mb-1">Pelajar</span>
-                            <span class="text-[9px] uppercase font-bold tracking-widest opacity-70 group-hover/item:text-white">Cari & Ikuti Lomba</span>
+                            <span class="text-[9px] uppercase font-bold tracking-widest opacity-70 group-hover/item:text-white block">Cari & Ikuti Lomba</span>
+                            <p class="md:hidden mt-4 text-xs text-slate-500 group-hover/item:text-blue-100 leading-relaxed transition-colors">Akses ribuan lomba, kumpulkan sertifikat, dan bangun portofolio prestasimu.</p>
                         </div>
-                        <!-- Popup -->
-                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-48 p-4 bg-slate-900 text-white text-[11px] rounded-2xl opacity-0 invisible group-hover/role:opacity-100 group-hover/role:visible group-hover/role:-translate-y-2 transition-all duration-300 shadow-xl z-20 pointer-events-none">
+                        <!-- Popup (Desktop Only) -->
+                        <div class="hidden md:block absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-48 p-4 bg-slate-900 text-white text-[11px] rounded-2xl opacity-0 invisible group-hover/role:opacity-100 group-hover/role:visible group-hover/role:-translate-y-2 transition-all duration-300 shadow-xl z-20 pointer-events-none">
                             Akses ribuan lomba, kumpulkan sertifikat, dan bangun portofolio prestasimu.
                             <div class="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-slate-900"></div>
                         </div>
                     </div>
 
                     <div class="relative group/role">
-                        <div class="p-6 rounded-3xl bg-emerald-50/50 text-center border border-emerald-100 hover:bg-emerald-600 hover:text-white transition-all duration-500 cursor-default group/item">
+                        <div class="p-6 md:p-8 rounded-3xl bg-emerald-50/50 text-center border border-emerald-100 hover:bg-emerald-600 hover:text-white transition-all duration-500 cursor-default group/item h-full flex flex-col justify-center">
                             <span class="block font-black text-lg mb-1">Penyelenggara</span>
-                            <span class="text-[9px] uppercase font-bold tracking-widest opacity-70 group-hover/item:text-white">Pasang Lomba</span>
+                            <span class="text-[9px] uppercase font-bold tracking-widest opacity-70 group-hover/item:text-white block">Pasang Lomba</span>
+                            <p class="md:hidden mt-4 text-xs text-slate-500 group-hover/item:text-emerald-100 leading-relaxed transition-colors">Kelola pendaftaran, verifikasi, dan promosikan kompetisi Anda ke ribuan pelajar.</p>
                         </div>
-                        <!-- Popup -->
-                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-48 p-4 bg-slate-900 text-white text-[11px] rounded-2xl opacity-0 invisible group-hover/role:opacity-100 group-hover/role:visible group-hover/role:-translate-y-2 transition-all duration-300 shadow-xl z-20 pointer-events-none">
+                        <!-- Popup (Desktop Only) -->
+                        <div class="hidden md:block absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-48 p-4 bg-slate-900 text-white text-[11px] rounded-2xl opacity-0 invisible group-hover/role:opacity-100 group-hover/role:visible group-hover/role:-translate-y-2 transition-all duration-300 shadow-xl z-20 pointer-events-none">
                             Kelola pendaftaran, verifikasi peserta, dan promosikan kompetisi Anda ke ribuan pelajar.
                             <div class="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-slate-900"></div>
                         </div>
@@ -153,14 +159,14 @@
         </div>
     </section>
 
-    <section class="py-20 bg-slate-50/50" id="lomba">
+    <section class="py-24 bg-white border-y border-slate-100" id="lomba">
         <div class="max-w-[1440px] w-[92%] mx-auto">
-            <div class="flex justify-between items-end mb-12">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 mb-12">
                 <div>
                     <h2 class="text-3xl font-bold mb-2">Lomba Pilihan Minggu Ini</h2>
                     <p class="text-slate-500">Lomba paling diminati dengan pendaftaran hingga saat ini.</p>
                 </div>
-                <a href="{{ route('peserta.dashboard') }}" class="text-blue-600 font-bold text-sm hover:underline">Lihat Semua Lomba →</a>
+                <a href="{{ route('peserta.dashboard') }}" class="text-blue-600 font-bold text-sm hover:underline whitespace-nowrap">Lihat Semua Lomba →</a>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -209,9 +215,9 @@
         </div>
     </section>
 
-    <section class="py-24">
-        <div class="max-w-[1440px] w-[92%] mx-auto grid md:grid-cols-2 gap-16 items-center bg-white">
-            <div id="kontak">
+    <section class="py-24" id="kontak">
+        <div class="max-w-[1440px] w-[92%] mx-auto grid md:grid-cols-2 gap-16 items-center">
+            <div>
                 <h2 class="text-4xl font-extrabold mb-4 italic text-blue-900">Hubungi Kami</h2>
                 <p class="text-slate-500 mb-8">Punya pertanyaan atau ingin bekerja sama? Tim kami siap membantu.</p>
                 <div class="space-y-6">
@@ -245,7 +251,7 @@
         </div>
     </section>
 
-    <footer class="bg-slate-50 pt-20 pb-10 border-t border-slate-200">
+    <footer class="bg-white pt-20 pb-10 border-t border-slate-100">
         <div class="max-w-[1440px] w-[92%] mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 mb-16">
             <div class="col-span-2 md:col-span-1">
                 <div class="flex items-center gap-2 mb-6">

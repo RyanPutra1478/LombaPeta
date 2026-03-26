@@ -244,11 +244,6 @@
         </main>
     </div>
 
-                </div>
-            </div>
-        </main>
-    </div>
-
     <div id="editProfileModal" class="fixed inset-0 z-50 bg-slate-900/60 hidden items-center justify-center backdrop-blur-sm transition-opacity px-4">
         <div class="bg-white rounded-3xl w-full max-w-xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
 
@@ -337,6 +332,21 @@
                 modal.classList.add('hidden');
                 modal.classList.remove('flex');
                 document.body.style.overflow = 'auto';
+            }
+        }
+
+        function previewAvatarModal(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('avatar-preview-modal');
+                    const placeholder = document.getElementById('avatar-placeholder-modal');
+                    
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                    if (placeholder) placeholder.classList.add('hidden');
+                }
+                reader.readAsDataURL(input.files[0]);
             }
         }
     </script>

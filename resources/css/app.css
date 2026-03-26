@@ -20,15 +20,30 @@
     .animate-fade-in-up {
         animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-    
+
     .animate-fade-in-right {
         animation: fadeInRight 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
-    .animate-stagger-1 { animation-delay: 0.1s; opacity: 0; }
-    .animate-stagger-2 { animation-delay: 0.2s; opacity: 0; }
-    .animate-stagger-3 { animation-delay: 0.3s; opacity: 0; }
-    .animate-stagger-4 { animation-delay: 0.4s; opacity: 0; }
+    .animate-stagger-1 {
+        animation-delay: 0.1s;
+        opacity: 0;
+    }
+
+    .animate-stagger-2 {
+        animation-delay: 0.2s;
+        opacity: 0;
+    }
+
+    .animate-stagger-3 {
+        animation-delay: 0.3s;
+        opacity: 0;
+    }
+
+    .animate-stagger-4 {
+        animation-delay: 0.4s;
+        opacity: 0;
+    }
 }
 
 @keyframes fadeInUp {
@@ -36,6 +51,7 @@
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -47,6 +63,7 @@
         opacity: 0;
         transform: translateX(-30px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -64,9 +81,10 @@
 }
 
 .glass-nav {
-    background: rgba(255, 255, 255, 0.7) !important;
-    backdrop-filter: blur(12px) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
+    background: rgba(255, 255, 255, 0.5) !important;
+    backdrop-filter: blur(20px) saturate(150%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(150%) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.04) !important;
 }
 
 .glass-card {
@@ -76,8 +94,22 @@
     border: 1px solid rgba(255, 255, 255, 0.4) !important;
 }
 
-.animate-stagger-ext-1 { animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; opacity: 0; }
-.animate-stagger-ext-2 { animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards; opacity: 0; }
-.animate-stagger-ext-3 { animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards; opacity: 0; }
-.animate-stagger-ext-4 { animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards; opacity: 0; }
+.animate-stagger-ext-1 {
+    animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+    opacity: 0;
+}
 
+.animate-stagger-ext-2 {
+    animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+    opacity: 0;
+}
+
+.animate-stagger-ext-3 {
+    animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+    opacity: 0;
+}
+
+.animate-stagger-ext-4 {
+    animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+    opacity: 0;
+}

@@ -20,7 +20,10 @@
                 <a href="/" class="flex items-center gap-2">
                     <img src="{{ asset('images/lombapeta.png') }}" alt="Logo" class="w-10 h-10 object-contain"> <span class="text-xl font-bold tracking-tight text-blue-900">LombaPeta</span>
                 </a>
-                <a href="/" class="text-sm font-medium text-slate-500 hover:text-blue-600 transition">← Kembali ke Beranda</a>
+                <a href="/" class="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-50 border border-slate-200 text-sm font-bold text-slate-600 shadow-sm hover:shadow hover:bg-white hover:text-blue-600 hover:border-blue-200 transition-all duration-300">
+                    <svg class="w-4 h-4 text-slate-400 group-hover:text-blue-500 group-hover:-translate-x-1 transition-all duration-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    Kembali
+                </a>
             </div>
         </div>
     </nav>
