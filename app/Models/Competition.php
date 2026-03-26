@@ -57,4 +57,26 @@ class Competition extends Model
     {
         return $this->hasMany(Bookmark::class);
     }
+
+    /**
+     * Get the poster URL with fallback.
+     */
+    public function getPosterUrlAttribute()
+    {
+        if ($this->poster && \Illuminate\Support\Facades\Storage::disk('public')->exists($this->poster)) {
+            return asset('storage/' . $this->poster);
+        }
+        return asset('images/lomba.png');
+    }
+
+    /**
+     * Get the payment QR code URL with fallback.
+     */
+    public function getPaymentQrUrlAttribute()
+    {
+        if ($this->payment_qr_code && \Illuminate\Support\Facades\Storage::disk('public')->exists($this->payment_qr_code)) {
+            return asset('storage/' . $this->payment_qr_code);
+        }
+        return null; // For QR, null might be better than a generic image if optional
+    }
 }

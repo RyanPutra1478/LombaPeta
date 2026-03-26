@@ -133,11 +133,7 @@
                          style="animation-delay: {{ $index * 75 }}ms"
                          onclick="window.location.href='{{ route('peserta.detail', $l->id) }}'">
                         <div class="h-44 relative overflow-hidden bg-slate-100">
-                            @if($l->poster)
-                            <img src="{{ asset('storage/' . $l->poster) }}" alt="Poster" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                            @else
-                             <img src="{{ asset('images/lomba.png') }}" alt="Poster Lomba" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                            @endif
+                            <img src="{{ $l->poster_url }}" alt="Poster" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                             <div class="absolute top-3 left-3 flex gap-2">
                                 <span class="px-2.5 py-1 bg-blue-600 text-white rounded text-[10px] font-bold uppercase tracking-wide shadow-sm">{{ $l->level }}</span>
                                 <span class="px-2.5 py-1 bg-green-500 text-white rounded text-[10px] font-bold uppercase tracking-wide shadow-sm">{{ $l->category }}</span>

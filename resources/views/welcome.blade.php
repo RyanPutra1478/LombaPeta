@@ -169,11 +169,7 @@
                 @forelse ($competitions as $index => $competition)
                 <a href="{{ route('peserta.detail', $competition->id) }}" class="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 animate-fade-in-up animate-stagger-{{ ($index % 4) + 1 }}">
                     <div class="h-48 bg-slate-200 relative overflow-hidden">
-                        @if($competition->poster && Storage::disk('public')->exists($competition->poster))
-                            <img src="{{ asset('storage/' . $competition->poster) }}" alt="Poster" class="w-full h-full object-cover transition-transform group-hover:scale-105 duration-700">
-                        @else
-                            <img src="{{ asset('images/lomba.png') }}" alt="Default" class="w-full h-full object-cover transition-transform group-hover:scale-105 duration-700">
-                        @endif
+                        <img src="{{ $competition->poster_url }}" alt="Poster" class="w-full h-full object-cover transition-transform group-hover:scale-105 duration-700">
                         <div class="absolute top-4 left-4 flex gap-2">
                             @if($competition->category_id && $competition->category_relation)
                                 <span class="px-3 py-1 bg-white/95 backdrop-blur text-blue-700 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm border border-blue-50">{{ $competition->category_relation->name }}</span>

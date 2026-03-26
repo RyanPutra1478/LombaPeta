@@ -68,9 +68,8 @@
 
             <div class="flex items-center gap-6">
                 <div class="flex items-center gap-4 border-l border-slate-200 pl-6">
-                    <button class="w-9 h-9 rounded-full bg-blue-600 text-white font-bold text-sm flex items-center justify-center shadow-md shadow-blue-200" hover:-translate-y-0.5 transition-all duration-300 shadow-lg hover:shadow-blue-100 >
-                        {{ substr(auth()->user()->name, 0, 1) }}
-                    </button>
+                    @include('partials.notifications')
+                    @include('partials.profile_avatar')
                 </div>
             </div>
         </header>
@@ -96,6 +95,10 @@
                         <div class="px-5 py-2.5 rounded-full border border-blue-200 bg-blue-50 text-blue-700 font-bold text-sm shadow-sm">
                             {{ $registrations->count() }} Lomba Diikuti
                         </div>
+                        <button onclick="toggleModal('editProfileModal')" class="px-5 py-2.5 rounded-full bg-white border border-slate-200 text-slate-700 font-bold text-sm shadow-sm hover:bg-slate-50 transition-all flex items-center gap-2">
+                             <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                             Edit Profil
+                        </button>
                     </div>
                 </div>
 
@@ -112,11 +115,7 @@
                             @forelse($registrations as $r)
                             <div class="bg-white rounded-3xl p-4 flex flex-col sm:flex-row gap-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow mb-4">
                                 <div class="w-full sm:w-48 h-36 bg-slate-100 rounded-2xl overflow-hidden shrink-0">
-                                    @if($r->competition->poster)
-                                    <img src="{{ asset('storage/' . $r->competition->poster) }}" alt="Poster" class="w-full h-full object-cover">
-                                    @else
-                                    <img src="{{ asset('images/lomba.png') }}" alt="Poster Default" class="w-full h-full object-cover">
-                                    @endif
+                                    <img src="{{ $r->competition->poster_url }}" alt="Poster" class="w-full h-full object-cover">
                                 </div>
                                     <div class="flex-1 flex flex-col justify-between py-1">
                                     <div>
@@ -173,11 +172,7 @@
                             @forelse($bookmarks as $b)
                             <div class="bg-white rounded-3xl p-4 flex flex-col sm:flex-row gap-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow mb-4">
                                 <div class="w-full sm:w-48 h-36 bg-slate-100 rounded-2xl overflow-hidden shrink-0">
-                                    @if($b->competition->poster)
-                                    <img src="{{ asset('storage/' . $b->competition->poster) }}" alt="Poster" class="w-full h-full object-cover">
-                                    @else
-                                    <img src="{{ asset('images/lomba.png') }}" alt="Poster Default" class="w-full h-full object-cover">
-                                    @endif
+                                    <img src="{{ $b->competition->poster_url }}" alt="Poster" class="w-full h-full object-cover">
                                 </div>
                                 <div class="flex-1 flex flex-col justify-between py-1">
                                     <div>
@@ -265,42 +260,53 @@
             </div>
 
             <div class="p-6 md:p-8 overflow-y-auto">
-                <form action="#" method="POST" id="formEditProfile" class="space-y-6">
-
+                <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" id="formEditProfile" class="space-y-6">
+                    @csrf
                     <div class="flex items-center gap-5 mb-2">
-                        <div class="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-2xl shadow-inner border border-blue-200">
-                            BS
+                        <div class="relative group">
+                             <div class="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-2xl shadow-inner border border-blue-200 overflow-hidden">
+                                @if(auth()->user()->profile && auth()->user()->profile->avatar)
+                                    <img id="avatar-preview-modal" src="{{ asset('storage/' . auth()->user()->profile->avatar) }}" class="w-full h-full object-cover">
+                                @else
+                                    <div id="avatar-placeholder-modal">{{ substr(auth()->user()->name, 0, 1) }}</div>
+                                    <img id="avatar-preview-modal" class="w-full h-full object-cover hidden">
+                                @endif
+                             </div>
+                             <label for="avatar-modal" class="absolute -bottom-1 -right-1 w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center cursor-pointer hover:bg-blue-700 transition shadow-lg border-2 border-white">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
+                                <input type="file" name="avatar" id="avatar-modal" class="hidden" onchange="previewAvatarModal(this)">
+                             </label>
                         </div>
-                        <div class="space-y-2">
-                            <button type="button" class="px-4 py-2 bg-blue-50 text-blue-600 text-sm font-semibold rounded-lg border border-blue-200 hover:bg-blue-600 hover:text-white transition">Ubah Foto</button>
-                            <p class="text-[11px] text-slate-400">JPG/PNG maks. 2MB</p>
+                        <div class="flex-1">
+                            <h4 class="font-bold text-slate-800">Foto Profil</h4>
+                            <p class="text-[11px] text-slate-400 uppercase font-black tracking-widest mt-1">Maks. 2MB (JPG/PNG)</p>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div class="md:col-span-2">
                             <label class="block text-sm font-semibold mb-2 text-slate-700">Nama Lengkap</label>
-                            <input type="text" value="Budi Santoso" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all">
+                            <input type="text" name="name" value="{{ auth()->user()->name }}" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all font-medium">
                         </div>
 
                         <div>
-                            <label class="block text-sm font-semibold mb-2 text-slate-700">Email Utama</label>
-                            <input type="email" value="budi.santoso@email.com" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all">
+                            <label class="block text-sm font-semibold mb-2 text-slate-700">Email Utama (Read-only)</label>
+                            <input type="email" value="{{ auth()->user()->email }}" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-100 text-slate-400 font-medium cursor-not-allowed" readonly>
                         </div>
 
                         <div>
                             <label class="block text-sm font-semibold mb-2 text-slate-700">Nomor Telepon</label>
-                            <input type="text" value="081234567890" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all">
+                            <input type="text" name="phone" value="{{ auth()->user()->profile->phone ?? '' }}" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all font-medium">
                         </div>
 
                         <div class="md:col-span-2">
                             <label class="block text-sm font-semibold mb-2 text-slate-700">Asal Sekolah / Instansi</label>
-                            <input type="text" value="SMAN 1 Jakarta" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all">
+                            <input type="text" name="institution" value="{{ auth()->user()->profile->institution ?? '' }}" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all font-medium">
                         </div>
 
                         <div class="md:col-span-2">
                             <label class="block text-sm font-semibold mb-2 text-slate-700">Bio Singkat</label>
-                            <textarea rows="3" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all">Siswa SMA yang menyukai sains dan pemrograman.</textarea>
+                            <textarea name="bio" rows="3" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white transition-all font-medium">{{ auth()->user()->profile->bio ?? '' }}</textarea>
                         </div>
                     </div>
                 </form>
@@ -308,7 +314,10 @@
 
             <div class="p-6 md:p-8 border-t border-slate-100 bg-slate-50 shrink-0 flex justify-end gap-3 rounded-b-3xl">
                 <button type="button" onclick="toggleModal('editProfileModal')" class="px-6 py-3 rounded-xl font-bold text-slate-500 bg-white border border-slate-200 hover:bg-slate-100 transition-colors">Batal</button>
-                <button type="button" onclick="toggleModal('editProfileModal')" class="px-6 py-3 rounded-xl font-bold bg-blue-600 text-white hover:bg-blue-700 shadow-md shadow-blue-200 transition-all">Simpan Perubahan</button>
+                <button type="button" onclick="document.getElementById('formEditProfile').submit()" class="px-6 py-3 rounded-xl font-bold bg-blue-600 text-white hover:bg-blue-700 shadow-md shadow-blue-200 transition-all flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    Simpan Perubahan
+                </button>
             </div>
 
         </div>

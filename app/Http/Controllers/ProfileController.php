@@ -13,10 +13,25 @@ class ProfileController extends Controller
         $user = auth()->user();
         $profile = $user->profile ?? UserProfile::create(['user_id' => $user->id]);
         
-        $view = $user->role === 'penyelenggara' ? 'penyelenggara.profile' : 'peserta.profile';
+        $registrations = collect();
+        $bookmarks = collect();
+
+        if ($user->role === 'peserta') {
+            $registrations = \App\Models\Registration::where('user_id', $user->id)
+                ->with('competition.organizer')
+                ->latest()
+                ->get();
+                
+            $bookmarks = \App\Models\Bookmark::where('user_id', $user->id)
+                ->with('competition.organizer')
+                ->latest()
+                ->get();
+        }
+
+        $view = $user->role === 'penyelenggara' ? 'penyelenggara.profile' : 'peserta.profil';
         if ($user->role === 'admin') return redirect()->route('admin.pengaturan'); 
         
-        return view($view, compact('user', 'profile'));
+        return view($view, compact('user', 'profile', 'registrations', 'bookmarks'));
     }
  
     public function update(Request $request)

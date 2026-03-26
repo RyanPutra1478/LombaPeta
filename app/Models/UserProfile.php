@@ -18,5 +18,16 @@ class UserProfile extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Get the avatar URL with fallback.
+     */
+    public function getAvatarUrlAttribute()
+    {
+        if ($this->avatar && \Illuminate\Support\Facades\Storage::disk('public')->exists($this->avatar)) {
+            return asset('storage/' . $this->avatar);
+        }
+        return null; // Controller/View can decide to use initials or a generic icon
+    }
 }
 

@@ -54,8 +54,8 @@
                         <div class="flex flex-col md:flex-row items-center gap-8">
                             <div class="relative group">
                                 <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-slate-50 shadow-inner bg-slate-100 flex items-center justify-center">
-                                    @if($profile->avatar)
-                                        <img id="avatar-preview" src="{{ asset('storage/' . $profile->avatar) }}" alt="Avatar" class="w-full h-full object-cover">
+                                    @if($profile->avatar_url)
+                                        <img id="avatar-preview" src="{{ $profile->avatar_url }}" alt="Avatar" class="w-full h-full object-cover">
                                     @else
                                         <div id="avatar-placeholder" class="text-3xl font-bold text-slate-400">
                                             {{ substr($user->name, 0, 1) }}

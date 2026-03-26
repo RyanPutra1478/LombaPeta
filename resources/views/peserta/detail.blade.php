@@ -137,11 +137,7 @@
                 </nav>
 
                 <div class="relative w-full h-80 md:h-[400px] rounded-3xl overflow-hidden shadow-lg mb-6 text-white">
-                    @if($competition->poster)
-                    <img src="{{ asset('storage/' . $competition->poster) }}" alt="Banner Lomba" class="absolute inset-0 w-full h-full object-cover">
-                    @else
-                    <img src="{{ asset('images/lomba.png') }}" alt="Banner Lomba Default" class="absolute inset-0 w-full h-full object-cover">
-                    @endif
+                    <img src="{{ $competition->poster_url }}" alt="{{ $competition->title }}" class="absolute inset-0 w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent"></div>
 
                     <div class="absolute bottom-0 left-0 p-6 md:p-10 w-full">
