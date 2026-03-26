@@ -24,23 +24,26 @@ class AuthController extends Controller
 
         if ($role === 'admin') {
             $request->validate([
-                'email' => 'required', // The frontend reuses the email input for username
-                'password' => 'required'
+                'email'    => 'required',
+                'password' => 'required',
             ]);
+            $input = $request->input('email');
+            // Try username first, then email
+            $field = filter_var($input, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
             $credentials = [
-                'username' => $request->input('email'),
+                $field     => $input,
                 'password' => $request->input('password'),
-                'role' => 'admin'
+                'role'     => 'admin',
             ];
         } else {
             $request->validate([
-                'email' => 'required|email',
-                'password' => 'required'
+                'email'    => 'required|email',
+                'password' => 'required',
             ]);
             $credentials = [
-                'email' => $request->input('email'),
+                'email'    => $request->input('email'),
                 'password' => $request->input('password'),
-                'role' => $role
+                'role'     => $role,
             ];
         }
 
@@ -51,9 +54,8 @@ class AuthController extends Controller
             if ($role === 'admin') return redirect()->route('admin.dashboard');
             if ($role === 'penyelenggara') {
                 if ($user->status !== 'approved') {
-                    // Log them out or let CheckStatus handle it?
-                    // Better to redirect and let middleware block them or redirect them to a pending page
-                    return redirect()->route('penyelenggara.dashboard'); 
+                    auth()->logout();
+                    return redirect()->route('login')->with('error', 'Akun penyelenggara Anda sedang menunggu persetujuan admin. Harap tunggu verifikasi dalam 1x24 jam.');
                 }
                 return redirect()->route('penyelenggara.dashboard');
             }
@@ -90,7 +92,8 @@ class AuthController extends Controller
         auth()->login($user);
 
         if ($role === 'penyelenggara') {
-            return redirect()->route('penyelenggara.dashboard');
+            auth()->logout();
+            return redirect()->route('login')->with('success', 'Pendaftaran berhasil! Akun Anda sedang menunggu persetujuan admin. Harap tunggu verifikasi dalam 1x24 jam.');
         }
 
         return redirect()->route('peserta.dashboard');

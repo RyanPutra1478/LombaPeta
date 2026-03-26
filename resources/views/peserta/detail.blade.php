@@ -24,6 +24,7 @@
 </head>
 <body class="bg-[#f8fafc] text-slate-900 flex h-screen overflow-hidden">
 
+    @auth
     <aside id="sidebar" class="w-64 bg-white border-r border-slate-200 transition-all duration-300 flex-col justify-between hidden md:flex absolute md:relative z-50 md:z-20 h-full shadow-2xl md:shadow-none z-20 shrink-0">
         <div>
             <div class="h-20 flex items-center px-6 border-b border-slate-100 mb-4">
@@ -31,17 +32,18 @@
                     <img src="{{ asset('images/lombapeta.png') }}" alt="Logo" class="w-10 h-10 object-contain">
                     <div class="flex flex-col sidebar-text">
                         <span class="text-xl font-bold tracking-tight text-blue-600 leading-tight">LombaPeta</span>
-                        <span class="text-blue-700 opacity-70 text-[10px] font-bold uppercase tracking-wider">Peserta</span>
+                        <span class="text-blue-700 opacity-70 text-[10px] font-bold uppercase tracking-wider">{{ auth()->user()->role == 'peserta' ? 'Peserta' : 'Admin' }}</span>
                     </div>
                 </a>
             </div>
 
             <nav class="px-4 space-y-1">
-                <a href="{{ route('peserta.dashboard') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-blue-50 text-blue-700 font-bold border border-blue-100 transition-all">
+                <a href="{{ auth()->user()->role == 'peserta' ? route('peserta.dashboard') : route('admin.dashboard') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-blue-50 text-blue-700 font-bold border border-blue-100 transition-all">
                     <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
                     <span class="text-sm sidebar-text">Info Lomba</span>
                 </a>
 
+                @if(auth()->user()->role == 'peserta')
                 <a href="{{ route('peserta.kalender') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium transition-all">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                     <span class="text-sm sidebar-text">Kalender Lomba</span>
@@ -51,6 +53,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                     <span class="text-sm sidebar-text">Profil Saya</span>
                 </a>
+                @endif
             </nav>
         </div>
 
@@ -64,6 +67,35 @@
             </form>
         </div>
     </aside>
+    @else
+    <aside id="sidebar" class="w-64 bg-white border-r border-slate-200 transition-all duration-300 flex-col justify-between hidden md:flex absolute md:relative z-50 md:z-20 h-full shadow-2xl md:shadow-none z-20 shrink-0">
+        <div>
+            <div class="h-20 flex items-center px-6 border-b border-slate-100 mb-4">
+                <a href="{{ route('home') }}" class="flex items-center gap-2">
+                    <img src="{{ asset('images/lombapeta.png') }}" alt="Logo" class="w-10 h-10 object-contain">
+                    <div class="flex flex-col sidebar-text">
+                        <span class="text-xl font-bold tracking-tight text-blue-600 leading-tight">LombaPeta</span>
+                        <span class="text-blue-700 opacity-70 text-[10px] font-bold uppercase tracking-wider">Guest</span>
+                    </div>
+                </a>
+            </div>
+
+            <nav class="px-4 space-y-1">
+                <a href="{{ route('home') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-blue-50 text-blue-700 font-bold border border-blue-100 transition-all">
+                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    <span class="text-sm sidebar-text">Beranda</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="p-4 border-t border-slate-100">
+            <a href="{{ route('login') }}" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-blue-600 hover:bg-blue-50 font-bold transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                <span class="text-sm sidebar-text">Masuk / Daftar</span>
+            </a>
+        </div>
+    </aside>
+    @endauth
 
     <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
 
@@ -74,9 +106,13 @@
 
             <div class="flex items-center gap-6">
                 <div class="flex items-center gap-4 border-l border-slate-200 pl-6">
+                    @auth
                     <button class="w-9 h-9 rounded-full bg-blue-600 text-white font-bold text-sm flex items-center justify-center shadow-md shadow-blue-200" hover:-translate-y-0.5 transition-all duration-300 shadow-lg hover:shadow-blue-100 >
                         {{ substr(auth()->user()->name, 0, 1) }}
                     </button>
+                    @else
+                    <a href="{{ route('login') }}" class="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-100">Masuk</a>
+                    @endauth
                 </div>
             </div>
         </header>
@@ -92,11 +128,11 @@
 
                 <nav class="flex text-sm text-slate-500 mb-4" aria-label="Breadcrumb">
                     <ol class="inline-flex items-center space-x-1 md:space-x-2">
-                        <li><a href="{{ route('peserta.dashboard') }}" class="hover:text-blue-600">Beranda</a></li>
+                        <li><a href="{{ route('home') }}" class="hover:text-blue-600">Beranda</a></li>
                         <li><span class="mx-1">/</span></li>
-                        <li><a href="{{ route('peserta.dashboard') }}" class="hover:text-blue-600">Pencarian</a></li>
+                        <li><a href="{{ route('home') }}#lomba" class="hover:text-blue-600">Pencarian</a></li>
                         <li><span class="mx-1">/</span></li>
-                        <li class="font-semibold text-slate-800">{{ $competition->category }}</li>
+                        <li class="font-semibold text-slate-800">{{ $competition->category_id && $competition->category_relation ? $competition->category_relation->name : $competition->category }}</li>
                     </ol>
                 </nav>
 
@@ -111,7 +147,11 @@
                     <div class="absolute bottom-0 left-0 p-6 md:p-10 w-full">
                         <div class="flex gap-2 mb-4 text-white">
                             <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-bold uppercase tracking-wider border border-white/30">{{ $competition->level }}</span>
-                            <span class="px-3 py-1 bg-blue-600 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm">{{ $competition->category }}</span>
+                            @if($competition->category_id && $competition->category_relation)
+                                <span class="px-3 py-1 bg-blue-600 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm">{{ $competition->category_relation->name }}</span>
+                            @else
+                                <span class="px-3 py-1 bg-blue-600 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm">{{ $competition->category }}</span>
+                            @endif
                         </div>
                         <h1 class="text-3xl md:text-5xl font-extrabold mb-3 leading-tight max-w-4xl">
                             {{ $competition->title }}
@@ -207,10 +247,23 @@
                                         <span class="text-[9px] font-black uppercase tracking-[0.2em] opacity-60">Admin belum menyetujui lomba ini</span>
                                     </div>
                                 @elseif(!$myRegistration)
-                                    <a href="{{ route('peserta.pendaftaran', $competition->id) }}" class="flex justify-center items-center gap-2 w-full py-4 bg-blue-600 text-white rounded-2xl font-black shadow-lg shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 transition-all text-lg active:scale-95">
-                                        Daftar Sekarang
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                    @auth
+                                        @if(auth()->user()->role == 'peserta')
+                                        <a href="{{ route('peserta.pendaftaran', $competition->id) }}" class="flex justify-center items-center gap-2 w-full py-4 bg-blue-600 text-white rounded-2xl font-black shadow-lg shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 transition-all text-lg active:scale-95">
+                                            Daftar Sekarang
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                        </a>
+                                        @else
+                                        <div class="w-full py-4 bg-slate-100 text-slate-400 rounded-2xl font-black text-center border-2 border-slate-200 opacity-70">
+                                            <span class="text-sm">Hanya Peserta yang bisa Daftar</span>
+                                        </div>
+                                        @endif
+                                    @else
+                                    <a href="{{ route('login') }}" class="flex justify-center items-center gap-2 w-full py-4 bg-blue-600 text-white rounded-2xl font-black shadow-lg shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 transition-all text-lg active:scale-95">
+                                        Login untuk Daftar
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                                     </a>
+                                    @endauth
                                 @elseif($myRegistration->status == 'approved')
                                     <a href="{{ $myRegistration->group_link ?? '#' }}" target="_blank" class="flex justify-center items-center gap-3 w-full py-4 bg-[#25D366] text-white rounded-2xl font-black shadow-lg shadow-green-100 hover:scale-[1.02] hover:bg-[#20bd5c] transition-all text-lg active:scale-95">
                                         <img src="{{ asset('images/whatsapp.png') }}" class="w-7 h-7 object-contain" alt="WhatsApp">
@@ -234,10 +287,11 @@
                                     </div>
                                 @endif
 
-                                <form action="{{ route('peserta.bookmark.toggle', $competition->id) }}" method="POST">
+                                <form action="{{ auth()->check() ? route('peserta.bookmark.toggle', $competition->id) : route('login') }}" method="{{ auth()->check() ? 'POST' : 'GET' }}">
                                     @csrf
                                     <button type="submit" class="flex justify-center items-center gap-2 w-full py-3.5 bg-white text-slate-700 border-2 {{ $isBookmarked ? 'border-red-200 bg-red-50 text-red-600 hover:bg-red-100 hover:border-red-300' : 'border-slate-200 hover:bg-slate-50 hover:border-slate-300' }} rounded-xl font-bold transition-all">
                                         <svg class="w-5 h-5 {{ $isBookmarked ? 'text-red-500 fill-red-500' : 'text-slate-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                                        @guest Login untuk @endguest
                                         {{ $isBookmarked ? 'Hapus dari Favorit' : 'Simpan ke Favorit' }}
                                     </button>
                                 </form>

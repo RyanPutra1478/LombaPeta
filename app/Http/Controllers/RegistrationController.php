@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 use App\Models\Registration;
 use App\Models\Competition;
+use App\Models\ActivityLog;
+use App\Notifications\NewRegistrationNotification;
+use App\Notifications\RegistrationStatusNotification;
+use App\Notifications\RegistrationSubmittedNotification;
+
 use Illuminate\Support\Facades\Storage;
 
 class RegistrationController extends Controller
@@ -61,7 +66,19 @@ class RegistrationController extends Controller
 
         $registration->save();
 
+        // Notify Organizer
+        $organizer = $competition->user;
+        if ($organizer) {
+            $organizer->notify(new NewRegistrationNotification($registration));
+        }
+
+        // Notify Participant
+        auth()->user()->notify(new RegistrationSubmittedNotification($registration));
+
+        ActivityLog::log('create', 'Registration', $registration->id, "Peserta '" . auth()->user()->name . "' mendaftar ke kompetisi '{$competition->title}'");
+
         return redirect()->route('peserta.dashboard')->with('success', 'Pendaftaran berhasil dikirim. Menunggu verifikasi tim LombaPeta.');
+
     }
 
     public function calendar(Request $request)
@@ -117,6 +134,7 @@ class RegistrationController extends Controller
         $registration = Registration::whereHas('competition', function($q) {
                 $q->where('user_id', auth()->id());
             })
+            ->with('user', 'competition')
             ->findOrFail($registrationId);
             
         $request->validate([
@@ -128,9 +146,16 @@ class RegistrationController extends Controller
         if ($request->input('status') === 'approved') {
             $registration->group_link = $request->input('group_link');
         }
+        
+        ActivityLog::logModelChange($registration, 'update', "Penyelenggara memperbarui status pendaftaran '{$registration->user->name}' pada lomba '{$registration->competition->title}'");
+        
         $registration->save();
 
+        // Notify Participant
+        $registration->user->notify(new RegistrationStatusNotification($registration));
+
         return redirect()->back()->with('success', 'Status pendaftaran berhasil diperbarui.');
+
     }
 
     public function allRegistrants()
@@ -148,4 +173,54 @@ class RegistrationController extends Controller
             'registrations' => $registrations
         ]);
     }
+
+    public function export($competitionId)
+    {
+        $organizer = auth()->user();
+        $query = Registration::whereHas('competition', function($q) use ($organizer, $competitionId) {
+                $q->where('user_id', $organizer->id);
+                if ($competitionId != 0) {
+                    $q->where('id', $competitionId);
+                }
+            })
+            ->with(['user', 'competition', 'user.profile']);
+
+        $registrations = $query->get();
+        if ($registrations->isEmpty() && $competitionId != 0) {
+            return redirect()->back()->with('error', 'Tidak ada data untuk diekspor.');
+        }
+
+        $competitionTitle = $competitionId == 0 ? 'Semua_Pendaftar' : $registrations->first()->competition->title;
+        $filename = "Pendaftar_" . str_replace(' ', '_', $competitionTitle) . "_" . date('Ymd') . ".csv";
+        
+        $headers = [
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=$filename",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        ];
+
+        $callback = function() use ($registrations) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, ['Nama', 'Email', 'No. HP', 'Instansi', 'Tanggal Daftar', 'Status', 'Data Tambahan']);
+
+            foreach ($registrations as $reg) {
+                fputcsv($file, [
+                    $reg->user->name,
+                    $reg->user->email,
+                    $reg->phone_number ?? ($reg->user->profile->phone ?? '-'),
+                    $reg->user->profile->institution ?? '-',
+                    $reg->created_at->format('d/m/Y H:i'),
+                    $reg->status,
+                    $reg->form_data ? json_encode($reg->form_data) : '-'
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
 }
+

@@ -10,12 +10,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
-        /* Kustomisasi scrollbar ringan untuk area konten */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body class="bg-[#f8fafc] text-slate-900 flex h-screen overflow-hidden">
 
@@ -62,7 +62,8 @@
 
     <div class="flex-1 flex flex-col h-screen overflow-hidden">
 
-        <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-6 lg:px-10 z-10 shrink-0">
+        <header class="h-20 glass-nav border-b border-slate-200/50 flex items-center justify-between px-6 lg:px-10 z-10 shrink-0">
+
             <div class="flex items-center gap-4">
                 <div class="flex items-center"><button onclick="toggleSidebar()" class="p-2 mr-3 text-slate-500 hover:bg-slate-100 rounded-lg"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg></button></div><h1 class="text-lg font-bold text-slate-800">Dashboard Admin</h1>
             </div>
@@ -74,14 +75,10 @@
                 </div>
 
                 <div class="flex items-center gap-4 border-l border-slate-200 pl-6">
-                    <button class="relative text-slate-400 hover:text-slate-600 transition-colors">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                        <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
-                    </button>
-                    <button class="w-9 h-9 rounded-full bg-blue-100 text-blue-600 font-bold text-sm flex items-center justify-center border border-blue-200">
-                        {{ substr(auth()->user()->name, 0, 1) }}
-                    </button>
+                    @include('partials.notifications')
+                    @include('partials.profile_avatar')
                 </div>
+
             </div>
         </header>
 
@@ -94,10 +91,10 @@
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm relative overflow-hidden">
+                    <div class="bg-white/60 rounded-3xl p-6 border border-blue-200 shadow-sm relative overflow-hidden animate-fade-in-up" style="background: linear-gradient(to bottom right, #eff6ff, #ffffff); animation-delay: 0ms">
                         <div class="flex justify-between items-start mb-4">
-                            <h3 class="font-bold text-blue-600 text-sm">Antrean Menunggu</h3>
-                            <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+                            <h3 class="font-bold text-blue-600 text-sm">Menunggu Verifikasi</h3>
+                            <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 border border-blue-100">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             </div>
                         </div>
@@ -107,7 +104,7 @@
                         </div>
                     </div>
 
-                    <div class="bg-white/60 rounded-3xl p-6 border border-green-200 shadow-sm relative overflow-hidden" style="background: linear-gradient(to bottom right, #f0fdf4, #ffffff);">
+                    <div class="bg-white/60 rounded-3xl p-6 border border-green-200 shadow-sm relative overflow-hidden animate-fade-in-up" style="background: linear-gradient(to bottom right, #f0fdf4, #ffffff); animation-delay: 100ms">
                         <div class="flex justify-between items-start mb-4">
                             <h3 class="font-bold text-green-700 text-sm">Disetujui</h3>
                             <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 border border-green-200">
@@ -118,7 +115,7 @@
                         <p class="text-xs font-bold text-green-600">Seluruh Waktu</p>
                     </div>
 
-                    <div class="bg-white/60 rounded-3xl p-6 border border-orange-200 shadow-sm relative overflow-hidden" style="background: linear-gradient(to bottom right, #fff7ed, #ffffff);">
+                    <div class="bg-white/60 rounded-3xl p-6 border border-orange-200 shadow-sm relative overflow-hidden animate-fade-in-up" style="background: linear-gradient(to bottom right, #fff7ed, #ffffff); animation-delay: 200ms">
                         <div class="flex justify-between items-start mb-4">
                             <h3 class="font-bold text-orange-600 text-sm">Total Kompetisi</h3>
                             <div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-500 border border-orange-200">
@@ -129,7 +126,7 @@
                         <p class="text-xs font-bold text-orange-600">Seluruh Kategori</p>
                     </div>
 
-                    <div class="bg-white/60 rounded-3xl p-6 border border-purple-200 shadow-sm relative overflow-hidden" style="background: linear-gradient(to bottom right, #faf5ff, #ffffff);">
+                    <div class="bg-white/60 rounded-3xl p-6 border border-purple-200 shadow-sm relative overflow-hidden animate-fade-in-up" style="background: linear-gradient(to bottom right, #faf5ff, #ffffff); animation-delay: 300ms">
                         <div class="flex justify-between items-start mb-4">
                             <h3 class="font-bold text-purple-700 text-sm">Total Pengguna</h3>
                             <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 border border-purple-200">
@@ -152,9 +149,8 @@
                             <span class="px-3 py-1 bg-green-50 text-green-600 text-xs font-bold rounded-full border border-green-100">Meningkat</span>
                         </div>
 
-                        <div class="flex-1 bg-slate-50 rounded-2xl border border-dashed border-slate-200 flex flex-col items-center justify-center min-h-[250px] text-slate-400">
-                            <svg class="w-8 h-8 mb-3 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg>
-                            <span class="text-sm font-medium">Grafik area akan ditampilkan di sini</span>
+                        <div class="flex-1 min-h-[250px] relative">
+                            <canvas id="chartLomba"></canvas>
                         </div>
                     </div>
 
@@ -211,7 +207,93 @@
     </div>
 
 
+@include('partials.scripts')
 <script>
+    // Chart.js — Tren Aktivitas (Lomba & Pendaftaran)
+    const ctx = document.getElementById('chartLomba');
+    if (ctx) {
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: @json($labels),
+                datasets: [
+                    {
+                        label: 'Lomba Diajukan',
+                        data: @json($compData),
+                        borderColor: '#2563eb',
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 3,
+                        pointBackgroundColor: '#2563eb',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                    },
+                    {
+                        label: 'Pendaftaran Siswa',
+                        data: @json($regData),
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 3,
+                        pointBackgroundColor: '#10b981',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        align: 'end',
+                        labels: {
+                            boxWidth: 8,
+                            usePointStyle: true,
+                            font: { size: 11, family: 'Inter', weight: 'bold' },
+                            padding: 20
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#1e293b',
+                        padding: 12,
+                        titleFont: { size: 14, weight: 'bold' },
+                        bodyFont: { size: 13 },
+                        intersect: false,
+                        mode: 'index',
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#f1f5f9' },
+                        ticks: {
+                            precision: 0,
+                            font: { size: 11, family: 'Inter' },
+                            color: '#64748b'
+                        }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: {
+                            font: { size: 11, family: 'Inter' },
+                            color: '#64748b',
+                            maxRotation: 0,
+                            autoSkip: true,
+                            maxTicksLimit: 7
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
         const isMobile = window.innerWidth < 768;
@@ -236,5 +318,7 @@
         }
     }
 </script>
+    @include('partials.scripts')
 </body>
 </html>
+

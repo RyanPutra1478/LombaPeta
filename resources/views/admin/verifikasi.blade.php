@@ -66,17 +66,16 @@
     <!-- Main Content -->
     <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
 
-        <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-6 lg:px-10 z-10">
+        <header class="h-20 glass-nav border-b border-slate-200/50 flex items-center justify-between px-6 lg:px-10 z-10 shrink-0">
             <div class="flex items-center gap-4">
                 <div class="flex items-center"><button onclick="toggleSidebar()" class="p-2 mr-3 text-slate-500 hover:bg-slate-100 rounded-lg"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg></button></div><h1 class="text-lg font-bold text-slate-800">Manajemen Verifikasi Lomba</h1>
             </div>
-            <div class="flex items-center gap-4">
-                <button class="relative text-slate-400 hover:text-slate-600 transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                    <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
-                </button>
-                <div class="w-9 h-9 rounded-full bg-blue-100 text-blue-600 font-bold text-sm flex items-center justify-center border border-blue-200">{{ substr(auth()->user()->name, 0, 1) }}</div>
+            <div class="flex items-center gap-4 border-l border-slate-200 pl-6">
+                @include('partials.notifications')
+                @include('partials.profile_avatar')
             </div>
+
+
         </header>
 
         <main class="flex-1 overflow-y-auto p-6 lg:p-10">
@@ -96,44 +95,44 @@
 
                 <!-- Stats Grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between h-32 transition-all hover:shadow-md hover:border-blue-200">
+                    <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex items-center justify-between transition-all hover:shadow-md hover:border-blue-200">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                             </div>
                             <h3 class="font-bold text-slate-500 text-xs uppercase tracking-widest">Total Lomba</h3>
                         </div>
-                        <p class="text-3xl font-black text-slate-900 mt-2">{{ $competitions->count() }}</p>
+                        <p class="text-3xl font-black text-slate-900 ml-4">{{ $competitions->count() }}</p>
                     </div>
 
-                    <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between h-32 transition-all hover:shadow-md hover:border-green-200">
+                    <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex items-center justify-between transition-all hover:shadow-md hover:border-green-200">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center text-green-600">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             </div>
                             <h3 class="font-bold text-slate-500 text-xs uppercase tracking-widest">Disetujui</h3>
                         </div>
-                        <p class="text-3xl font-black text-slate-900 mt-2">{{ $competitions->where('status', 'approved')->count() }}</p>
+                        <p class="text-3xl font-black text-slate-900 ml-4">{{ $competitions->where('status', 'approved')->count() }}</p>
                     </div>
 
-                    <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between h-32 transition-all hover:shadow-md hover:border-amber-200">
+                    <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex items-center justify-between transition-all hover:shadow-md hover:border-amber-200">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             </div>
                             <h3 class="font-bold text-slate-500 text-xs uppercase tracking-widest">Menunggu</h3>
                         </div>
-                        <p class="text-3xl font-black text-slate-900 mt-2">{{ $competitions->where('status', 'pending')->count() }}</p>
+                        <p class="text-3xl font-black text-slate-900 ml-4">{{ $competitions->where('status', 'pending')->count() }}</p>
                     </div>
 
-                    <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between h-32 transition-all hover:shadow-md hover:border-red-200">
+                    <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex items-center justify-between transition-all hover:shadow-md hover:border-red-200">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center text-red-600">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             </div>
                             <h3 class="font-bold text-slate-500 text-xs uppercase tracking-widest">Ditolak</h3>
                         </div>
-                        <p class="text-3xl font-black text-slate-900 mt-2">{{ $competitions->where('status', 'rejected')->count() }}</p>
+                        <p class="text-3xl font-black text-slate-900 ml-4">{{ $competitions->where('status', 'rejected')->count() }}</p>
                     </div>
                 </div>
 
@@ -172,7 +171,7 @@
                                             <img src="{{ asset('images/lomba.png') }}" class="w-12 h-16 object-cover rounded-lg shadow-sm border border-slate-200 bg-slate-100">
                                             @endif
                                             <div>
-                                                <p class="font-black text-slate-900 group-hover:text-blue-600 transition-colors leading-tight">{{ $lomba->title }}</p>
+                                                <p onclick="showLombaDetail({{ $lomba->id }})" class="font-black text-slate-900 group-hover:text-blue-600 transition-colors cursor-pointer leading-tight">{{ $lomba->title }}</p>
                                                 <p class="text-xs text-slate-400 font-bold uppercase tracking-tighter mt-1">{{ $lomba->user->name }}</p>
                                             </div>
                                         </div>
@@ -202,24 +201,21 @@
                                     <td class="px-8 py-6">
                                         <span class="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black 
                                             {{ $lomba->status == 'pending' ? 'bg-amber-100 text-amber-700 border border-amber-200 shadow-sm' : 
-                                               ($lomba->status == 'approved' ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-red-100 text-red-700 border border-red-200') }} uppercase tracking-widest">
+                                               ($lomba->status == 'approved' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700') }} uppercase tracking-widest">
                                             {{ $lomba->status }}
                                         </span>
                                     </td>
                                     <td class="px-8 py-6">
                                         <div class="flex items-center justify-center gap-2">
-                                            <button onclick="showLombaDetail({{ $lomba->id }})" title="Lihat Informasi Lengkap" class="p-3 bg-slate-100 text-slate-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all active:scale-90 shadow-sm">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                                            </button>
-                                            
-                                            @if($lomba->status == 'pending')
-                                            <button onclick="openApprovalModal({{ $lomba->id }}, '{{ addslashes($lomba->title) }}')" title="Setujui & Beri Skor" class="p-3 bg-green-50 text-green-600 rounded-xl hover:bg-green-600 hover:text-white transition-all active:scale-90 shadow-sm">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                            <button onclick="openEditModal({{ $lomba->id }})" title="Edit / Setujui" class="p-3 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all active:scale-90 shadow-sm">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                             </button>
 
-                                            <form action="{{ route('admin.verifikasi.approve', $lomba->id) }}" method="POST">
+                                            @if($lomba->status == 'pending')
+                                            <form action="{{ route('admin.verifikasi.update', $lomba->id) }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="status" value="rejected">
+                                                <input type="hidden" name="title" value="{{ $lomba->title }}">
                                                 <button type="submit" title="Tolak Pengajuan" class="p-3 bg-red-50 text-red-600 rounded-xl hover:bg-red-600 hover:text-white transition-all active:scale-90 shadow-sm">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                                 </button>
@@ -237,35 +233,24 @@
                                     </td>
                                 </tr>
                                 @empty
-                                <tr>
-                                    <td colspan="6" class="px-8 py-20 text-center">
-                                        <div class="flex flex-col items-center gap-3">
-                                            <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-200">
-                                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
-                                            </div>
-                                            <p class="text-slate-400 font-bold italic">Tidak ada data kompetisi ditemukan.</p>
-                                        </div>
-                                    </td>
-                                </tr>
+                                <tr><td colspan="6" class="px-8 py-20 text-center text-slate-400 italic">Tidak ada data kompetisi.</td></tr>
                                 @endforelse
                             </tbody>
                         </table>
                     </div>
                 </div>
-
             </div>
         </main>
     </div>
 
     <!-- Competition Detail Modal -->
-    <div id="lombaDetailModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md transition-all duration-300 opacity-0">
+    <div id="lombaDetailModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md transition-all duration-300 opacity-0 text-slate-900">
         <div class="bg-white rounded-[2.5rem] shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto transform scale-95 transition-all duration-300 relative">
             <button onclick="closeLombaModal()" class="absolute top-6 right-8 p-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full transition-all z-10 shadow-sm active:scale-95">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
             
             <div class="flex flex-col lg:flex-row">
-                <!-- Image Side -->
                 <div class="lg:w-1/3 p-10 bg-slate-50 flex flex-col items-center">
                     <img id="modalPoster" src="" class="w-full h-[400px] object-cover rounded-3xl shadow-2xl border-4 border-white mb-6 bg-white">
                     <div id="modalCredBadge" class="px-6 py-2 rounded-2xl font-black text-sm uppercase tracking-widest text-center shadow-md">
@@ -273,7 +258,6 @@
                     </div>
                 </div>
 
-                <!-- Info Side -->
                 <div class="lg:w-2/3 p-10 lg:pl-0">
                     <div class="px-4">
                         <span id="modalCategory" class="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full mb-4 inline-block">Category</span>
@@ -298,9 +282,20 @@
                             </div>
                         </div>
 
-                        <div class="space-y-4">
+                        <div class="space-y-4 mb-8">
                             <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Deskripsi Kompetisi</p>
                             <div id="modalDescription" class="prose prose-sm text-slate-600 font-medium leading-relaxed max-h-48 overflow-y-auto pr-4 break-words whitespace-pre-line">--</div>
+                        </div>
+
+                        <!-- Mini Audit Trail for Detail Modal -->
+                        <div class="pt-6 border-t border-slate-100">
+                             <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Riwayat Perubahan & Aktivitas
+                             </p>
+                             <div id="detailLogsContainer" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                                 <!-- Logs will be injected here -->
+                             </div>
                         </div>
 
                         <div class="mt-8 pt-6 border-t border-slate-100 flex items-center justify-between">
@@ -319,44 +314,133 @@
         </div>
     </div>
 
-    <!-- Approval Modal (Credibility Input) -->
-    <div id="approvalModal" class="fixed inset-0 z-[110] hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-all duration-300 opacity-0">
-        <div class="bg-white rounded-[2rem] shadow-2xl max-w-md w-full p-10 transform scale-95 transition-all duration-300 relative">
+    <!-- Edit Modal (Credibility & Details) -->
+    <div id="editModal" class="fixed inset-0 z-[110] hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-all duration-300 opacity-0 text-slate-900">
+        <div class="bg-white rounded-[2rem] shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-y-auto p-10 transform scale-95 transition-all duration-300 relative">
             <div class="text-center mb-8">
-                <div class="w-10 h-10 rounded-3xl bg-green-100 text-green-600 flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <div class="w-10 h-10 rounded-3xl bg-blue-100 text-blue-600 flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                 </div>
-                <h3 class="text-2xl font-black text-slate-900 tracking-tight">Setujui Kompetisi</h3>
-                <p class="text-slate-400 text-sm font-bold mt-1 tracking-tight" id="approvingTitle"></p>
+                <h3 class="text-2xl font-black text-slate-900 tracking-tight">Edit Detail Kompetisi</h3>
+                <p class="text-slate-400 text-sm font-bold mt-1 tracking-tight">Admin Privilege: Modifikasi data kompetisi dan skor.</p>
             </div>
 
-            <form id="approvalForm" method="POST">
-                @csrf
-                <input type="hidden" name="status" value="approved">
-                
-                <div class="space-y-6">
-                    <div>
-                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 text-center">Tingkat Kredibilitas (0-100)</label>
-                        <div class="relative">
-                            <input type="number" name="credibility_score" id="credScoreInput" min="0" max="100" value="80" 
-                                class="w-full text-center text-4xl font-black text-blue-600 bg-slate-50 border-2 border-slate-100 rounded-3xl py-6 focus:outline-none focus:border-blue-500 focus:bg-white transition-all shadow-inner">
-                            <div class="absolute inset-y-0 right-8 flex items-center pointer-events-none">
-                                <span class="text-2xl font-black text-blue-200">%</span>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <!-- Form Side -->
+                <form id="editForm" method="POST" class="space-y-6">
+                    @csrf
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-1 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-400 uppercase mb-1 ml-2">Judul Lomba</label>
+                                <input type="text" name="title" id="editTitle" required class="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-1 ml-2">Kategori</label>
+                                    <select name="category_id" id="editCategory" class="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold">
+                                        @foreach($categories as $cat)
+                                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-1 ml-2">Jenjang</label>
+                                    <select name="level" id="editLevel" class="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold">
+                                        <option value="SD">SD</option>
+                                        <option value="SMP">SMP</option>
+                                        <option value="SMA">SMA</option>
+                                        <option value="Universitas/Perguruan Tinggi">Universitas/Perguruan Tinggi</option>
+                                        <option value="Umum">Umum</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-1 ml-2">Status</label>
+                                    <select name="status" id="editStatus" class="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold">
+                                        <option value="pending">Pending</option>
+                                        <option value="approved">Approved</option>
+                                        <option value="rejected">Rejected</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-1 ml-2">Kredibilitas (%)</label>
+                                    <input type="number" name="credibility_score" id="editScore" min="0" max="100" class="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-black text-blue-600">
+                                </div>
                             </div>
                         </div>
-                        <p class="text-[10px] text-slate-400 text-center font-bold mt-3 uppercase tracking-tighter">Admin wajib memberikan penilaian kredibilitas profil</p>
-                    </div>
 
-                    <div class="flex flex-col gap-3">
-                        <button type="submit" class="w-full py-4 bg-blue-600 text-white rounded-2xl font-black text-sm hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 active:scale-95">Setujui Sekarang</button>
-                        <button type="button" onclick="closeApprovalModal()" class="w-full py-4 bg-slate-100 text-slate-600 rounded-2xl font-black text-sm hover:bg-slate-200 transition-all active:scale-95">Batal</button>
+                        <div class="flex flex-col gap-3 pt-4">
+                            <button type="submit" class="w-full py-4 bg-blue-600 text-white rounded-2xl font-black text-sm hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 active:scale-95">Simpan Perubahan</button>
+                            <button type="button" onclick="closeEditModal()" class="w-full py-2 text-slate-400 font-bold text-xs hover:text-slate-600 transition-all">Tutup</button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Audit Log Side -->
+                <div class="bg-slate-50 rounded-3xl p-6 border border-slate-100 overflow-hidden flex flex-col">
+                    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        History Perubahan Detail
+                    </h4>
+                    <div id="editLogsContainer" class="space-y-4 overflow-y-auto pr-2 custom-scrollbar flex-1 max-h-[400px]">
+                        <!-- Logs will be injected here -->
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 
     <script>
+        function renderLogs(logs, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            if (!logs || logs.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-400 italic text-center py-4">Belum ada riwayat perubahan.</p>';
+                return;
+            }
+
+            logs.forEach(log => {
+                const date = new Date(log.created_at);
+                const timeStr = date.toLocaleDateString('id-ID', {day: 'numeric', month: 'short'}) + ', ' + date.toLocaleTimeString('id-ID', {hour: '2-digit', minute: '2-digit'});
+                
+                let changesHtml = '';
+                if (log.properties && log.properties.changes) {
+                    changesHtml = '<div class="mt-2 space-y-1 border-l-2 border-slate-200 pl-3 py-1 bg-white/50 rounded-r-lg">';
+                    for (const [field, change] of Object.entries(log.properties.changes)) {
+                        const oldVal = change.old === null ? 'NULL' : (typeof change.old === 'object' ? JSON.stringify(change.old) : (change.old || 'NULL'));
+                        const newVal = change.new === null ? 'NULL' : (typeof change.new === 'object' ? JSON.stringify(change.new) : (change.new || 'NULL'));
+                        changesHtml += `
+                            <p class="text-[9px] text-slate-500 font-medium">
+                                <span class="font-bold text-slate-600 uppercase text-[8px] tracking-wider">${field.replace('_', ' ')}:</span> 
+                                <span class="text-slate-400 line-through opacity-70">${oldVal}</span> 
+                                <span class="text-slate-300 mx-1">→</span> 
+                                <span class="text-blue-600 font-bold">${newVal}</span>
+                            </p>
+                        `;
+                    }
+                    changesHtml += '</div>';
+                }
+
+                const logEl = document.createElement('div');
+                logEl.className = 'flex gap-3 items-start group';
+                logEl.innerHTML = `
+                    <div class="w-8 h-8 rounded-full bg-white border border-slate-200 text-blue-600 flex items-center justify-center font-black text-[10px] shrink-0 shadow-sm">${(log.user?.name || '?').charAt(0)}</div>
+                    <div class="flex-1">
+                        <p class="text-xs font-bold text-slate-800 leading-tight">${log.description}</p>
+                        ${changesHtml}
+                        <div class="flex justify-between items-center mt-1">
+                            <span class="text-[9px] text-slate-400 font-bold uppercase tracking-tighter">${log.user?.name || 'System'} • ${log.user?.role || ''}</span>
+                            <span class="text-[9px] text-slate-400 italic">${timeStr}</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(logEl);
+            });
+        }
+
         function showLombaDetail(id) {
             const modal = document.getElementById('lombaDetailModal');
             const content = modal.querySelector('div');
@@ -371,7 +455,8 @@
 
             fetch(`/admin/verifikasi/${id}`)
                 .then(response => response.json())
-                .then(lomba => {
+                .then(data => {
+                    const lomba = data.competition;
                     document.getElementById('modalTitle').innerText = lomba.title;
                     document.getElementById('modalDescription').innerText = lomba.description;
                     document.getElementById('modalOrganizer').innerText = lomba.user ? lomba.user.name : '--';
@@ -383,18 +468,9 @@
                     const deadline = new Date(lomba.deadline);
                     document.getElementById('modalDeadline').innerText = deadline.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: 'numeric'});
                     
-                    if (lomba.poster) {
-                        document.getElementById('modalPoster').src = '/storage/' + lomba.poster;
-                    } else {
-                        document.getElementById('modalPoster').src = "{{ asset('images/lomba.png') }}";
-                    }
-
-                    if (lomba.guidebook_link) {
-                        document.getElementById('modalGuidebook').href = lomba.guidebook_link;
-                        document.getElementById('modalGuidebook').style.display = 'flex';
-                    } else {
-                        document.getElementById('modalGuidebook').style.display = 'none';
-                    }
+                    document.getElementById('modalPoster').src = lomba.poster ? '/storage/' + lomba.poster : "{{ asset('images/lomba.png') }}";
+                    document.getElementById('modalGuidebook').href = lomba.guidebook_link || '#';
+                    document.getElementById('modalGuidebook').style.display = lomba.guidebook_link ? 'flex' : 'none';
 
                     const badge = document.getElementById('modalCredBadge');
                     const scoreText = document.getElementById('modalScoreText');
@@ -405,6 +481,8 @@
                         scoreText.innerText = 'Not Set';
                         badge.className = 'px-6 py-2 rounded-2xl font-black text-sm uppercase tracking-widest text-center shadow-md bg-slate-300 text-slate-600';
                     }
+
+                    renderLogs(data.logs, 'detailLogsContainer');
                 });
         }
 
@@ -420,25 +498,36 @@
             }, 300);
         }
 
-        function openApprovalModal(id, title) {
-            const modal = document.getElementById('approvalModal');
+        function openEditModal(id) {
+            const modal = document.getElementById('editModal');
             const content = modal.querySelector('div');
-            const form = document.getElementById('approvalForm');
-            
-            document.getElementById('approvingTitle').innerText = title;
+            const form = document.getElementById('editForm');
             form.action = `/admin/verifikasi/${id}`;
             
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => {
-                modal.classList.add('opacity-100');
-                content.classList.remove('scale-95');
-                content.classList.add('scale-100');
-            }, 10);
+            fetch(`/admin/verifikasi/${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    const lomba = data.competition;
+                    document.getElementById('editTitle').value = lomba.title;
+                    document.getElementById('editCategory').value = lomba.category_id;
+                    document.getElementById('editLevel').value = lomba.level;
+                    document.getElementById('editStatus').value = lomba.status;
+                    document.getElementById('editScore').value = lomba.credibility_score || 80;
+                    
+                    renderLogs(data.logs, 'editLogsContainer');
+
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                    setTimeout(() => {
+                        modal.classList.add('opacity-100');
+                        content.classList.remove('scale-95');
+                        content.classList.add('scale-100');
+                    }, 10);
+                });
         }
 
-        function closeApprovalModal() {
-            const modal = document.getElementById('approvalModal');
+        function closeEditModal() {
+            const modal = document.getElementById('editModal');
             const content = modal.querySelector('div');
             modal.classList.remove('opacity-100');
             content.classList.remove('scale-100');
@@ -451,10 +540,11 @@
 
         window.onclick = function(event) {
             if (event.target == document.getElementById('lombaDetailModal')) closeLombaModal();
-            if (event.target == document.getElementById('approvalModal')) closeApprovalModal();
+            if (event.target == document.getElementById('editModal')) closeEditModal();
         }
     </script>
 
+@include('partials.scripts')
 <script>
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
@@ -480,5 +570,7 @@
         }
     }
 </script>
+    @include('partials.scripts')
 </body>
 </html>
+

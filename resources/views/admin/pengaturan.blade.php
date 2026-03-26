@@ -65,21 +65,18 @@
 
     <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
 
-        <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-6 lg:px-10 z-10 shrink-0">
+        <header class="h-20 glass-nav border-b border-slate-200/50 flex items-center justify-between px-6 lg:px-10 z-10 shrink-0">
+
             <div class="flex items-center gap-4">
                 <div class="flex items-center"><button onclick="toggleSidebar()" class="p-2 mr-3 text-slate-500 hover:bg-slate-100 rounded-lg"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg></button></div><h1 class="text-lg font-bold text-slate-800">Pengaturan Sistem</h1>
             </div>
 
             <div class="flex items-center gap-6">
                 <div class="flex items-center gap-4 border-l border-slate-200 pl-6">
-                    <button class="relative text-slate-400 hover:text-slate-600 transition-colors">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                        <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
-                    </button>
-                    <button class="w-9 h-9 rounded-full bg-blue-100 text-blue-600 font-bold text-sm flex items-center justify-center border border-blue-200">
-                        {{ substr(auth()->user()->name, 0, 1) }}
-                    </button>
+                    @include('partials.notifications')
+                    @include('partials.profile_avatar')
                 </div>
+
             </div>
         </header>
 
@@ -88,7 +85,7 @@
 
                 @if(session('success'))
                 <div class="bg-emerald-50 border border-emerald-200 text-emerald-700 px-6 py-4 rounded-2xl flex items-center gap-3 animate-fade-in shadow-sm">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     <p class="font-medium text-sm">{{ session('success') }}</p>
                 </div>
                 @endif
@@ -129,7 +126,6 @@
                 </div>
 
                 @if($deletedUsers->count() > 0)
-                <!-- Deleted Accounts Section (At the top as per request) -->
                 <div class="bg-white rounded-3xl border-2 border-red-100 shadow-lg overflow-hidden transition-all hover:border-red-200">
                     <div class="p-6 border-b border-red-50 bg-red-50/50 flex justify-between items-center">
                         <div class="flex items-center gap-3">
@@ -184,6 +180,103 @@
                     </div>
                 </div>
                 @endif
+
+                <!-- Audit Trail / Activity Log History Section -->
+                <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden transition-all hover:border-blue-100">
+                    <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/30">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="font-black text-slate-800 tracking-tight text-xl">Audit Trail & Riwayat Aktivitas</h3>
+                                <p class="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-0.5">Logging system records • Real-time database audit</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50 text-[10px] font-black text-slate-400 uppercase tracking-[0.22em] border-b border-slate-100">
+                                <tr>
+                                    <th class="px-8 py-5">Pelaku</th>
+                                    <th class="px-8 py-5">Aksi</th>
+                                    <th class="px-8 py-5">Detail Aktivitas</th>
+                                    <th class="px-8 py-5">Waktu</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-50">
+                                @forelse($recentLogs as $log)
+                                <tr class="hover:bg-slate-50/50 transition-all group">
+                                    <td class="px-8 py-5 border-r border-slate-50">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs shrink-0">
+                                                {{ substr($log->user->name ?? '?', 0, 1) }}
+                                            </div>
+                                            <div>
+                                                <p class="font-bold text-slate-900 group-hover:text-blue-600 transition-colors leading-none mb-1">{{ $log->user->name ?? 'System/Deleted' }}</p>
+                                                <span class="px-2 py-0.5 bg-slate-100 text-slate-500 rounded text-[8px] font-black uppercase tracking-wider">{{ $log->user->role ?? 'N/A' }}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-8 py-5">
+                                        @php
+                                            $colorClass = match($log->action) {
+                                                'create' => 'bg-emerald-100 text-emerald-700 border-emerald-200',
+                                                'update' => 'bg-blue-100 text-blue-700 border-blue-200',
+                                                'delete' => 'bg-red-100 text-red-700 border-red-200',
+                                                'approve' => 'bg-green-100 text-green-700 border-green-200',
+                                                'reject' => 'bg-amber-100 text-amber-700 border-amber-200',
+                                                default => 'bg-slate-100 text-slate-700 border-slate-200'
+                                            };
+                                        @endphp
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-[9px] font-black border uppercase tracking-widest {{ $colorClass }}">
+                                            {{ $log->action }}
+                                        </span>
+                                    </td>
+                                    <td class="px-8 py-5">
+                                        <div class="flex flex-col">
+                                            <p class="text-sm font-bold text-slate-700 leading-relaxed">{{ $log->description }}</p>
+                                            
+                                            @if(isset($log->properties['changes']))
+                                                <div class="mt-2 space-y-1 border-l-2 border-slate-100 pl-3 bg-slate-50/50 py-1 rounded-r-lg">
+                                                    @foreach($log->properties['changes'] as $field => $change)
+                                                        <p class="text-[10px] text-slate-500 font-medium">
+                                                            <span class="font-bold text-slate-600 uppercase text-[8px] tracking-wider">{{ str_replace('_', ' ', $field) }}:</span> 
+                                                            <span class="text-slate-400 line-through opacity-70">{{ is_array($change['old'] ?? '') ? json_encode($change['old']) : ($change['old'] ?? 'NULL') }}</span> 
+                                                            <span class="text-slate-300 mx-1">→</span> 
+                                                            <span class="text-blue-600 font-bold">{{ is_array($change['new'] ?? '') ? json_encode($change['new']) : ($change['new'] ?? 'NULL') }}</span>
+                                                        </p>
+                                                    @endforeach
+                                                </div>
+                                            @endif
+
+                                            <p class="text-[9px] text-slate-400 font-bold uppercase tracking-tight mt-1">Origin: {{ $log->ip_address ?? 'Unknown' }} • {{ $log->model_type }} #{{ $log->model_id }}</p>
+                                        </div>
+                                    </td>
+                                    <td class="px-8 py-5">
+                                        <div class="flex flex-col text-right">
+                                            <p class="text-xs font-black text-slate-800">{{ $log->created_at->diffForHumans() }}</p>
+                                            <p class="text-[10px] text-slate-400 font-bold">{{ $log->created_at->format('d M, H:i') }}</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="4" class="px-8 py-20 text-center">
+                                        <div class="flex flex-col items-center gap-3">
+                                            <div class="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-slate-200 mb-2">
+                                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                            </div>
+                                            <p class="text-slate-400 font-bold italic">Belum ada catatan aktivitas yang tersedia.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
                 <!-- Active Penyelenggara Table -->
                 <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden transition-all hover:border-blue-100">
@@ -321,6 +414,50 @@
                     </div>
                 </div>
 
+                <!-- Bidang Lomba (Kategori) CRUD -->
+                <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/30">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-800 tracking-tight">Bidang Lomba (Kategori)</h3>
+                                <p class="text-xs text-slate-400 mt-0.5">Kategori yang tersedia saat penyelenggara pasang lomba</p>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest border border-slate-200 px-3 py-1.5 rounded-full">{{ $categories->count() }} Kategori</span>
+                    </div>
+
+                    <div class="p-6">
+                        <!-- Add Category Form -->
+                        <form action="{{ route('admin.kategori.store') }}" method="POST" class="flex gap-3 mb-6">
+                            @csrf
+                            <input type="text" name="name" placeholder="Nama kategori baru..." required
+                                class="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-violet-100 focus:border-violet-400 bg-slate-50 focus:bg-white transition-all text-sm">
+                            <button type="submit" class="px-5 py-2.5 bg-violet-600 text-white rounded-xl font-bold text-sm hover:bg-violet-700 transition-all shadow-sm">
+                                + Tambah
+                            </button>
+                        </form>
+
+                        <!-- Categories List -->
+                        <div class="flex flex-wrap gap-2">
+                            @forelse($categories as $cat)
+                            <div class="flex items-center gap-2 px-4 py-2 bg-violet-50 text-violet-700 rounded-xl border border-violet-100 text-sm font-bold">
+                                <span>{{ $cat->name }}</span>
+                                <form action="{{ route('admin.kategori.destroy', $cat->id) }}" method="POST" onsubmit="return confirm('Hapus kategori {{ $cat->name }}?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-violet-300 hover:text-red-500 transition-colors ml-1 leading-none">&times;</button>
+                                </form>
+                            </div>
+                            @empty
+                                <p class="text-slate-400 text-sm italic">Belum ada kategori. Tambahkan di atas.</p>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </main>
     </div>
@@ -413,12 +550,12 @@
             }, 300);
         }
 
-        // Close on escape
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeModal();
         });
     </script>
 
+@include('partials.scripts')
 <script>
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
@@ -444,5 +581,7 @@
         }
     }
 </script>
+    @include('partials.scripts')
 </body>
 </html>
+

@@ -62,3 +62,22 @@
     transform: translateY(-5px);
     box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
 }
+
+.glass-nav {
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+}
+
+.animate-stagger-ext-1 { animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; opacity: 0; }
+.animate-stagger-ext-2 { animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards; opacity: 0; }
+.animate-stagger-ext-3 { animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards; opacity: 0; }
+.animate-stagger-ext-4 { animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards; opacity: 0; }
+

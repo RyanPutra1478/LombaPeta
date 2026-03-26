@@ -18,50 +18,13 @@
 </head>
 <body class="bg-[#f8fafc] text-slate-900 flex h-screen overflow-hidden">
 
-    <aside id="sidebar" class="w-64 bg-white border-r border-slate-200 transition-all duration-300 flex-col justify-between hidden md:flex absolute md:relative z-50 md:z-20 h-full shadow-2xl md:shadow-none z-20">
-        <div>
-            <div class="h-20 flex items-center px-6 border-b border-slate-100 mb-4">
-                <a href="{{ route('home') }}" class="flex items-center gap-2">
-                    <img src="{{ asset('images/lombapeta.png') }}" alt="Logo" class="w-10 h-10 object-contain">
-                    <div class="flex flex-col sidebar-text">
-                        <span class="text-xl font-bold tracking-tight text-blue-600 leading-tight">LombaPeta</span>
-                        <span class="text-green-600 opacity-70 text-[10px] font-bold uppercase tracking-wider border border-green-100">Penyelenggara</span>
-                    </div>
-                </a>
-            </div>
+    @include('partials.sidebar_organizer')
 
-            <nav class="px-4 space-y-1">
-                <a href="{{ route('penyelenggara.dashboard') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-blue-50 text-blue-700 font-bold border border-blue-100 transition-all">
-                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                    <span class="text-sm sidebar-text">Dashboard</span>
-                </a>
-
-                <a href="{{ route('penyelenggara.create') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium transition-all">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                    <span class="text-sm sidebar-text">Pasang Info Lomba</span>
-                </a>
-
-                <a href="{{ route('penyelenggara.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium transition-all">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
-                    <span class="text-sm sidebar-text">Lomba Saya</span>
-                </a>
-            </nav>
-        </div>
-
-        <div class="p-4 border-t border-slate-100">
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-500 hover:bg-red-50 font-medium transition-all">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                    <span class="text-sm sidebar-text">Keluar</span>
-                </button>
-            </form>
-        </div>
-    </aside>
 
     <div class="flex-1 flex flex-col h-screen overflow-hidden">
 
-        <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-6 lg:px-10 z-10 shrink-0">
+        <header class="h-20 glass-nav border-b border-slate-200/50 flex items-center justify-between px-6 lg:px-10 z-10 shrink-0">
+
             <div class="flex items-center gap-4">
                 <div class="flex items-center"><button onclick="toggleSidebar()" class="p-2 mr-3 text-slate-500 hover:bg-slate-100 rounded-lg"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg></button></div><h1 class="text-lg font-bold text-slate-800">Dashboard Penyelenggara</h1>
             </div>
@@ -73,13 +36,9 @@
                 </div>
 
                 <div class="flex items-center gap-4 border-l border-slate-200 pl-6">
-                    <button class="relative text-slate-400 hover:text-slate-600 transition-colors">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                        <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
-                    </button>
-                    <button class="w-9 h-9 rounded-full bg-green-100 text-green-700 font-bold text-sm flex items-center justify-center border border-green-200">
-                        {{ substr(auth()->user()->name, 0, 1) }}
-                    </button>
+                    @include('partials.notifications')
+                    @include('partials.profile_avatar')
+
                 </div>
             </div>
         </header>
@@ -93,9 +52,9 @@
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm relative overflow-hidden">
+                    <div class="bg-white/60 rounded-3xl p-6 border border-blue-200 shadow-sm relative overflow-hidden animate-fade-in-up" style="background: linear-gradient(to bottom right, #eff6ff, #ffffff); animation-delay: 0ms">
                         <div class="flex justify-between items-start mb-4">
-                            <h3 class="font-bold text-blue-600 text-sm">Total Pendaftar</h3>
+                            <h3 class="font-bold text-blue-600 text-sm">Pendaftar (Pending)</h3>
                             <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                             </div>
@@ -106,7 +65,7 @@
                         </div>
                     </div>
 
-                    <div class="bg-white/60 rounded-3xl p-6 border border-green-200 shadow-sm relative overflow-hidden" style="background: linear-gradient(to bottom right, #f0fdf4, #ffffff);">
+                    <div class="bg-white/60 rounded-3xl p-6 border border-green-200 shadow-sm relative overflow-hidden animate-fade-in-up" style="background: linear-gradient(to bottom right, #f0fdf4, #ffffff); animation-delay: 100ms">
                         <div class="flex justify-between items-start mb-4">
                             <h3 class="font-bold text-green-700 text-sm">Lomba Aktif</h3>
                             <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 border border-green-200">
@@ -117,7 +76,7 @@
                         <p class="text-xs font-bold text-green-600">Disetujui & Live</p>
                     </div>
 
-                    <div class="bg-white/60 rounded-3xl p-6 border border-orange-200 shadow-sm relative overflow-hidden" style="background: linear-gradient(to bottom right, #fff7ed, #ffffff);">
+                    <div class="bg-white/60 rounded-3xl p-6 border border-orange-200 shadow-sm relative overflow-hidden animate-fade-in-up" style="background: linear-gradient(to bottom right, #fff7ed, #ffffff); animation-delay: 200ms">
                         <div class="flex justify-between items-start mb-4">
                             <h3 class="font-bold text-orange-600 text-sm">Menunggu Verifikasi</h3>
                             <div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-500 border border-orange-200">
@@ -128,7 +87,7 @@
                         <p class="text-xs font-bold text-orange-600">Pending Admin</p>
                     </div>
 
-                    <div class="bg-white/60 rounded-3xl p-6 border border-purple-200 shadow-sm relative overflow-hidden" style="background: linear-gradient(to bottom right, #faf5ff, #ffffff);">
+                    <div class="bg-white/60 rounded-3xl p-6 border border-purple-200 shadow-sm relative overflow-hidden animate-fade-in-up" style="background: linear-gradient(to bottom right, #faf5ff, #ffffff); animation-delay: 300ms">
                         <div class="flex justify-between items-start mb-4">
                             <h3 class="font-bold text-purple-700 text-sm">Total Dilihat</h3>
                             <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 border border-purple-200">
@@ -151,11 +110,84 @@
                             <span class="px-3 py-1 bg-green-50 text-green-600 text-xs font-bold rounded-full border border-green-100">Meningkat</span>
                         </div>
 
-                        <div class="flex-1 bg-slate-50 rounded-2xl border border-dashed border-slate-200 flex flex-col items-center justify-center min-h-[250px] text-slate-400">
-                            <svg class="w-8 h-8 mb-3 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg>
-                            <span class="text-sm font-medium">Grafik lonjakan pendaftar akan ditampilkan di sini</span>
+                        <div class="flex-1 min-h-[300px] relative">
+                            <canvas id="registrationChart"></canvas>
                         </div>
                     </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const ctx = document.getElementById('registrationChart').getContext('2d');
+                            new Chart(ctx, {
+                                type: 'line',
+                                data: {
+                                    labels: @json($chartLabels),
+                                    datasets: [{
+                                        label: 'Pendaftaran',
+                                        data: @json($chartData),
+                                        borderColor: '#2563eb',
+                                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                                        borderWidth: 3,
+                                        fill: true,
+                                        tension: 0.4,
+                                        pointRadius: 4,
+                                        pointBackgroundColor: '#2563eb',
+                                        pointBorderColor: '#fff',
+                                        pointBorderWidth: 2,
+                                        pointHoverRadius: 6,
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    plugins: {
+                                        legend: {
+                                            display: false
+                                        },
+                                        tooltip: {
+                                            backgroundColor: '#1e293b',
+                                            padding: 12,
+                                            titleFont: { size: 14, weight: 'bold' },
+                                            bodyFont: { size: 13 },
+                                            displayColors: false,
+                                            callbacks: {
+                                                label: function(context) {
+                                                    return context.parsed.y + ' Pendaftaran';
+                                                }
+                                            }
+                                        }
+                                    },
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                            grid: {
+                                                display: true,
+                                                color: '#f1f5f9'
+                                            },
+                                            ticks: {
+                                                precision: 0,
+                                                font: { size: 11, family: 'Inter' },
+                                                color: '#64748b'
+                                            }
+                                        },
+                                        x: {
+                                            grid: {
+                                                display: false
+                                            },
+                                            ticks: {
+                                                font: { size: 11, family: 'Inter' },
+                                                color: '#64748b',
+                                                maxRotation: 0,
+                                                autoSkip: true,
+                                                maxTicksLimit: 7
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        });
+                    </script>
+
                     <div class="lg:col-span-1 bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
                         <h3 class="font-bold text-slate-900 mb-6">Pendaftar per Lomba</h3>
 
@@ -209,6 +241,7 @@
     </div>
 
 
+@include('partials.scripts')
 <script>
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
@@ -234,5 +267,7 @@
         }
     }
 </script>
+    @include('partials.scripts')
 </body>
 </html>
+

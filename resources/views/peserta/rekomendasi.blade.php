@@ -61,17 +61,17 @@
 
     <div class="flex-1 flex flex-col h-screen overflow-hidden">
 
-        <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-6 lg:px-10 z-10 shrink-0">
+        <header class="h-20 glass-nav border-b border-slate-200/50 flex items-center justify-between px-6 lg:px-10 z-10 shrink-0 font-sans">
             <div class="flex items-center gap-4">
                 <div class="flex items-center"><button onclick="toggleSidebar()" class="p-2 mr-3 text-slate-500 hover:bg-slate-100 rounded-lg"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg></button></div><h1 class="text-lg font-bold text-slate-800">Eksplorasi Lomba</h1>
             </div>
 
             <div class="flex items-center gap-6">
                 <div class="flex items-center gap-4 border-l border-slate-200 pl-6">
-                    <button class="w-9 h-9 rounded-full bg-blue-600 text-white font-bold text-sm flex items-center justify-center shadow-md shadow-blue-200" hover:-translate-y-0.5 transition-all duration-300 shadow-lg hover:shadow-blue-100 >
-                        {{ substr(auth()->user()->name, 0, 1) }}
-                    </button>
+                    @include('partials.notifications')
+                    @include('partials.profile_avatar')
                 </div>
+
             </div>
         </header>
 
@@ -93,12 +93,11 @@
 
                         <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Kategori</label>
-                            <select name="category" onchange="this.form.submit()" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white text-sm transition-all appearance-none cursor-pointer text-slate-700">
+                            <select name="category_id" onchange="this.form.submit()" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-slate-50 focus:bg-white text-sm transition-all appearance-none cursor-pointer text-slate-700">
                                 <option value="">Semua Kategori</option>
-                                <option value="Sains" {{ request('category') == 'Sains' ? 'selected' : '' }}>Sains & Matematika</option>
-                                <option value="Seni" {{ request('category') == 'Seni' ? 'selected' : '' }}>Seni & Sastra</option>
-                                <option value="Olahraga" {{ request('category') == 'Olahraga' ? 'selected' : '' }}>Olahraga</option>
-                                <option value="Teknologi" {{ request('category') == 'Teknologi' ? 'selected' : '' }}>Teknologi</option>
+                                @foreach($categories as $cat)
+                                    <option value="{{ $cat->id }}" {{ request('category_id') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -129,8 +128,9 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
-                    @forelse($competitions as $l)
-                    <div class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col group cursor-pointer">
+                    @forelse($competitions as $index => $l)
+                    <div class="bg-white rounded-[2rem] border border-slate-200 overflow-hidden hover:shadow-2xl hover:shadow-slate-200/50 transition-all duration-300 group flex flex-col justify-between animate-fade-in-up cursor-pointer" 
+                         style="animation-delay: {{ $index * 75 }}ms">
                         <div class="h-44 relative overflow-hidden bg-slate-100">
                             @if($l->poster)
                             <img src="{{ asset('storage/' . $l->poster) }}" alt="Poster" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
@@ -177,9 +177,13 @@
                         </div>
                     </div>
                     @empty
-                    <div class="col-span-full py-20 text-center">
-                        <p class="text-slate-400 text-lg">Tidak ada lomba yang ditemukan.</p>
-                    </div>
+                    @include('partials.empty_state', [
+                        'title' => 'Lomba Belum Ditemukan',
+                        'message' => 'Cobalah mencari dengan kata kunci lain atau pilih kategori yang berbeda.',
+                        'action_url' => route('peserta.dashboard'),
+                        'action_text' => 'Reset Pencarian'
+                    ])
+
                     @endforelse
 
                 </div>
@@ -214,5 +218,7 @@
         }
     }
 </script>
+    @include('partials.scripts')
 </body>
 </html>
+

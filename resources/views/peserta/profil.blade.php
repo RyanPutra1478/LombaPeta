@@ -150,9 +150,13 @@
                                 </div>
                             </div>
                             @empty
-                            <div class="p-8 text-center bg-slate-100 rounded-3xl border border-dashed border-slate-300">
-                                <p class="text-slate-400 font-medium">Belum ada lomba yang diikuti.</p>
-                            </div>
+                            @include('partials.empty_state', [
+                                'title' => 'Belum Ada Lomba Diikuti',
+                                'message' => 'Cari lomba favoritmu dan daftar segera untuk menambah pengalaman!',
+                                'action_url' => route('peserta.dashboard'),
+                                'action_text' => 'Cari Lomba'
+                            ])
+
                             @endforelse
                         </section>
 
@@ -200,9 +204,13 @@
                                 </div>
                             </div>
                             @empty
-                            <div class="p-8 text-center bg-slate-100 rounded-3xl border border-dashed border-slate-300">
-                                <p class="text-slate-400 font-medium">Belum ada lomba yang disimpan.</p>
-                            </div>
+                            @include('partials.empty_state', [
+                                'title' => 'Simpanan Masih Kosong',
+                                'message' => 'Simpan lomba yang menarik minatmu agar tidak lupa deadline pendaftaran.',
+                                'action_url' => route('peserta.dashboard'),
+                                'action_text' => 'Eksplor Lomba'
+                            ])
+
                             @endforelse
                         </section>
 

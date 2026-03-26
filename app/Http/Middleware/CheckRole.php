@@ -20,7 +20,7 @@ class CheckRole
         }
 
         if (! in_array($request->user()->role, $roles)) {
-            abort(403, 'Unauthorized Access.');
+            return redirect()->route('login')->with('error', 'Akses tidak diizinkan (Unauthorized).');
         }
 
         return $next($request);

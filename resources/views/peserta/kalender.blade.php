@@ -65,18 +65,19 @@
 
     <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
 
-        <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-6 lg:px-10 z-10 shrink-0">
+        <header class="h-20 glass-nav border-b border-slate-200/50 flex items-center justify-between px-6 lg:px-10 z-10 shrink-0">
+
             <div class="flex items-center gap-4">
                 <div class="flex items-center"><button onclick="toggleSidebar()" class="p-2 mr-3 text-slate-500 hover:bg-slate-100 rounded-lg"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg></button></div><h1 class="text-lg font-bold text-slate-800">Jadwal & Agenda</h1>
             </div>
 
             <div class="flex items-center gap-6">
                 <div class="flex items-center gap-4 border-l border-slate-200 pl-6">
-                    <button class="w-9 h-9 rounded-full bg-blue-600 text-white font-bold text-sm flex items-center justify-center shadow-md shadow-blue-200" hover:-translate-y-0.5 transition-all duration-300 shadow-lg hover:shadow-blue-100 >
-                        {{ substr(auth()->user()->name, 0, 1) }}
-                    </button>
+                    @include('partials.notifications')
+                    @include('partials.profile_avatar')
                 </div>
             </div>
+
         </header>
 
         <main class="flex-1 overflow-y-auto p-4 lg:p-8">
@@ -226,5 +227,7 @@
         }
     }
 </script>
+    @include('partials.scripts')
 </body>
 </html>
+

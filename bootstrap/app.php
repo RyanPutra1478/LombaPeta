@@ -19,6 +19,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'status' => \App\Http\Middleware\CheckStatus::class,
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions): void {
-        //
+    ->withExceptions(function (Exceptions $exceptions) {
+        $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException $e, $request) {
+            return redirect()->route('login')->with('error', 'Akses tidak diizinkan atau sesi habis. Silakan login kembali.');
+        });
     })->create();

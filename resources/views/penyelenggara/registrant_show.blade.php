@@ -50,15 +50,19 @@
                 </a>
                 <h1 class="text-lg font-bold text-slate-800">Detail Registrasi Peserta</h1>
             </div>
-            <div class="flex items-center gap-3">
-               @if($registration->status == 'pending')
-                    <span class="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs font-extrabold rounded-full border border-yellow-200 uppercase tracking-widest">Verifikasi Pending</span>
-               @elseif($registration->status == 'approved')
-                    <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-extrabold rounded-full border border-green-200 uppercase tracking-widest">Telah Disetujui</span>
-               @else
+             <div class="flex items-center gap-3">
+                @if($registration->status == 'pending')
+                     <span class="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs font-extrabold rounded-full border border-yellow-200 uppercase tracking-widest">Verifikasi Pending</span>
+                @elseif($registration->status == 'approved')
+                     <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-extrabold rounded-full border border-green-200 uppercase tracking-widest">Telah Disetujui</span>
+                @else
                      <span class="px-3 py-1 bg-red-100 text-red-700 text-xs font-extrabold rounded-full border border-red-200 uppercase tracking-widest">Pendaftaran Ditolak</span>
-               @endif
-            </div>
+                @endif
+                <div class="flex items-center gap-4 border-l border-slate-200 pl-4 ml-2">
+                    @include('partials.notifications')
+                </div>
+             </div>
+
         </header>
 
         <main class="flex-1 overflow-y-auto p-6 lg:p-10">
@@ -68,6 +72,16 @@
                     <div class="mb-6 p-4 bg-green-50 text-green-700 border border-green-100 rounded-2xl text-sm font-bold flex items-center gap-3">
                          <svg class="w-5 h-5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
                         {{ session('success') }}
+                    </div>
+                @endif
+
+                @if($errors->any())
+                    <div class="mb-6 p-4 bg-red-50 text-red-700 border border-red-100 rounded-2xl text-sm font-bold">
+                        <ul class="list-disc list-inside">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 @endif
 
@@ -115,10 +129,24 @@
                                                 </div>
                                             @endif
                                         @endforeach
-                                        @if(!$hasMember)
-                                            <p class="text-sm text-slate-400 italic">Pendaftaran Individu (Tidak ada anggota lain).</p>
+                                        @if(!$hasMember && $registration->competition->competition_model == 'tim')
+                                            <p class="text-sm text-slate-400 italic">Pendaftaran Tim (Tanpa anggota tambahan terisi).</p>
                                         @endif
                                     </div>
+
+                                    @if(!empty($registration->form_data['additional']))
+                                    <div class="mt-8 pt-6 border-t border-slate-100">
+                                        <p class="text-[10px] font-bold text-blue-600 uppercase mb-4 tracking-widest">Informasi Kustom Tambahan</p>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            @foreach($registration->form_data['additional'] as $label => $value)
+                                            <div class="p-4 bg-blue-50/30 border border-blue-100/50 rounded-2xl">
+                                                <p class="text-[9px] font-black text-slate-400 uppercase mb-1 tracking-tight">{{ $label }}</p>
+                                                <p class="text-sm font-bold text-slate-800">{{ $value ?: '-' }}</p>
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -130,7 +158,7 @@
                                     Bukti Pembayaran
                                 </h4>
                                 @if($registration->proof_of_payment)
-                                <a href="{{ asset('storage/' . $registration->proof_of_payment) }}" target="_blank" class="block group relative rounded-2xl overflow-hidden border border-slate-200 shadow-sm aspect-video bg-slate-100">
+                                <a href="{{ asset('storage/' . $registration->proof_of_payment) }}" target="_blank" class="block group relative rounded-2xl overflow-hidden border border-slate-200 shadow-sm aspect-square bg-slate-100">
                                     <img src="{{ asset('storage/' . $registration->proof_of_payment) }}" alt="Bukti Bayar" class="w-full h-full object-cover">
                                     <div class="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                         <p class="text-white text-xs font-bold flex items-center gap-2">
@@ -154,13 +182,13 @@
                                     
                                     @php $isPdf = str_ends_with($registration->id_card_file, '.pdf'); @endphp
                                     @if($isPdf)
-                                    <a href="{{ asset('storage/' . $registration->id_card_file) }}" target="_blank" class="block w-full py-12 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center group hover:bg-slate-100 hover:border-blue-300 transition-all">
+                                    <a href="{{ asset('storage/' . $registration->id_card_file) }}" target="_blank" class="block w-full aspect-square bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center group hover:bg-slate-100 hover:border-blue-300 transition-all">
                                         <svg class="w-10 h-10 text-red-500 mb-3 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                                         <p class="text-sm font-bold text-slate-700">Dokumen PDF Terlampir</p>
                                         <p class="text-xs text-blue-600 font-bold mt-2">Buka/Lihat Kartu Identitas</p>
                                     </a>
                                     @else
-                                    <a href="{{ asset('storage/' . $registration->id_card_file) }}" target="_blank" class="block group relative rounded-2xl overflow-hidden border border-slate-200 shadow-sm aspect-video bg-slate-100">
+                                    <a href="{{ asset('storage/' . $registration->id_card_file) }}" target="_blank" class="block group relative rounded-2xl overflow-hidden border border-slate-200 shadow-sm aspect-square bg-slate-100">
                                         <img src="{{ asset('storage/' . $registration->id_card_file) }}" alt="Identitas" class="w-full h-full object-cover">
                                         <div class="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-bold">
                                             Perbesar Gambar
@@ -192,15 +220,29 @@
                                     </div>
 
                                     <div class="flex flex-col gap-2">
-                                        <button type="submit" name="status" value="approved" class="w-full py-4 bg-emerald-600 text-white rounded-2xl font-black text-sm shadow-lg shadow-emerald-200 hover:bg-emerald-700 hover:-translate-y-1 transition-all flex items-center justify-center gap-2 active:scale-95">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                            Setujui Pendaftaran
-                                        </button>
-                                        
-                                        <button type="submit" name="status" value="rejected" class="w-full py-4 bg-white text-red-600 border-2 border-red-50 rounded-2xl font-black text-sm hover:bg-red-50 hover:border-red-100 transition-all flex items-center justify-center gap-2 active:scale-95">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                            Tolak Peserta
-                                        </button>
+                                        @if($registration->status == 'pending')
+                                            <button type="submit" name="status" value="approved" class="w-full py-4 bg-emerald-600 text-white rounded-2xl font-black text-sm shadow-lg shadow-emerald-200 hover:bg-emerald-700 hover:-translate-y-1 transition-all flex items-center justify-center gap-2 active:scale-95">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                                Setujui Pendaftaran
+                                            </button>
+                                            
+                                            <button type="submit" name="status" value="rejected" class="w-full py-4 bg-white text-red-600 border-2 border-red-50 rounded-2xl font-black text-sm hover:bg-red-50 hover:border-red-100 transition-all flex items-center justify-center gap-2 active:scale-95">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                                Tolak Peserta
+                                            </button>
+                                        @elseif($registration->status == 'approved')
+                                            <div class="w-full py-4 bg-emerald-50 text-emerald-700 rounded-2xl font-black text-sm text-center border border-emerald-100 flex items-center justify-center gap-2">
+                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                                Pendaftaran Disetujui
+                                            </div>
+                                            <p class="text-[9px] text-slate-400 text-center uppercase font-bold tracking-widest mt-2">Status telah terkunci sebagai "Disetujui"</p>
+                                        @else
+                                            <div class="w-full py-4 bg-red-50 text-red-700 rounded-2xl font-black text-sm text-center border border-red-100 flex items-center justify-center gap-2">
+                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>
+                                                Pendaftaran Ditolak
+                                            </div>
+                                            <p class="text-[9px] text-slate-400 text-center uppercase font-bold tracking-widest mt-2">Status telah terkunci sebagai "Ditolak"</p>
+                                        @endif
                                     </div>
                                 </form>
 
@@ -222,6 +264,7 @@
     </div>
 
 
+@include('partials.scripts')
 <script>
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');

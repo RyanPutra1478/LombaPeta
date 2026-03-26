@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Seeder;
 
 class AdminSeeder extends Seeder
@@ -17,7 +18,7 @@ class AdminSeeder extends Seeder
             [
                 'name' => 'Administrator',
                 'email' => 'admin@lombapeta.com',
-                'password' => \Illuminate\Support\Facades\Hash::make('090307'),
+                'password' => Hash::make('password'),
                 'role' => 'admin',
                 'status' => 'approved',
             ]

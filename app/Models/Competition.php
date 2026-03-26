@@ -24,11 +24,19 @@ class Competition extends Model
         'poster',
         'views',
         'status',
+        'additional_fields',
+        'category_id',
     ];
 
     protected $casts = [
         'deadline' => 'datetime',
+        'additional_fields' => 'array',
     ];
+
+    public function category_relation()
+    {
+        return $this->belongsTo(CompetitionCategory::class, 'category_id');
+    }
 
     public function user()
     {

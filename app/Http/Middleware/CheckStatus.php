@@ -16,7 +16,7 @@ class CheckStatus
     public function handle(Request $request, Closure $next): Response
     {
         if ($request->user() && $request->user()->status !== 'approved') {
-            abort(403, 'Your account is pending admin approval.');
+            return redirect()->route('login')->with('error', 'Akun Anda sedang menunggu persetujuan admin.');
         }
 
         return $next($request);
