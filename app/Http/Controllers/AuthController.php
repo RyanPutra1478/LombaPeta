@@ -89,11 +89,17 @@ class AuthController extends Controller
             'status' => $status,
         ]);
 
+        // Create initial profile with institution if organizer
+        $user->profile()->create([
+            'institution' => ($role === 'penyelenggara') ? $request->nama : null,
+            'organization_website' => ($role === 'penyelenggara') ? $request->organization_website : null,
+        ]);
+
         auth()->login($user);
 
         if ($role === 'penyelenggara') {
             auth()->logout();
-            return redirect()->route('login')->with('success', 'Pendaftaran berhasil! Akun Anda sedang menunggu persetujuan admin. Harap tunggu verifikasi dalam 1x24 jam.');
+            return redirect()->route('login')->with('success', 'Pendaftaran berhasil! Akun Anda sedang diverifikasi. Tim LombaPeta akan segera menghubungi Anda melalui email untuk langkah selanjutnya. Harap tunggu verifikasi dalam 1x24 jam.');
         }
 
         return redirect()->route('peserta.dashboard');

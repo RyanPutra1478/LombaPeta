@@ -199,6 +199,7 @@
                             <thead class="bg-white text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border-b border-slate-100">
                                 <tr>
                                     <th class="px-6 py-4">Nama Penyelenggara</th>
+                                    <th class="px-6 py-4">Institusi</th>
                                     <th class="px-6 py-4">Waktu Daftar</th>
                                     <th class="px-6 py-4">Status</th>
                                     <th class="px-6 py-4 text-center">Kelola</th>
@@ -211,6 +212,11 @@
                                         <p class="font-bold text-slate-900 group-hover:text-blue-700 transition-colors">{{ $p->name }}</p>
                                         <p class="text-xs text-slate-500 font-medium">{{ $p->email }}</p>
                                     </td>
+                                    <td class="px-6 py-5">
+                                        <span class="text-xs font-bold text-slate-600 bg-slate-100 px-2 py-1 rounded-lg">
+                                            {{ $p->profile->institution ?? '-' }}
+                                        </span>
+                                    </td>
                                     <td class="px-6 py-5 text-xs text-slate-500 font-bold uppercase tracking-tight">{{ $p->created_at->format('d M Y, H:i') }}</td>
                                     <td class="px-6 py-5">
                                         <span class="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black {{ $p->status == 'pending' ? 'bg-amber-100 text-amber-700 border border-amber-200 bubble-pending' : 'bg-green-100 text-green-700 border border-green-200' }} uppercase tracking-widest">
@@ -219,9 +225,16 @@
                                     </td>
                                     <td class="px-6 py-5">
                                         <div class="flex items-center justify-center gap-2">
+                                            @if($p->status == 'pending')
+                                            <a href="mailto:{{ $p->email }}?subject=Verifikasi%20Akun%20Penyelenggara%20LombaPeta&body=Halo%20{{ $p->name }},%0A%0AAnda%20mendaftar%20sebagai%20penyelenggara%20untuk%20{{ $p->profile->institution ?? 'institusi%20Anda' }}.%20Mohon%20lampirkan%20SK%20Panitia%20atau%20Surat%20Tugas%20resmi%20untuk%20proses%20verifikasi.%0A%0ATerima%20kasih." 
+                                               class="p-2.5 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all shadow-sm active:scale-90" title="Hubungi via Email">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                            </a>
+                                            @else
                                             <button onclick="showUserDetail({{ $p->id }})" class="p-2.5 bg-slate-50 text-slate-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all shadow-sm active:scale-90" title="Lihat Detail">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                                             </button>
+                                            @endif
 
                                             @if($p->status == 'pending')
                                             <form action="{{ route('admin.user.approve', $p->id) }}" method="POST">
@@ -439,6 +452,8 @@
                 <div class="grid grid-cols-2 gap-4 text-left">
                     <div class="p-4 rounded-3xl bg-slate-50 border border-slate-100"><p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Role</p><p id="modalRole" class="font-black text-slate-700 uppercase text-[10px]">--</p></div>
                     <div class="p-4 rounded-3xl bg-slate-50 border border-slate-100"><p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Status</p><p id="modalStatus" class="font-black text-blue-600 uppercase text-[10px]">--</p></div>
+                    <div class="p-4 rounded-3xl bg-slate-50 border border-slate-100 col-span-2"><p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Institusi / Organisasi</p><p id="modalInstitution" class="font-bold text-slate-700 text-sm">--</p></div>
+                    <div id="modalWebsiteContainer" class="p-4 rounded-3xl bg-slate-50 border border-slate-100 col-span-2 hidden"><p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Website Resmi</p><a id="modalWebsite" href="#" target="_blank" class="font-bold text-blue-600 hover:underline text-sm truncate block">--</a></div>
                     <div class="p-4 rounded-3xl bg-slate-50 border border-slate-100"><p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Username</p><p id="modalUsername" class="font-bold text-slate-700 text-xs">--</p></div>
                     <div class="p-4 rounded-3xl bg-slate-50 border border-slate-100"><p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Bergabung</p><p id="modalJoined" class="font-bold text-slate-700 text-xs">--</p></div>
                 </div>
@@ -501,6 +516,17 @@
                     document.getElementById('modalUsername').innerText = u.username || '-';
                     document.getElementById('modalAvatar').innerText = u.name.charAt(0);
                     document.getElementById('modalJoined').innerText = new Date(u.created_at).toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'});
+                    document.getElementById('modalInstitution').innerText = (u.profile && u.profile.institution) ? u.profile.institution : '-';
+                    
+                    const websiteContainer = document.getElementById('modalWebsiteContainer');
+                    const websiteLink = document.getElementById('modalWebsite');
+                    if (u.profile && u.profile.organization_website) {
+                        websiteContainer.classList.remove('hidden');
+                        websiteLink.href = u.profile.organization_website.startsWith('http') ? u.profile.organization_website : 'https://' + u.profile.organization_website;
+                        websiteLink.innerText = u.profile.organization_website;
+                    } else {
+                        websiteContainer.classList.add('hidden');
+                    }
                 });
         }
 

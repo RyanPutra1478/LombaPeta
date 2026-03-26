@@ -1,6 +1,6 @@
 @php
     $profile = auth()->user()->profile;
-    $avatar = $profile && $profile->avatar ? asset('storage/' . $profile->avatar) : null;
+    $avatar = $profile ? $profile->avatar_url : null;
     $initial = substr(auth()->user()->name, 0, 1);
     
     // Choose colors based on role

@@ -88,7 +88,12 @@
 
                         <div id="field-nama" class="hidden">
                             <label class="block text-sm font-semibold mb-2 text-slate-700" id="label-nama">Nama Lengkap</label>
-                            <input type="text" name="nama" placeholder="Masukkan nama Anda" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition bg-slate-50 focus:bg-white">
+                            <input type="text" name="nama" placeholder="Masukkan nama Anda" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition bg-slate-50 focus:bg-white text-sm">
+                        </div>
+                        
+                        <div id="field-website" class="hidden">
+                            <label class="block text-sm font-semibold mb-2 text-slate-700">Website Institusi (Opsional)</label>
+                            <input type="text" name="organization_website" placeholder="https://institusi.sch.id" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition bg-slate-50 focus:bg-white text-sm">
                         </div>
 
                         <div>
@@ -161,6 +166,12 @@
                 document.getElementById('btn-admin').classList.add('hidden');
                 document.getElementById('role-grid').className = "grid grid-cols-2 gap-2 bg-slate-50 p-1.5 rounded-xl border border-slate-100";
                 
+                if (currentRole === 'penyelenggara') {
+                    document.getElementById('field-website').classList.remove('hidden');
+                } else {
+                    document.getElementById('field-website').classList.add('hidden');
+                }
+
                 if (currentRole === 'admin') setRole('peserta');
             }
 
@@ -200,6 +211,12 @@
                 document.getElementById('link-forgot').className = "text-blue-600 font-medium hover:underline";
             } else {
                 document.getElementById('link-forgot').className = "text-slate-800 font-medium hover:underline";
+            }
+
+            if (currentMode === 'register' && role === 'penyelenggara') {
+                document.getElementById('field-website').classList.remove('hidden');
+            } else {
+                document.getElementById('field-website').classList.add('hidden');
             }
 
             setMode(currentMode);

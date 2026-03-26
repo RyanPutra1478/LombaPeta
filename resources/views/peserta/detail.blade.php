@@ -107,11 +107,9 @@
             <div class="flex items-center gap-6">
                 <div class="flex items-center gap-4 border-l border-slate-200 pl-6">
                     @auth
-                    <button class="w-9 h-9 rounded-full bg-blue-600 text-white font-bold text-sm flex items-center justify-center shadow-md shadow-blue-200" hover:-translate-y-0.5 transition-all duration-300 shadow-lg hover:shadow-blue-100 >
-                        {{ substr(auth()->user()->name, 0, 1) }}
-                    </button>
+                        @include('partials.profile_avatar')
                     @else
-                    <a href="{{ route('login') }}" class="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-100">Masuk</a>
+                        <a href="{{ route('login') }}" class="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-100">Masuk</a>
                     @endauth
                 </div>
             </div>

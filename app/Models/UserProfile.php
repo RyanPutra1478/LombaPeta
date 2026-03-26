@@ -11,6 +11,7 @@ class UserProfile extends Model
         'avatar',
         'phone',
         'institution',
+        'organization_website',
         'bio',
     ];
 

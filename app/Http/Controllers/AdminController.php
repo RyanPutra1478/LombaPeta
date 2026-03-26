@@ -130,9 +130,9 @@ class AdminController extends Controller
 
     public function pengaturan()
     {
-        $organizers  = User::where('role', 'penyelenggara')->latest()->get();
-        $participants = User::where('role', 'peserta')->latest()->get();
-        $deletedUsers = User::onlyTrashed()->latest()->get();
+        $organizers  = User::with('profile')->where('role', 'penyelenggara')->latest()->get();
+        $participants = User::with('profile')->where('role', 'peserta')->latest()->get();
+        $deletedUsers = User::with('profile')->onlyTrashed()->latest()->get();
         $categories  = CompetitionCategory::orderBy('name')->get();
         
         // Comprehensive Activities from ActivityLog table
@@ -149,7 +149,7 @@ class AdminController extends Controller
 
     public function showUser($id)
     {
-        $user = User::withTrashed()->findOrFail($id);
+        $user = User::withTrashed()->with('profile')->findOrFail($id);
         return response()->json($user);
     }
 
